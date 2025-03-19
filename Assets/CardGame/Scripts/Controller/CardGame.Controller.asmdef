@@ -1,0 +1,24 @@
+{
+    "name": "CardGame.Controller",
+    "rootNamespace": "",
+    "references": [
+        "GUID:504fdab4c7b1ae246859c1fd4752bfe6",
+        "GUID:f3ab9efc220f41ab8ecbddc190dbd107",
+        "GUID:2fdef4a859838e3449b625605ab13c25",
+        "GUID:fcf26afa24f209f48995057e40e2e83e",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "Helpers",
+        "GUID:688cfbbe2a536604ab4aa06ececa1da3",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:74e71802d0867014d9f72896ef513200"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

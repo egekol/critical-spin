@@ -1,0 +1,25 @@
+{
+    "name": "CardGame.Test",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a2f2239355369ba4fb6909aeaa41def5",
+        "GUID:045e916bb9d18ce41826a2b9440d8fb0",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:f3ab9efc220f41ab8ecbddc190dbd107",
+        "GUID:504fdab4c7b1ae246859c1fd4752bfe6",
+        "GUID:9a88817da2cdeb94388ab1c4165583ac"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
