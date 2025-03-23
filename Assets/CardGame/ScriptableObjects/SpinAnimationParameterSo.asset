@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fac24eb3d44001a1da6abbe4dbdf3c, type: 3}
   m_Name: SpinAnimationParameterSo
   m_EditorClassIdentifier: 
-  LoopRotationDuration: 2
+  LoopRotationDuration: 0.5
   EnabledBlurValue: 4
   DisabledBlurValue: 0
   BlurChangeDuration: 0.2
@@ -27,17 +27,44 @@ MonoBehaviour:
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.21353453
+      value: 0.21353453
+      inSlope: 1.0608993
+      outSlope: 0.94565135
+      tangentMode: 1
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.47947833
+    - serializedVersion: 3
+      time: 0.7942152
+      value: 1.0071929
+      inSlope: -0.008065045
+      outSlope: 0.07225153
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.20445359
+      outWeight: 0.56758404
+    - serializedVersion: 3
+      time: 0.93984085
+      value: 0.9936491
+      inSlope: -0.058029372
+      outSlope: -0.058029372
+      tangentMode: 0
+      weightedMode: 1
+      inWeight: 0.34188002
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: -0.043697193
+      outSlope: -0.043697193
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.71826386
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  LoopSpinVelocity: 180
+  LoopSpinVelocity: 720
