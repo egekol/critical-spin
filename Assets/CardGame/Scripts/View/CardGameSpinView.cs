@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -16,6 +18,10 @@ namespace CardGame.View
         [SerializeField] private List<CardGameSpinSlotView> _spinSlotViewList;
         private Tween _loopTween;
         private Tween _blurTween;
+        private bool _isRotating;
+        private float _spinVelocity;
+        private float _spinRotationValue;
+        private Tween _stopTween;
 
         private const string SpinBaseObjectName = "ui_spin_base_value";
         private const string SpinParentObjectName = "ui_spin_parent";
@@ -25,25 +31,44 @@ namespace CardGame.View
         [Button]
         public void StartRotateSpinOnLoop()
         {
-            var angle = _spinParentTf.rotation.eulerAngles;
+            _isRotating = true;
+            _spinVelocity = _spinAnimationParameter.LoopSpinVelocity;
 
-            _loopTween = _spinParentTf.DORotate(angle + Vector3.forward * 360f,
-                    _spinAnimationParameter.LoopRotationDuration, RotateMode.FastBeyond360)
-                .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear).SetLink(gameObject);
+            // var angle = _spinParentTf.rotation.eulerAngles;
+            // _loopTween = _spinParentTf.DORotate(angle + Vector3.forward * 360f,
+            // _spinAnimationParameter.LoopRotationDuration, RotateMode.FastBeyond360)
+            // .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear).SetLink(gameObject);
         }
 
         [Button]
         public void StopRotateSpinOnLoop()
         {
-            _loopTween?.Kill();
+            _isRotating = false;
         }
 
         private void Update()
         {
-            if (!)
+            if (!_isRotating)
             {
-                
+                return;
             }
+
+            if (_spinRotationValue>360f)
+            {
+                _spinRotationValue -= 360f;
+            }
+            Rotate(_spinVelocity * Time.deltaTime);
+        }
+
+        private void Rotate(float value)
+        {
+            _spinRotationValue += value;
+            SetRotation(_spinRotationValue);
+        }
+
+        private void SetRotation(float rotationValue)
+        {
+            _spinParentTf.rotation = Quaternion.Euler(Vector3.forward * rotationValue);
         }
 
         [Button]
@@ -62,11 +87,11 @@ namespace CardGame.View
             var totalRotation = rotationAngle + angle;
 
             var rotationDuration = CalculateRotationDuration(angle, spinCountBeforeStop);
-            var rotation = _spinParentTf.transform.rotation.eulerAngles + Vector3.forward * totalRotation;
-            _spinParentTf.DORotate(rotation,
-                    rotationDuration, RotateMode.FastBeyond360).SetEase(_spinAnimationParameter.StopRotationEase)
-                .SetLink(gameObject);
-            Debug.Log($"last :: {rotation}");
+            var currentRotation = _spinParentTf.transform.rotation.eulerAngles;
+            var targetRotation = currentRotation + Vector3.forward * totalRotation;
+
+            StopSpinAnimationAsync(currentRotation, targetRotation, rotationDuration).Forget();
+            Debug.Log($"last :: {targetRotation}");
             return;
 
             float CalculateAngleOfSlot(CardGameSpinSlotView slot)
@@ -86,6 +111,29 @@ namespace CardGame.View
                 return dur;
             }
         }
+
+        private async UniTask StopSpinAnimationAsync(Vector3 currentRotation, Vector3 targetRotation, float rotationDuration, CancellationTokenSource cts = null)
+        {
+            float elapsed = 0;
+            
+            while (elapsed < rotationDuration)
+            {
+                elapsed += Time.deltaTime;
+
+                var lerp = elapsed / rotationDuration;
+                Debug.Log($"lerp  {lerp}");
+                var inverseLerp = Mathf.LerpUnclamped(currentRotation.z, targetRotation.z,
+                    _spinAnimationParameter.StopRotationEase.Evaluate(lerp));
+                var reelVelocity = inverseLerp - _spinRotationValue;
+
+                Debug.Log($"inverseLerp : {inverseLerp}");
+                Debug.Log($"vel : {reelVelocity} = {inverseLerp} - {_spinRotationValue}");
+                Rotate(reelVelocity);
+
+                await UniTask.WaitForSeconds(Time.deltaTime);
+            }
+        }
+
 
         public void SetSpinBlurActive(bool isActive)
         {
