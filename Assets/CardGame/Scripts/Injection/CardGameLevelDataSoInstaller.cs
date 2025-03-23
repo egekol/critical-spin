@@ -5,15 +5,15 @@ using Zenject;
 
 namespace CardGame.Injection
 {
-    [CreateAssetMenu(fileName = "CoreGameLevelDataSoInstaller", menuName = "SO/Core/CoreGameLevelDataInstaller",
+    [CreateAssetMenu(fileName = "CoreGameLevelDataSoInstaller", menuName = "SO/CoreGameLevelDataInstaller",
         order = 0)]
     public class CardGameLevelDataSoInstaller : ScriptableObjectInstaller<CardGameLevelDataSoInstaller>
     {
-        [SerializeField] private CardGameLevelDataSo cardGameLevelDataSo;
+        [SerializeField] private CardGameLevelDtoSo cardGameLevelDataSo;
 
         public override void InstallBindings()
         {
-            Container.Bind<CardGameLevelDataSo>().FromInstance(cardGameLevelDataSo).AsSingle();
+            Container.Bind<CardGameLevelDtoSo>().FromInstance(cardGameLevelDataSo).AsSingle();
         }
     }
 }

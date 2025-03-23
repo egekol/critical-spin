@@ -31,13 +31,17 @@ namespace CardGame.View
         [Button]
         public void StartRotateSpinOnLoop()
         {
-            _isRotating = true;
+            SetSpinning(true);
             _spinVelocity = _spinAnimationParameter.LoopSpinVelocity;
+        }
 
-            // var angle = _spinParentTf.rotation.eulerAngles;
-            // _loopTween = _spinParentTf.DORotate(angle + Vector3.forward * 360f,
-            // _spinAnimationParameter.LoopRotationDuration, RotateMode.FastBeyond360)
-            // .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear).SetLink(gameObject);
+        private void SetSpinning(bool isSpinning)
+        {
+            _isRotating = isSpinning;
+            foreach (var slotView in _spinSlotViewList)
+            {
+                slotView.SetSpinning(isSpinning);
+            }
         }
 
         [Button]

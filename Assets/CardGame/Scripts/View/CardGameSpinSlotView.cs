@@ -46,5 +46,10 @@ namespace CardGame.View
         {
             _slotIndex = index;
         }
+
+        public void SetSpinning(bool isSpinning)
+        {
+            _isRotating = isSpinning;
+        }
     }
 }
