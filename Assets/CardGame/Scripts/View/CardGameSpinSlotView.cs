@@ -6,10 +6,16 @@ namespace CardGame.View
 {
     public class CardGameSpinSlotView : MonoBehaviour
     {
-        [SerializeField] private bool _isRotating;
-        [SerializeField] private Image _spinSlotImage;
+        private bool _isRotating;
         
+        
+        [SerializeField] private Image _spinSlotImage;
+        [SerializeField] private int _slotIndex;
+
         private const string SpinSlotObjectName = "ui_spin_slot_value";
+
+        public int SlotIndex => _slotIndex;
+
 
         public void SetSpinSlotImage(Sprite sprite)
         {
@@ -34,6 +40,11 @@ namespace CardGame.View
                     _spinSlotImage = image;
                 }
             }
+        }
+
+        public void SetSlotIndex(int index)
+        {
+            _slotIndex = index;
         }
     }
 }

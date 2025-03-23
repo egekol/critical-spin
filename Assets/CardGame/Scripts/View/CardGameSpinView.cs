@@ -13,7 +13,7 @@ namespace CardGame.View
         [SerializeField] private Image _spinBaseImage;
         [SerializeField] private Transform _spinParentTf;
         [SerializeField] private SpinAnimationParameterSo _spinAnimationParameter;
-        [SerializeField] private List<CardGameSpinSlotView> _spinSlotViews;
+        [SerializeField] private List<CardGameSpinSlotView> _spinSlotViewList;
         private Tween _loopTween;
         private Tween _blurTween;
 
@@ -26,9 +26,10 @@ namespace CardGame.View
         public void StartRotateSpinOnLoop()
         {
             var angle = _spinParentTf.rotation.eulerAngles;
+
             _loopTween = _spinParentTf.DORotate(angle + Vector3.forward * 360f,
                     _spinAnimationParameter.LoopRotationDuration, RotateMode.FastBeyond360)
-                .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
+                .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear).SetLink(gameObject);
         }
 
         [Button]
@@ -37,13 +38,64 @@ namespace CardGame.View
             _loopTween?.Kill();
         }
 
+        private void Update()
+        {
+            if (!)
+            {
+                
+            }
+        }
+
+        [Button]
+        public void StopSpinRotationAt(int spinIndex, int spinCountBeforeStop = 0)
+        {
+            if (spinIndex < 0 || spinIndex >= _spinSlotViewList.Count)
+            {
+                return;
+            }
+
+            StopRotateSpinOnLoop();
+
+            var slotView = _spinSlotViewList[spinIndex];
+            var angle = CalculateAngleOfSlot(slotView);
+            var rotationAngle = spinCountBeforeStop * 360f;
+            var totalRotation = rotationAngle + angle;
+
+            var rotationDuration = CalculateRotationDuration(angle, spinCountBeforeStop);
+            var rotation = _spinParentTf.transform.rotation.eulerAngles + Vector3.forward * totalRotation;
+            _spinParentTf.DORotate(rotation,
+                    rotationDuration, RotateMode.FastBeyond360).SetEase(_spinAnimationParameter.StopRotationEase)
+                .SetLink(gameObject);
+            Debug.Log($"last :: {rotation}");
+            return;
+
+            float CalculateAngleOfSlot(CardGameSpinSlotView slot)
+            {
+                var rhs = slot.transform.up;
+                Debug.Log($"rhs :: {rhs}");
+                float slotAngle = Mathf.Atan2(rhs.x, rhs.y) * Mathf.Rad2Deg;
+                slotAngle = (slotAngle < 0) ? slotAngle + 360 : slotAngle;
+                Debug.Log($"angle :: {slotAngle}");
+                return slotAngle;
+            }
+
+            float CalculateRotationDuration(float slotAngle, int spinCount)
+            {
+                var angleValue = slotAngle / 360f;
+                var dur = _spinAnimationParameter.LoopRotationDuration * (spinCount + angleValue);
+                return dur;
+            }
+        }
+
         public void SetSpinBlurActive(bool isActive)
         {
-            var blurValue = isActive ? 1 : 0f;
+            var blurValue = isActive
+                ? _spinAnimationParameter.EnabledBlurValue
+                : _spinAnimationParameter.DisabledBlurValue;
             _blurTween?.Kill();
             var from = _spinBaseImage.material.GetFloat(SpinBlurValueFloatName);
-            _blurTween = DOVirtual.Float(from, blurValue, _spinAnimationParameter.BlurChangeDuration, OnBlurValueChanged);
-
+            _blurTween = DOVirtual.Float(from, blurValue, _spinAnimationParameter.BlurChangeDuration,
+                OnBlurValueChanged);
         }
 
         private void OnBlurValueChanged(float value)
@@ -51,6 +103,7 @@ namespace CardGame.View
             _spinBaseImage.material.SetFloat(SpinBlurValueFloatName, value);
         }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             var images = GetComponentsInChildren<Image>(true);
@@ -61,13 +114,25 @@ namespace CardGame.View
                     _spinBaseImage = image;
                 }
             }
+
             var parent = transform.Find(SpinParentObjectName);
             if (parent)
             {
                 _spinParentTf = parent;
             }
+
             var slots = GetComponentsInChildren<CardGameSpinSlotView>(true);
-            _spinSlotViews = slots.ToList();
+            _spinSlotViewList = slots.ToList();
+            UpdateSlotIndex();
         }
+
+        private void UpdateSlotIndex()
+        {
+            for (int i = 0; i < _spinSlotViewList.Count; i++)
+            {
+                _spinSlotViewList[i].SetSlotIndex(i);
+            }
+        }
+#endif
     }
 }
