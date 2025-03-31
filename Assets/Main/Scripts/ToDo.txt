@@ -1,0 +1,10 @@
+
+
+
+Generate levels - set data to zone model from card game model
+Choose zone slots - calculate which reward to show
+set slot views from atlas
+visual so sprite chooser?
+
+---
+injecting game model everywhere!!
