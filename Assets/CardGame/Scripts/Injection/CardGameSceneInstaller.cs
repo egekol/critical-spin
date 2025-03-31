@@ -12,7 +12,9 @@ namespace CardGame.Injection
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesTo<InputController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<CardGameMainController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<CardGameDataTransferController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<CardGameSceneController>().AsSingle().NonLazy();
             BindPools();
             BindModels();
 #if UNITY_EDITOR

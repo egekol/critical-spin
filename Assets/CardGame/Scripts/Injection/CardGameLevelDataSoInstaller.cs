@@ -1,19 +1,18 @@
-using CardGame.Model;
+using CardGame.Scripts.Network;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace CardGame.Injection
 {
-    [CreateAssetMenu(fileName = "CoreGameLevelDataSoInstaller", menuName = "SO/CoreGameLevelDataInstaller",
+    [CreateAssetMenu(fileName = "CardGameLevelDataSoInstaller", menuName = "SO/CardGameLevelDataSoInstaller",
         order = 0)]
     public class CardGameLevelDataSoInstaller : ScriptableObjectInstaller<CardGameLevelDataSoInstaller>
     {
-        [SerializeField] private CardGameLevelDtoSo cardGameLevelDataSo;
+        [SerializeField] private CardGameLevelDataTransferSo cardGameLevelDataSo;
 
         public override void InstallBindings()
         {
-            Container.Bind<CardGameLevelDtoSo>().FromInstance(cardGameLevelDataSo).AsSingle();
+            Container.Bind<CardGameLevelDataTransferSo>().FromInstance(cardGameLevelDataSo).AsSingle();
         }
     }
 }
