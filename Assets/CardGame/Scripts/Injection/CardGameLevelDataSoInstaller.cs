@@ -12,7 +12,7 @@ namespace CardGame.Injection
 
         public override void InstallBindings()
         {
-            Container.Bind<CardGameLevelDataTransferSo>().FromInstance(cardGameLevelDataSo).AsSingle();
+            Container.BindInterfacesTo<CardGameLevelDataTransferSo>().FromInstance(cardGameLevelDataSo).AsSingle();
         }
     }
 }
