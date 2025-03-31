@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ffb659ab8b6774b87e767e412f5073, type: 3}
+  m_Name: CardGameLevelDataTransferSo
+  m_EditorClassIdentifier: 
+  LevelConfigList:
+  - {fileID: 11400000, guid: 8b3c269186369e748a1f8af0986de15f, type: 2}
+  - {fileID: 11400000, guid: d1696bd2a4984554aafde92bb9bcc934, type: 2}
+  - {fileID: 11400000, guid: d5f67b4f1610ca54fbe6d9b320091a4e, type: 2}
