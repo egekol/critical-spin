@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace CardGame.Scripts.Network
@@ -10,6 +11,18 @@ namespace CardGame.Scripts.Network
         public string Name;
         public RewardRarity rewardRarity;
         public List<CardGameRewardDto> RewardList;
+
+        private const string LevelConfigPrefix = "so_config_reward_";
+
+        private void OnValidate()
+        {
+            if (!name.StartsWith(LevelConfigPrefix))
+            {
+                Debug.LogError($"SO name must include the prefix : {LevelConfigPrefix}");
+                return;
+            }
+            Name = name.Substring(LevelConfigPrefix.Length);
+        }
     }
     
     [Serializable]

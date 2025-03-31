@@ -2,7 +2,8 @@
     "name": "CardGame.Network",
     "rootNamespace": "",
     "references": [
-        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4"
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:df832ccee9967f6439109f28f309a1b6"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

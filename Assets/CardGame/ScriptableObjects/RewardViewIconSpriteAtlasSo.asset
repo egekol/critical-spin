@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 345750b891e047728b71533f57b2af5f, type: 3}
-  m_Name: so_reward_helmet_pumpkin
+  m_Script: {fileID: 11500000, guid: 3226bc65917842e8bab920a686c099ee, type: 3}
+  m_Name: RewardViewIconSpriteAtlasSo
   m_EditorClassIdentifier: 
-  Type: 4
-  Value: helmet_pumpkin
-  Icon: {fileID: 21300000, guid: 1fd5297ad03a79147b18f246a9874cf4, type: 3}
+  IconSpriteAtlas: {fileID: 100100200, guid: 35a29d36ba3dddc4fb86ed270bdb2e14, type: 3}

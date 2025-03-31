@@ -12,7 +12,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ffb659ab8b6774b87e767e412f5073, type: 3}
   m_Name: CardGameLevelDataTransferSo
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   LevelConfigList:
   - {fileID: 11400000, guid: 8b3c269186369e748a1f8af0986de15f, type: 2}
   - {fileID: 11400000, guid: d1696bd2a4984554aafde92bb9bcc934, type: 2}
   - {fileID: 11400000, guid: d5f67b4f1610ca54fbe6d9b320091a4e, type: 2}
+  - {fileID: 11400000, guid: b59ba5f2c6895f944bc2ed78381e1bf0, type: 2}
+  - {fileID: 11400000, guid: 75e2cb68a01806d45ad50dc99bea6c87, type: 2}
+  ZoneRarityCountConfigList:
+  - Rarity: 1
+    MinAvailableLevel: 1
+    MinAvailableCount: 6
+    MaxAvailableLevel: 60
+    MaxAvailableCount: 0
+  - Rarity: 2
+    MinAvailableLevel: 1
+    MinAvailableCount: 1
+    MaxAvailableLevel: 70
+    MaxAvailableCount: 5
+  - Rarity: 3
+    MinAvailableLevel: 15
+    MinAvailableCount: 1
+    MaxAvailableLevel: 70
+    MaxAvailableCount: 2
+  - Rarity: 4
+    MinAvailableLevel: 40
+    MinAvailableCount: 1
+    MaxAvailableLevel: 70
+    MaxAvailableCount: 1
+  - Rarity: 5
+    MinAvailableLevel: 70
+    MinAvailableCount: 1
+    MaxAvailableLevel: 100
+    MaxAvailableCount: 1
+  CardGameLevelConfig:
+    SafeZoneCoefficient: 5
+    SuperZoneCoefficient: 30
+    TotalSlotCount: 8
