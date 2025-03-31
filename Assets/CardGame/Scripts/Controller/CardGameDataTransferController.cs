@@ -7,22 +7,37 @@ namespace CardGame.Controller
 {
     public interface ICardGameDataTransferController
     {
-        void SetModelFromLevelData(CardGameModel gameModel);
+        void SetGameModelFromLevelData();
     }
 
     public class CardGameDataTransferController : ICardGameDataTransferController
     {
-        [Inject] private readonly ICardGameLevelDto CardGameLevelDto;
+        [Inject] private readonly ICardGameLevelDto _cardGameLevelDto;
+        [Inject] private readonly CardGameModel _cardGameModel;
 
-        public void SetModelFromLevelData(CardGameModel gameModel)
+        public void SetGameModelFromLevelData()
+        {
+            SetRewardModelFromLevelData(_cardGameModel);
+            SetZoneRarityCountFromLevelData(_cardGameModel);
+            SetLevelConfigFromLevelData(_cardGameModel);
+        }
+
+        private void SetLevelConfigFromLevelData(CardGameModel cardGameModel)
+        {
+            var config = _cardGameLevelDto.GetLevelConfig();
+            cardGameModel.SetLevelConfig(config.SafeZoneCoefficient, config.SuperZoneCoefficient,
+                config.TotalSlotCount);
+        }
+
+        private void SetRewardModelFromLevelData(CardGameModel gameModel)
         {
             gameModel.ClearZoneConfig();
-            foreach (var keyValuePair in CardGameLevelDto.GetLevelConfigDictionary())
+            foreach (var keyValuePair in _cardGameLevelDto.GetLevelConfigDictionary())
             {
                 var zoneConfig = new CardGameZoneConfig();
                 var rarity = ConvertRarityToCardGameRarity(keyValuePair.Key);
                 zoneConfig.SetRarity(rarity);
-                
+
                 foreach (var rewardDto in keyValuePair.Value)
                 {
                     var rewardModel = new CardGameRewardModel
@@ -31,12 +46,32 @@ namespace CardGame.Controller
                         Amount = rewardDto.Amount,
                         Value = rewardDto.RewardData.Value,
                     };
-                    zoneConfig.AddRewardModel(rewardModel,rewardDto.RewardProbability);
+                    zoneConfig.AddRewardModel(rewardModel, rewardDto.RewardProbability);
                 }
 
                 gameModel.AddZoneConfig(zoneConfig, rarity);
                 DebugLogger.Log($"[SetModelFromLevelData] Added zone config to game model: {zoneConfig}");
             }
+        }
+
+        private void SetZoneRarityCountFromLevelData(CardGameModel cardGameModel)
+        {
+            cardGameModel.ZoneRarityCountModel.ClearZoneRarityCount();
+
+            var configList = _cardGameLevelDto.GetZoneRarityCountConfigList();
+
+            foreach (var zoneRarityCountConfig in configList)
+            {
+                var rarity = ConvertRarityToCardGameRarity(zoneRarityCountConfig.Rarity);
+
+                cardGameModel.ZoneRarityCountModel.AddZoneRarityCountConfig(rarity,
+                    zoneRarityCountConfig.MinAvailableLevel,
+                    zoneRarityCountConfig.MinAvailableCount, zoneRarityCountConfig.MaxAvailableCount,
+                    zoneRarityCountConfig.MaxAvailableLevel);
+                
+            }
+            
+            
         }
 
         private CardGameRewardRarity ConvertRarityToCardGameRarity(RewardRarity rewardRarity)
@@ -51,6 +86,7 @@ namespace CardGame.Controller
                 RewardRarity.None => HandleException(),
                 _ => HandleException(),
             };
+
             CardGameRewardRarity HandleException()
             {
                 DebugLogger.LogError($"Unhandled reward type: {rewardRarity}");

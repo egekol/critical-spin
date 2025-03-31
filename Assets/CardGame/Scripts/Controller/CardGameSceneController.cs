@@ -13,11 +13,12 @@ namespace CardGame.Controller
     {
         [Inject] private readonly CardGameModel _cardGameModel;
         [Inject] private readonly ICardGameSceneView _cardGameSceneView;
+        [Inject] private readonly IRewardViewIconSpriteCache _cache;
 
         public void InitializeScene()
         {
+            // _cardGameSceneView.SetSpriteCache(_cache);
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
-            
         }
     }
 }
