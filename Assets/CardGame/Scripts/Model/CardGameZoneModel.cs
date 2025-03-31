@@ -4,9 +4,24 @@ namespace CardGame.Model
 {
     public class CardGameZoneModel
     {
-        public ZoneType ZoneType { get; set; }
-        public List<CardGameSlotModel> RewardModelList { get; set; } = new();
-        public int ZoneIndex { get; set; }
+        public ZoneType ZoneType { get; private set; }
+
+        public List<CardGameSlotModel> SlotModelList { get; private set; }
+
+        public int ZoneIndex { get; private set; }
+
+        public CardGameZoneModel(ZoneType zoneType, int index, int slotCount)
+        {
+            ZoneType = zoneType;
+            SlotModelList = new List<CardGameSlotModel>(slotCount);
+            ZoneIndex = index;
+        }
+
+
+        public void AddSlotModel(CardGameSlotModel cardGameSlotModel)
+        {
+            SlotModelList.Add(cardGameSlotModel);
+        }
     }
 
     public enum ZoneType

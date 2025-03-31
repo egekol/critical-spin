@@ -23,10 +23,10 @@ namespace CardGame.Model
             var sb = new StringBuilder();
             foreach (var i in RewardModelDict)
             {
-                sb.AppendLine($"rate{i.Key} : {i.Value}");
+                sb.AppendLine($"{i.Key} probabilityRate : {i.Value}");
             }
 
-            return $"RewardRarity: {RewardRarity}, RewardModel: {RewardModelDict.Count} : {sb} ";
+            return $"RewardRarity: {RewardRarity}, RewardModel: {sb} ";
         }
     }
 }
