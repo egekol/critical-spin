@@ -11,10 +11,13 @@ namespace CardGame.Controller
     {
         [Inject] private readonly ICardGameSceneController _cardGameSceneController;
         [Inject] private readonly CardGameModel _cardGameModel;
-        [Inject] private readonly CardGameDataTransferController _cardGameDataTransferController;
+        [Inject] private readonly ICardGameDataTransferController _cardGameDataTransferController;
+        [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
+
         public void Initialize()
         {
-            _cardGameDataTransferController.SetModelFromLevelData(_cardGameModel);
+            _cardGameDataTransferController.SetGameModelFromLevelData();
+            _cardGameLevelGenerator.InitializeFirstZone();
             _cardGameSceneController.InitializeScene();
         }
     }
