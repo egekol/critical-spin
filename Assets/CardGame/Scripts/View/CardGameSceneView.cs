@@ -7,6 +7,7 @@ namespace CardGame.View
     public interface ICardGameSceneView
     {
         void SetSpinSlotView(CardGameZoneModel zoneModelList);
+        // void SetSpriteCache(IRewardViewIconSpriteCache cache);
     }
 
     public class CardGameSceneView : MonoBehaviour, ICardGameSceneView
@@ -18,5 +19,10 @@ namespace CardGame.View
             _cardGameSpinView.SetSpinSlots(zoneModelList);
 
         }
+
+        // public void SetSpriteCache(IRewardViewIconSpriteCache cache)
+        // {
+        //     _cardGameSpinView.SetSpriteCache();
+        // }
     }
 }

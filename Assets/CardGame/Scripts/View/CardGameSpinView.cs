@@ -1,21 +1,27 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using CardGame.Model;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CardGame.View
 {
-    public class CardGameSpinView : MonoBehaviour
+    public interface ICardGameSpinView
+    {
+    }
+
+    public class CardGameSpinView : MonoBehaviour, ICardGameSpinView
     {
         [SerializeField] private Image _spinBaseImage;
         [SerializeField] private Transform _spinParentTf;
         [SerializeField] private SpinAnimationParameterSo _spinAnimationParameter;
         [SerializeField] private List<CardGameSpinSlotView> _spinSlotViewList;
+        [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache; 
         private Tween _loopTween;
         private Tween _blurTween;
         private bool _isRotating;
@@ -186,5 +192,15 @@ namespace CardGame.View
             }
         }
 #endif
+        public void SetSpinSlots(CardGameZoneModel cardGameZoneModel)
+        {
+            for (int i = 0; i < _spinSlotViewList.Count; i++)
+            {
+                var rewardModel = cardGameZoneModel.SlotModelList[i].CardGameRewardModel;
+                var icon = _rewardIconSpriteCache.GetIconSpriteById(rewardModel.Value);
+                _spinSlotViewList[i].SetSpinSlotImage(icon);
+                _spinSlotViewList[i].SetSpinSlotAmount(rewardModel.Amount);
+            }
+        }
     }
 }
