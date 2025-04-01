@@ -13,25 +13,24 @@ namespace CardGame.Controller
     public class CardGameDataTransferController : ICardGameDataTransferController
     {
         [Inject] private readonly ICardGameLevelDto _cardGameLevelDto;
-        [Inject] private readonly CardGameModel _cardGameModel;
+        [Inject] private readonly CardGameEventModel _cardGameEventModel;
 
         public void SetGameModelFromLevelData()
         {
-            SetRewardModelFromLevelData(_cardGameModel);
-            SetZoneRarityCountFromLevelData(_cardGameModel);
-            SetLevelConfigFromLevelData(_cardGameModel);
+            SetRewardModelFromLevelData(_cardGameEventModel);
+            SetZoneRarityCountFromLevelData(_cardGameEventModel);
+            SetLevelConfigFromLevelData(_cardGameEventModel);
         }
 
-        private void SetLevelConfigFromLevelData(CardGameModel cardGameModel)
+        private void SetLevelConfigFromLevelData(CardGameEventModel eventModel)
         {
             var config = _cardGameLevelDto.GetLevelConfig();
-            cardGameModel.SetLevelConfig(config.SafeZoneCoefficient, config.SuperZoneCoefficient,
-                config.TotalSlotCount);
+            eventModel.SetLevelConfig(config.SafeZoneCoefficient, config.SuperZoneCoefficient);
         }
 
-        private void SetRewardModelFromLevelData(CardGameModel gameModel)
+        private void SetRewardModelFromLevelData(CardGameEventModel eventModel)
         {
-            gameModel.ClearZoneConfig();
+            eventModel.ClearZoneConfig();
             foreach (var keyValuePair in _cardGameLevelDto.GetLevelConfigDictionary())
             {
                 var zoneConfig = new CardGameZoneConfig();
@@ -49,14 +48,14 @@ namespace CardGame.Controller
                     zoneConfig.AddRewardModel(rewardModel, rewardDto.RewardProbability);
                 }
 
-                gameModel.AddZoneConfig(zoneConfig, rarity);
+                eventModel.AddZoneConfig(zoneConfig, rarity);
                 DebugLogger.Log($"[SetModelFromLevelData] Added zone config to game model: {zoneConfig}");
             }
         }
 
-        private void SetZoneRarityCountFromLevelData(CardGameModel cardGameModel)
+        private void SetZoneRarityCountFromLevelData(CardGameEventModel eventModel)
         {
-            cardGameModel.ZoneRarityCountModel.ClearZoneRarityCount();
+            eventModel.ZoneRarityCountModel.ClearZoneRarityCount();
 
             var configList = _cardGameLevelDto.GetZoneRarityCountConfigList();
 
@@ -64,14 +63,11 @@ namespace CardGame.Controller
             {
                 var rarity = ConvertRarityToCardGameRarity(zoneRarityCountConfig.Rarity);
 
-                cardGameModel.ZoneRarityCountModel.AddZoneRarityCountConfig(rarity,
+                eventModel.ZoneRarityCountModel.AddZoneRarityCountConfig(rarity,
                     zoneRarityCountConfig.MinAvailableLevel,
                     zoneRarityCountConfig.MinAvailableCount, zoneRarityCountConfig.MaxAvailableCount,
                     zoneRarityCountConfig.MaxAvailableLevel);
-                
             }
-            
-            
         }
 
         private CardGameRewardRarity ConvertRarityToCardGameRarity(RewardRarity rewardRarity)

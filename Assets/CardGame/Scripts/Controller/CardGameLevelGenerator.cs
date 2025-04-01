@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CardGame.Model;
+using Main.Scripts.Utilities;
 using Zenject;
 
 namespace CardGame.Controller
@@ -10,19 +11,18 @@ namespace CardGame.Controller
     {
         void InitializeZones();
     }
-    
-    
 
     public class CardGameLevelGenerator : ICardGameLevelGenerator
     {
         [Inject] private readonly CardGameModel _cardGameModel;
+        [Inject] private readonly CardGameEventModel _cardGameEventModel;
         [Inject] private readonly ICardGameRarityCountCalculator _cardGameRarityCountCalculator;
         private static Random _random = new Random();
 
         public void InitializeZones()
         {
             _cardGameModel.ClearZoneModelList();
-            _cardGameRarityCountCalculator.Initialize(_cardGameModel.ZoneRarityCountModel);
+            _cardGameRarityCountCalculator.Initialize(_cardGameEventModel.ZoneRarityCountModel);
             var zone = CreateRandomZoneModel(0);
             _cardGameModel.SetCurrentZoneModel(zone);
             _cardGameModel.AddZoneToList(zone);
@@ -43,7 +43,7 @@ namespace CardGame.Controller
         private CardGameZoneModel CreateRandomZoneModel(int levelIndex)
         {
             var zoneType = GetZoneType(levelIndex);
-            var slotCount = _cardGameModel.TotalSlotCount;
+            var slotCount = CardGameConstants.TotalSlotCount;
             var slotIndex = 0;
             var zoneModel = new CardGameZoneModel(zoneType, levelIndex, slotCount);
             if (zoneType == ZoneType.NormalZone)
@@ -67,7 +67,7 @@ namespace CardGame.Controller
 
         private CardGameRewardModel CreateRandomRewardModel(CardGameRewardRarity rarity)
         {
-            var modelDict = _cardGameModel.ZoneModelDict[rarity].RewardModelDict;
+            var modelDict = _cardGameEventModel.ZoneModelDict[rarity].RewardModelDict;
             var model = GetWeightedRandomReward(modelDict);
             return model;
         }
@@ -89,7 +89,7 @@ namespace CardGame.Controller
 
         private ZoneType GetZoneType(int levelIndex)
         {
-            var model = _cardGameModel;
+            var model = _cardGameEventModel;
             if (levelIndex == 0)
             {
                 return ZoneType.NormalZone;

@@ -55,7 +55,6 @@ namespace CardGame.Scripts.Network
     {
         public int SafeZoneCoefficient;
         public int SuperZoneCoefficient;
-        public int TotalSlotCount;
     }
 
     [Serializable]
