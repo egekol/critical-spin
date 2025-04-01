@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CardGame.Model;
+using CardGame.Model.Spin;
+using CardGame.View.Spin.Animation;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace CardGame.View
+namespace CardGame.View.Spin
 {
 
 

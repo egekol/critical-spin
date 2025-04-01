@@ -1,5 +1,6 @@
 using CardGame.Controller;
 using CardGame.Model;
+using CardGame.Model.Spin;
 using CardGame.View;
 using UnityEngine;
 using Zenject;

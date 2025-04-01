@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CardGame.Model;
+using CardGame.Model.Spin;
 using CardGame.View;
 using Main.Scripts.Utilities;
 using Zenject;

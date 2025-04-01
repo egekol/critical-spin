@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using CardGame.Model;
+using CardGame.Model.Spin;
 using Main.Scripts.Utilities;
 
 namespace CardGame.Controller

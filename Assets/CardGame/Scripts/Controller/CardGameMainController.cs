@@ -1,4 +1,5 @@
 using CardGame.Model;
+using CardGame.Model.Spin;
 using Zenject;
 
 namespace CardGame.Controller

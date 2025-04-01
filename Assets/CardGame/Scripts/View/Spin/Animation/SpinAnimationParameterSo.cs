@@ -1,7 +1,6 @@
-using DG.Tweening;
 using UnityEngine;
 
-namespace CardGame.View
+namespace CardGame.View.Spin.Animation
 {
     [CreateAssetMenu(fileName = "SpinAnimationParameterSo", menuName = "Spin", order = 0)]
     public class SpinAnimationParameterSo : ScriptableObject

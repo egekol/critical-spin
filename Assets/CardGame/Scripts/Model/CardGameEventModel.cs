@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CardGame.Model.Spin;
 
 namespace CardGame.Model
 {

@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using CardGame.Model;
+using CardGame.Model.Spin;
+using CardGame.View.Spin;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using UnityEngine;

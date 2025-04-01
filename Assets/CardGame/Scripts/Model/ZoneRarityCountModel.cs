@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CardGame.Model.Spin;
 using Main.Scripts.Utilities;
 
 namespace CardGame.Model

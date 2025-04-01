@@ -1,4 +1,4 @@
-namespace CardGame.Model
+namespace CardGame.Model.Spin
 {
     public class CardGameRewardModel
     {

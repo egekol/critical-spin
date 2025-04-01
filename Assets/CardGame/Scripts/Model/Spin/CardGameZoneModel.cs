@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CardGame.Model
+namespace CardGame.Model.Spin
 {
     public class CardGameZoneModel
     {

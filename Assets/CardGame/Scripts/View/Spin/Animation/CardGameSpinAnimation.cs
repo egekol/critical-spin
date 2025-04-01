@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -6,7 +5,7 @@ using Main.Scripts.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace CardGame.View
+namespace CardGame.View.Spin.Animation
 {
     public class CardGameSpinAnimation : MonoBehaviour
     {

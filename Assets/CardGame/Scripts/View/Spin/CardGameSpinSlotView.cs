@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CardGame.View
+namespace CardGame.View.Spin
 {
     public class CardGameSpinSlotView : MonoBehaviour
     {

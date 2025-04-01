@@ -1,8 +1,8 @@
 using System;
-using CardGame.Model;
+using CardGame.Model.Spin;
 using UnityEngine;
 
-namespace CardGame.View
+namespace CardGame.View.Spin
 {
     [Serializable]
     public class CardGameSlotSpriteData
