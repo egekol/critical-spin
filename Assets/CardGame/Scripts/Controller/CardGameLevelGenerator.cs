@@ -28,24 +28,24 @@ namespace CardGame.Controller
             _cardGameModel.AddZoneToList(zone);
             _cardGameModel.SetCurrentZoneModelFromList();
 
-            CreateNewHundredMoreZonesToList();
+            CreateTenMoreZonesToList();
         }
 
         public void SetNextZoneModel()
         {
             _cardGameModel.IncreaseCountIndex();
-            if (_cardGameModel.ZoneModelList.Count - 1 >= _cardGameModel.CurrentZoneIndex)
+            if (_cardGameModel.ZoneModelList.Count - 1 <= _cardGameModel.CurrentZoneIndex)
             {
-                CreateNewHundredMoreZonesToList();
+                CreateTenMoreZonesToList();
             }
             _cardGameModel.SetCurrentZoneModelFromList();
         }
 
-        private void CreateNewHundredMoreZonesToList()
+        private void CreateTenMoreZonesToList()
         {
             DebugLogger.Log($"Creating new Hundred more zones");
             var index = _cardGameModel.ZoneModelList.Count - 1;
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var zone = CreateRandomZoneModel(index);
                 _cardGameModel.AddZoneToList(zone);

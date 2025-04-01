@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CardGame.Model;
+using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -80,9 +81,9 @@ namespace CardGame.View
             _spinAnimation.StartRotateSpinOnLoop();
         }
 
-        public void StopSpinRotationAt(int slotIndex)
+        public UniTask StopSpinRotationAt(int slotIndex)
         {
-            _spinAnimation.StopSpinRotationAt(slotIndex);
+           return _spinAnimation.StopSpinRotationAt(slotIndex);
         }
 
 #if UNITY_EDITOR

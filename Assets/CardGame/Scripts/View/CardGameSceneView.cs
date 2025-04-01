@@ -1,8 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using CardGame.Model;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace CardGame.View
@@ -12,28 +14,46 @@ namespace CardGame.View
         void SetSpinSlotView(CardGameZoneModel zoneModelList);
         UniTask SpinAndStopAt(int slotIndex);
         void Initialize(ICardGameSceneViewDelegate cardGameSceneViewDelegate);
+        void ShowFailPopup();
+        void SetSpinningActive(bool isActive);
     }
 
     public class CardGameSceneView : MonoBehaviour, ICardGameSceneView
     {
         [SerializeField] private CardGameSpinView _cardGameSpinView;
         [SerializeField] private Button _spinButton;
+        [SerializeField] private CardGameFailPopup cardGameFailPopup;
+        
         private ICardGameSceneViewDelegate _delegate;
-        private bool _isSpinning;
+        private bool _isInSpinState;
 
         private void OnEnable()
         {
             _spinButton.onClick.AddListener(OnSpinButtonClicked);
+            cardGameFailPopup.OnReviveButtonClick += OnReviveButtonClick;
+            cardGameFailPopup.OnGiveUpButtonClick += OnGiveUpButtonClick;
         }
 
         private void OnDisable()
         {
             _spinButton.onClick.RemoveListener(OnSpinButtonClicked);
+            cardGameFailPopup.OnReviveButtonClick -= OnReviveButtonClick;
+            cardGameFailPopup.OnGiveUpButtonClick -= OnGiveUpButtonClick;
         }
 
+        private void OnGiveUpButtonClick()
+        {
+            
+        }
+
+        private void OnReviveButtonClick()
+        {
+            
+        }
+        
         private void OnSpinButtonClicked()
         {
-            if (_isSpinning)
+            if (_isInSpinState)
             {
                 DebugLogger.Log($"Spinning, cant click to button");
                 return;
@@ -47,6 +67,11 @@ namespace CardGame.View
             _delegate = cardGameSceneViewDelegate;
         }
 
+        public void ShowFailPopup()
+        {
+            cardGameFailPopup.gameObject.SetActive(true);
+        }
+
         public void SetSpinSlotView(CardGameZoneModel zoneModelList)
         {
             _cardGameSpinView.SetSpinView(zoneModelList.ZoneType);
@@ -55,18 +80,15 @@ namespace CardGame.View
 
         public async UniTask SpinAndStopAt(int slotIndex)
         {
-            SetSpinningActive(true);
             _cardGameSpinView.StartRotateSpinOnLoop();
             await UniTask.WaitForSeconds(1);
-            _cardGameSpinView.StopSpinRotationAt(slotIndex);
-            _isSpinning = false;
+            await _cardGameSpinView.StopSpinRotationAt(slotIndex);
         }
 
-        private void SetSpinningActive(bool isActive)
+        public void SetSpinningActive(bool isActive)
         {
-            
             _spinButton.gameObject.SetActive(!isActive);
-            _isSpinning = isActive;
+            _isInSpinState = isActive;
         }
 
 #if UNITY_EDITOR
@@ -89,6 +111,6 @@ namespace CardGame.View
     
     public interface ICardGameSceneViewDelegate
     {
-        void OnSpinButtonClicked();
+        Task OnSpinButtonClicked();
     }
 }

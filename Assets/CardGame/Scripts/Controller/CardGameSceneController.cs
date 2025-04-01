@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CardGame.Model;
 using CardGame.View;
 using Main.Scripts.Utilities;
@@ -24,15 +25,30 @@ namespace CardGame.Controller
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
         }
 
-        public void OnSpinButtonClicked()
+        public async Task OnSpinButtonClicked()
         {
             var slotModelList = _cardGameModel.CurrentZoneModel.SlotModelList;
             var slotIndex = ChooseRandomSlot(slotModelList);
-            var reward = slotModelList[slotIndex];
-            DebugLogger.Log($"Spin started! - index: {slotIndex}, reward {reward}");
-            _cardGameSceneView.SpinAndStopAt(slotIndex);
+            var slotModel = slotModelList[slotIndex];
+            DebugLogger.Log($"Spin started! Number{_cardGameModel.CurrentZoneIndex} - index: {slotIndex}, reward {slotModel.CardGameRewardModel}");
+            _cardGameSceneView.SetSpinningActive(true);
+            await _cardGameSceneView.SpinAndStopAt(slotIndex);
+
+            if (slotModel.SlotType == SlotType.Bomb)
+            {
+                FailGame();
+                return;
+            }
             
+
             _cardGameLevelGenerator.SetNextZoneModel();
+            _cardGameSceneView.SetSpinningActive(false);
+
+        }
+
+        private void FailGame()
+        {
+            _cardGameSceneView.ShowFailPopup();
         }
 
         private int ChooseRandomSlot(List<CardGameSlotModel> slotModelList)
@@ -41,5 +57,4 @@ namespace CardGame.Controller
             return randomIndex;
         }
     }
-
 }

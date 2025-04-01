@@ -91,16 +91,16 @@ namespace CardGame.View
             var targetRotation = currentRotation + Vector3.forward * totalRotation;
 
             var spinTask = StopSpinAnimationAsync(currentRotation, targetRotation, rotationDuration);
-            Debug.Log($"last :: {targetRotation}");
+            // Debug.Log($"last :: {targetRotation}");
             return spinTask;
 
             float CalculateAngleOfSlot(CardGameSpinSlotView slot)
             {
                 var rhs = slot.transform.up;
-                Debug.Log($"rhs :: {rhs}");
+                // Debug.Log($"rhs :: {rhs}");
                 float slotAngle = Mathf.Atan2(rhs.x, rhs.y) * Mathf.Rad2Deg;
                 slotAngle = (slotAngle < 0) ? slotAngle + 360 : slotAngle;
-                Debug.Log($"angle :: {slotAngle}");
+                // Debug.Log($"angle :: {slotAngle}");
                 return slotAngle;
             }
 
@@ -121,13 +121,13 @@ namespace CardGame.View
                 elapsed += Time.deltaTime;
 
                 var lerp = elapsed / rotationDuration;
-                Debug.Log($"lerp  {lerp}");
+                // Debug.Log($"lerp  {lerp}");
                 var inverseLerp = Mathf.LerpUnclamped(currentRotation.z, targetRotation.z,
                     _spinAnimationParameter.StopRotationEase.Evaluate(lerp));
                 var reelVelocity = inverseLerp - _spinRotationValue;
 
-                Debug.Log($"inverseLerp : {inverseLerp}");
-                Debug.Log($"vel : {reelVelocity} = {inverseLerp} - {_spinRotationValue}");
+                // Debug.Log($"inverseLerp : {inverseLerp}");
+                // Debug.Log($"vel : {reelVelocity} = {inverseLerp} - {_spinRotationValue}");
                 Rotate(reelVelocity);
 
                 await UniTask.WaitForSeconds(Time.deltaTime);
