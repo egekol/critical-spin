@@ -55,5 +55,10 @@ namespace CardGame.View
                 }
             }
         }
+
+        public void SetTextViewEnabled(bool isActive)
+        {
+            _spinSlotAmountText.gameObject.SetActive(isActive);
+        }
     }
 }

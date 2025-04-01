@@ -17,7 +17,7 @@ namespace CardGame.Controller
         public void Initialize()
         {
             _cardGameDataTransferController.SetGameModelFromLevelData();
-            _cardGameLevelGenerator.InitializeFirstZone();
+            _cardGameLevelGenerator.InitializeZones();
             _cardGameSceneController.InitializeScene();
         }
     }

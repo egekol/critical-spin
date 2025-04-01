@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using CardGame.Model;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Main.Scripts.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,9 +20,11 @@ namespace CardGame.View
     public class CardGameSpinView : MonoBehaviour, ICardGameSpinView
     {
         [SerializeField] private Image _spinBaseImage;
+        [SerializeField] private Image _spinIndicatorImage;
         [SerializeField] private Transform _spinParentTf;
         [SerializeField] private SpinAnimationParameterSo _spinAnimationParameter;
         [SerializeField] private List<CardGameSpinSlotView> _spinSlotViewList;
+        [SerializeField] private List<CardGameSlotSpriteData> _cardGameSlotSpriteDataList;
         [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache; 
         private Tween _loopTween;
         private Tween _blurTween;
@@ -28,6 +32,7 @@ namespace CardGame.View
         private float _spinVelocity;
         private float _spinRotationValue;
         private Tween _stopTween;
+        private StringBuilder _sb = new StringBuilder();
 
         private const string SpinBaseObjectName = "ui_spin_base_value";
         private const string SpinParentObjectName = "ui_spin_parent";
@@ -144,7 +149,6 @@ namespace CardGame.View
             }
         }
 
-
         public void SetSpinBlurActive(bool isActive)
         {
             var blurValue = isActive
@@ -161,7 +165,58 @@ namespace CardGame.View
             _spinBaseImage.material.SetFloat(SpinBlurValueFloatName, value);
         }
 
+        public void SetSpinSlots(CardGameZoneModel cardGameZoneModel)
+        {
+            _sb.Clear();
+            _sb.Append("SetSpinSlots");
+            for (int i = 0; i < _spinSlotViewList.Count; i++)
+            {
+                var slotModel = cardGameZoneModel.SlotModelList[i];
+                if (slotModel.SlotType == SlotType.Bomb)
+                {
+                    SetSlotViewAsBomb(_spinSlotViewList[i]);
+                    _sb.Append($" - BOMB ");
+                    continue;
+                }
+                
+                var rewardModel = slotModel.CardGameRewardModel;
+                SetSlotViewAsReward(_spinSlotViewList[i], rewardModel);
+                _sb.Append($" - {rewardModel.Value} x{rewardModel.Amount} ");
+            }
+            DebugLogger.Log(_sb.ToString());
+        }
+
+        private void SetSlotViewAsBomb(CardGameSpinSlotView spinSlotView)
+        {
+            var bombId = CardGameConstants.SlotBombAtlasId;
+            var icon = _rewardIconSpriteCache.GetIconSpriteById(bombId);
+            spinSlotView.SetSpinSlotImage(icon);
+            spinSlotView.SetTextViewEnabled(false);
+        }
+
+        private void SetSlotViewAsReward(CardGameSpinSlotView spinSlotView, CardGameRewardModel rewardModel)
+        {
+            var icon = _rewardIconSpriteCache.GetIconSpriteById(rewardModel.Value);
+            spinSlotView.SetSpinSlotImage(icon);
+            spinSlotView.SetTextViewEnabled(true);
+            spinSlotView.SetSpinSlotAmount(rewardModel.Amount);
+        }
+
+        public void SetSpinView(ZoneType zoneType)
+        {
+            var spriteData = _cardGameSlotSpriteDataList.FirstOrDefault(d => d.ZoneType == zoneType);
+            if (spriteData is null)
+            {
+                DebugLogger.LogError($"Can not find zone type {zoneType}");
+                return;
+            }
+
+            _spinBaseImage.sprite = spriteData.SlotBase;
+            _spinIndicatorImage.sprite = spriteData.SlotIndicator;
+        }
+
 #if UNITY_EDITOR
+
         private void OnValidate()
         {
             var images = GetComponentsInChildren<Image>(true);
@@ -192,15 +247,5 @@ namespace CardGame.View
             }
         }
 #endif
-        public void SetSpinSlots(CardGameZoneModel cardGameZoneModel)
-        {
-            for (int i = 0; i < _spinSlotViewList.Count; i++)
-            {
-                var rewardModel = cardGameZoneModel.SlotModelList[i].CardGameRewardModel;
-                var icon = _rewardIconSpriteCache.GetIconSpriteById(rewardModel.Value);
-                _spinSlotViewList[i].SetSpinSlotImage(icon);
-                _spinSlotViewList[i].SetSpinSlotAmount(rewardModel.Amount);
-            }
-        }
     }
 }

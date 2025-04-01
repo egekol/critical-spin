@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using CardGame.Scripts.Network;
-using Main.Scripts.Utilities;
 
 namespace CardGame.Model
 {
@@ -8,7 +6,8 @@ namespace CardGame.Model
     {
         public IReadOnlyDictionary<CardGameRewardRarity, CardGameZoneConfig> ZoneModelDict => _zoneModelDict;
 
-        public List<CardGameZoneModel> ZoneModelList { get; private set; } = new();
+        public IReadOnlyList<CardGameZoneModel> ZoneModelList => _zoneModelList;
+        private readonly List<CardGameZoneModel> _zoneModelList = new();
 
         public ZoneRarityCountModel ZoneRarityCountModel { get; private set; } = new();
 
@@ -45,6 +44,16 @@ namespace CardGame.Model
             SafeZoneCoefficient = safeZoneCoefficient;
             SuperZoneCoefficient = superZoneCoefficient;
             TotalSlotCount = totalSlotCount;
+        }
+
+        public void ClearZoneModelList()
+        {
+            _zoneModelList.Clear();
+        }
+
+        public void AddZoneToList(CardGameZoneModel zone)
+        {
+            _zoneModelList.Add(zone);
         }
     }
 

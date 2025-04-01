@@ -17,7 +17,6 @@ namespace CardGame.Controller
 
         public void InitializeScene()
         {
-            // _cardGameSceneView.SetSpriteCache(_cache);
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
         }
     }

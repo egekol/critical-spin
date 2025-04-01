@@ -8,7 +8,7 @@ namespace CardGame.Controller
 {
     public interface ICardGameLevelGenerator
     {
-        void InitializeFirstZone();
+        void InitializeZones();
     }
     
     
@@ -19,12 +19,25 @@ namespace CardGame.Controller
         [Inject] private readonly ICardGameRarityCountCalculator _cardGameRarityCountCalculator;
         private static Random _random = new Random();
 
-        public void InitializeFirstZone()
+        public void InitializeZones()
         {
-            _cardGameModel.ZoneModelList.Clear();
+            _cardGameModel.ClearZoneModelList();
             _cardGameRarityCountCalculator.Initialize(_cardGameModel.ZoneRarityCountModel);
             var zone = CreateRandomZoneModel(0);
             _cardGameModel.SetCurrentZoneModel(zone);
+            _cardGameModel.AddZoneToList(zone);
+
+            CreateNewHundredMoreZonesToList();
+        }
+
+        private void CreateNewHundredMoreZonesToList()
+        {
+            var index = _cardGameModel.ZoneModelList.Count - 1;
+            for (int i = 0; i < 100; i++)
+            {
+                var zone = CreateRandomZoneModel(index);
+                _cardGameModel.AddZoneToList(zone);
+            }
         }
 
         private CardGameZoneModel CreateRandomZoneModel(int levelIndex)
@@ -77,6 +90,10 @@ namespace CardGame.Controller
         private ZoneType GetZoneType(int levelIndex)
         {
             var model = _cardGameModel;
+            if (levelIndex == 0)
+            {
+                return ZoneType.NormalZone;
+            }
 
             if (levelIndex % model.SuperZoneCoefficient == 0)
             {
