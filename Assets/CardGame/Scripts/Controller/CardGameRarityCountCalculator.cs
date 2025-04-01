@@ -46,7 +46,7 @@ namespace CardGame.Controller
                     var count = MathHelper.Map(levelIndex, rarity.MinAvailableLevel, rarity.MaxAvailableLevel,
                         rarity.MinAvailableCount, rarity.MaxAvailableCount);
                     var ceilingCount =  (int)Math.Ceiling(count);
-                    rarityCount =  Math.Min(ceilingCount,slotCount);
+                    rarityCount =  Math.Min(ceilingCount,countLeft);
                     countLeft -= rarityCount;
                 }
 

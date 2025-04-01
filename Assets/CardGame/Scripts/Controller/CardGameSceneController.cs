@@ -15,6 +15,8 @@ namespace CardGame.Controller
         void SetSpinningAvailable(bool isActive);
         void SetFailPopupActive(bool isActive);
         Task StartSpin(int slotIndex);
+        void SetExitButtonActive(bool isActive);
+        void UpdateSpinSlotView();
     }
 
     public class CardGameSceneController : ICardGameSceneController
@@ -30,9 +32,14 @@ namespace CardGame.Controller
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
         }
 
+
         public void SetSpinningAvailable(bool isActive)
         {
             _cardGameSceneView.SetSpinningAvailable(isActive);
+            if (_cardGameModel.CurrentZoneIndex>0)
+            {
+                _cardGameSceneView.SetExitButtonActive(true);
+            }
         }
 
         public UniTask SpinAndStopAt(int slotIndex)
@@ -48,7 +55,19 @@ namespace CardGame.Controller
         public async Task StartSpin(int slotIndex)
         {
             SetSpinningAvailable(false);
+            _cardGameSceneView.SetExitButtonActive(false);
             await SpinAndStopAt(slotIndex);
+        }
+
+        public void SetExitButtonActive(bool isActive)
+        {
+            _cardGameSceneView.SetExitButtonActive(isActive);
+        }
+
+        public void UpdateSpinSlotView()
+        {
+            _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
+            SetSpinningAvailable(true);
         }
     }
 }

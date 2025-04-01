@@ -19,29 +19,29 @@ MonoBehaviour:
     Amount: 10
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 11
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 12
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 13
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 14
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 15
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 16
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 17
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 18
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
-    Amount: 10
+    Amount: 19
     RewardProbability: 10

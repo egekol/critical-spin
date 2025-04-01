@@ -55,10 +55,11 @@ namespace CardGame.Controller
 
         private void CreateTenMoreZonesToList()
         {
-            DebugLogger.Log($"Creating new Hundred more zones");
+            DebugLogger.Log($"Creating new Ten more zones");
             var index = _cardGameModel.ZoneModelList.Count - 1;
             for (var i = 0; i < 10; i++)
             {
+                index++;
                 var zone = CreateRandomZoneModel(index);
                 _cardGameModel.AddZoneToList(zone);
             }
@@ -66,7 +67,7 @@ namespace CardGame.Controller
 
         private CardGameZoneModel CreateRandomZoneModel(int levelIndex)
         {
-            var zoneType = GetZoneType(levelIndex);
+            var zoneType = GetZoneType(levelIndex+1);
             var slotCount = CardGameConstants.TotalSlotCount;
             var slotIndex = 0;
             var zoneModel = new CardGameZoneModel(zoneType, levelIndex, slotCount);
@@ -113,20 +114,20 @@ namespace CardGame.Controller
             return rewards.Keys.First();
         }
 
-        private ZoneType GetZoneType(int levelIndex)
+        private ZoneType GetZoneType(int levelCount)
         {
             var model = _cardGameEventModel;
-            if (levelIndex == 0)
+            if (levelCount == 0)
             {
                 return ZoneType.NormalZone;
             }
 
-            if (levelIndex % model.SuperZoneCoefficient == 0)
+            if (levelCount % model.SuperZoneCoefficient == 0)
             {
                 return ZoneType.SuperZone;
             }
 
-            if (levelIndex % model.SafeZoneCoefficient == 0)
+            if (levelCount % model.SafeZoneCoefficient == 0)
             {
                 return ZoneType.SafeZone;
             }

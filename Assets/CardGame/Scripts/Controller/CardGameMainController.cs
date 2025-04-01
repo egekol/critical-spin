@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CardGame.Model;
 using CardGame.Model.Spin;
 using CardGame.View;
+using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using Zenject;
 
@@ -19,6 +20,7 @@ namespace CardGame.Controller
         [Inject] private readonly PlayerModel _playerModel;
         [Inject] private readonly ICardGameDataTransferController _cardGameDataTransferController;
         [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
+        private const float WaitDurationAfterSuccess = 1.2f;
 
         public void Initialize()
         {
@@ -32,7 +34,8 @@ namespace CardGame.Controller
             var slotModelList = _cardGameModel.CurrentZoneModel.SlotModelList;
             var slotIndex = ChooseRandomSlot(slotModelList);
             var slotModel = slotModelList[slotIndex];
-            DebugLogger.Log($"Spin started! Number{_cardGameModel.CurrentZoneIndex} - index: {slotIndex}, reward {slotModel.CardGameRewardModel}");
+            DebugLogger.Log(
+                $"Spin started! Number{_cardGameModel.CurrentZoneIndex} - index: {slotIndex}, reward {slotModel.CardGameRewardModel}");
             var isFailed = slotModel.SlotType == SlotType.Bomb;
 
             if (!isFailed)
@@ -48,8 +51,10 @@ namespace CardGame.Controller
             }
 
             _cardGameLevelGenerator.SetNextZoneModel();
-            _cardGameSceneController.SetSpinningAvailable(true);
+            await UniTask.WaitForSeconds(WaitDurationAfterSuccess);
+            _cardGameSceneController.UpdateSpinSlotView();
         }
+
 
         private void SaveRewardToRewardPack(CardGameRewardModel cardGameRewardModel)
         {
@@ -65,23 +70,26 @@ namespace CardGame.Controller
         public void OnReviveButtonClick()
         {
             _cardGameSceneController.SetFailPopupActive(false);
+            _cardGameLevelGenerator.SetNextZoneModel();
             _cardGameSceneController.SetSpinningAvailable(true);
         }
 
         public void OnExitButtonClicked()
         {
             SaveRewardPackToPlayerModel();
+            _cardGameSceneController.SetExitButtonActive(false);
         }
 
         private void SaveRewardPackToPlayerModel()
         {
+            DebugLogger.Log($"Saving reward to player model{string.Join(", ", _cardGameModel.RewardPack)}");
             _playerModel.UpdateModel(_cardGameModel.RewardPack);
         }
 
         private void RestartSpin()
         {
             _cardGameLevelGenerator.ResetLevel();
-            _cardGameSceneController.SetSpinningAvailable(true);
+            _cardGameSceneController.UpdateSpinSlotView();
         }
 
         private void FailGame()

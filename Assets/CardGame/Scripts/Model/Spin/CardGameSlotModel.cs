@@ -6,7 +6,6 @@ namespace CardGame.Model.Spin
         public SlotType SlotType { get; private set; }
         public int SlotIndex { get; private set; }
 
-        
         public CardGameSlotModel(SlotType slotType, int slotIndex, CardGameRewardModel cardGameRewardModel)
         {
             SlotType = slotType;

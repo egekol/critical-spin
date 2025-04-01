@@ -7,11 +7,10 @@
 spin start special animation
 skip animation?
 -spin level progress
-slot loot inventory?
-use sliced image components??
+-slot loot inventory?(no view)
+zone and reward model allocation (model pooler)
 visual so sprite choose tool?
+use sliced image components??
 -set profile model
--
 
 ---
-injecting game model everywhere!!

@@ -17,6 +17,7 @@ namespace CardGame.View
         void Initialize(ICardGameViewDelegate cardGameViewDelegate);
         void SetFailPopupActive(bool isActive);
         void SetSpinningAvailable(bool isActive);
+        void SetExitButtonActive(bool isActive);
     }
 
     public class CardGameSceneView : MonoBehaviour, ICardGameSceneView
@@ -25,9 +26,10 @@ namespace CardGame.View
         [SerializeField] private Button _spinButton;
         [SerializeField] private Button _exitButton;
         [SerializeField] private CardGameFailPopup cardGameFailPopup;
-        
+
         private ICardGameViewDelegate _delegate;
         private bool _isInSpinState;
+        private const float SpinLoopDuration = 1;
 
         private void OnEnable()
         {
@@ -53,7 +55,7 @@ namespace CardGame.View
         {
             _delegate.OnReviveButtonClick();
         }
-        
+
         private void OnExitButtonClicked()
         {
             _delegate.OnExitButtonClicked();
@@ -89,15 +91,22 @@ namespace CardGame.View
         public async UniTask SpinAndStopAt(int slotIndex)
         {
             _cardGameSpinView.StartRotateSpinOnLoop();
-            await UniTask.WaitForSeconds(1);
+            await UniTask.WaitForSeconds(SpinLoopDuration);
             await _cardGameSpinView.StopSpinRotationAt(slotIndex);
         }
+
 
         public void SetSpinningAvailable(bool isActive)
         {
             _spinButton.gameObject.SetActive(isActive);
             _isInSpinState = !isActive;
         }
+
+        public void SetExitButtonActive(bool isActive)
+        {
+            _exitButton.gameObject.SetActive(isActive);
+        }
+
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -109,14 +118,19 @@ namespace CardGame.View
                 {
                     _spinButton = button;
                 }
+
+                if (button.transform.name == UiExitButtonName)
+                {
+                    _exitButton = button;
+                }
             }
         }
 
         private const string UiSpinButtonName = "ui_elements_spinButton_value";
+        private const string UiExitButtonName = "ui_elements_exit_button";
 #endif
-
     }
-    
+
     public interface ICardGameViewDelegate
     {
         Task OnSpinButtonClicked();

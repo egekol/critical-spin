@@ -265,6 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardGameSpinView: {fileID: 7676356711046883024}
   _spinButton: {fileID: 2507422062548065043}
+  _exitButton: {fileID: 2507422062548065045}
   cardGameFailPopup: {fileID: 235274769}
 --- !u!1 &542681605
 GameObject:
@@ -561,6 +562,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -70.077
       objectReference: {fileID: 0}
+    - target: {fileID: 2558278407477406905, guid: 6fecefae1e1d99140b37bc59cdb70ab4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2981291965649597250, guid: 6fecefae1e1d99140b37bc59cdb70ab4, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -603,6 +608,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1581787080150076823, guid: 6fecefae1e1d99140b37bc59cdb70ab4, type: 3}
   m_PrefabInstance: {fileID: 2507422062548065042}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2507422062548065045 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 251250001311388272, guid: 6fecefae1e1d99140b37bc59cdb70ab4, type: 3}
+  m_PrefabInstance: {fileID: 2507422062548065042}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7676356711046883019
 PrefabInstance:
   m_ObjectHideFlags: 0
