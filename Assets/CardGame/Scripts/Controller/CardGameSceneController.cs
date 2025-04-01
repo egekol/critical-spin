@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CardGame.Model;
 using CardGame.Model.Spin;
 using CardGame.View;
+using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using Zenject;
 
@@ -10,52 +11,44 @@ namespace CardGame.Controller
 {
     public interface ICardGameSceneController
     {
-        void InitializeScene();
+        void InitializeScene(ICardGameViewDelegate cardGameViewDelegate);
+        void SetSpinningAvailable(bool isActive);
+        void SetFailPopupActive(bool isActive);
+        Task StartSpin(int slotIndex);
     }
 
-    public class CardGameSceneController : ICardGameSceneController, ICardGameSceneViewDelegate
+    public class CardGameSceneController : ICardGameSceneController
     {
         [Inject] private readonly CardGameModel _cardGameModel;
         [Inject] private readonly ICardGameSceneView _cardGameSceneView;
         [Inject] private readonly IRewardViewIconSpriteCache _cache;
         [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
 
-        public void InitializeScene()
+        public void InitializeScene(ICardGameViewDelegate cardGameViewDelegate)
         {
-            _cardGameSceneView.Initialize(this);
+            _cardGameSceneView.Initialize(cardGameViewDelegate);
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
         }
 
-        public async Task OnSpinButtonClicked()
+        public void SetSpinningAvailable(bool isActive)
         {
-            var slotModelList = _cardGameModel.CurrentZoneModel.SlotModelList;
-            var slotIndex = ChooseRandomSlot(slotModelList);
-            var slotModel = slotModelList[slotIndex];
-            DebugLogger.Log($"Spin started! Number{_cardGameModel.CurrentZoneIndex} - index: {slotIndex}, reward {slotModel.CardGameRewardModel}");
-            _cardGameSceneView.SetSpinningActive(true);
-            await _cardGameSceneView.SpinAndStopAt(slotIndex);
-
-            if (slotModel.SlotType == SlotType.Bomb)
-            {
-                FailGame();
-                return;
-            }
-            
-
-            _cardGameLevelGenerator.SetNextZoneModel();
-            _cardGameSceneView.SetSpinningActive(false);
-
+            _cardGameSceneView.SetSpinningAvailable(isActive);
         }
 
-        private void FailGame()
+        public UniTask SpinAndStopAt(int slotIndex)
         {
-            _cardGameSceneView.ShowFailPopup();
+           return _cardGameSceneView.SpinAndStopAt(slotIndex);
         }
 
-        private int ChooseRandomSlot(List<CardGameSlotModel> slotModelList)
+        public void SetFailPopupActive(bool isActive)
         {
-            var randomIndex = MathHelper.GetRandomIndex(slotModelList);
-            return randomIndex;
+            _cardGameSceneView.SetFailPopupActive(isActive);
+        }
+
+        public async Task StartSpin(int slotIndex)
+        {
+            SetSpinningAvailable(false);
+            await SpinAndStopAt(slotIndex);
         }
     }
 }

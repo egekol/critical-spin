@@ -37,6 +37,7 @@ namespace CardGame.Injection
         {
             Container.Bind<CardGameModel>().AsSingle().NonLazy();
             Container.Bind<CardGameEventModel>().AsSingle().NonLazy();
+            Container.Bind<PlayerModel>().AsSingle().NonLazy();
         }
     }
 }

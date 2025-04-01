@@ -3,14 +3,15 @@
 -Choose zone slots - calculate which reward to show
 -set slot views from atlas
 -spin button
-fail UI
+-fail UI
 spin start special animation
-skip animation??
+skip animation?
 -spin level progress
 slot loot inventory?
 use sliced image components??
-visual so sprite chooser?
-
+visual so sprite choose tool?
+-set profile model
+-
 
 ---
 injecting game model everywhere!!
