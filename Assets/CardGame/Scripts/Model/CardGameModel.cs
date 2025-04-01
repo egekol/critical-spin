@@ -12,9 +12,9 @@ namespace CardGame.Model
 
         public int CurrentZoneIndex { get; private set; }
 
-        public void SetCurrentZoneModel(CardGameZoneModel zone)
+        public void SetCurrentZoneModelFromList()
         {
-            CurrentZoneModel = zone;
+            CurrentZoneModel = _zoneModelList[CurrentZoneIndex];
         }
 
         public void ClearZoneModelList()
@@ -25,6 +25,11 @@ namespace CardGame.Model
         public void AddZoneToList(CardGameZoneModel zone)
         {
             _zoneModelList.Add(zone);
+        }
+
+        public void IncreaseCountIndex()
+        {
+            CurrentZoneIndex++;
         }
     }
 

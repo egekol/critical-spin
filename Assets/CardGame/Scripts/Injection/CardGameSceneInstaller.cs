@@ -11,7 +11,6 @@ namespace CardGame.Injection
         [SerializeField] private Camera _camera;
         [SerializeField] private CardGameSceneView _cardGameSpinView;
 
-
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<CardGameMainController>().AsSingle().NonLazy();

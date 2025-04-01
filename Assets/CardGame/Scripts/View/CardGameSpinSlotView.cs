@@ -44,6 +44,7 @@ namespace CardGame.View
             _spinSlotAmountText.SetText($"x{amount}");
         }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             var images = GetComponentsInChildren<Image>(true);
@@ -55,6 +56,7 @@ namespace CardGame.View
                 }
             }
         }
+#endif
 
         public void SetTextViewEnabled(bool isActive)
         {

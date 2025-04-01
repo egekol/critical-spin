@@ -10,6 +10,7 @@ namespace CardGame.Controller
     public interface ICardGameLevelGenerator
     {
         void InitializeZones();
+        void SetNextZoneModel();
     }
 
     public class CardGameLevelGenerator : ICardGameLevelGenerator
@@ -24,14 +25,25 @@ namespace CardGame.Controller
             _cardGameModel.ClearZoneModelList();
             _cardGameRarityCountCalculator.Initialize(_cardGameEventModel.ZoneRarityCountModel);
             var zone = CreateRandomZoneModel(0);
-            _cardGameModel.SetCurrentZoneModel(zone);
             _cardGameModel.AddZoneToList(zone);
+            _cardGameModel.SetCurrentZoneModelFromList();
 
             CreateNewHundredMoreZonesToList();
         }
 
+        public void SetNextZoneModel()
+        {
+            _cardGameModel.IncreaseCountIndex();
+            if (_cardGameModel.ZoneModelList.Count - 1 >= _cardGameModel.CurrentZoneIndex)
+            {
+                CreateNewHundredMoreZonesToList();
+            }
+            _cardGameModel.SetCurrentZoneModelFromList();
+        }
+
         private void CreateNewHundredMoreZonesToList()
         {
+            DebugLogger.Log($"Creating new Hundred more zones");
             var index = _cardGameModel.ZoneModelList.Count - 1;
             for (int i = 0; i < 100; i++)
             {
@@ -53,7 +65,8 @@ namespace CardGame.Controller
                 slotIndex++;
             }
 
-            var rarityCountCalculatorData = _cardGameRarityCountCalculator.CalculateRarityCountsByLevel(levelIndex, slotCount);
+            var rarityCountCalculatorData =
+                _cardGameRarityCountCalculator.CalculateRarityCountsByLevel(levelIndex, slotCount);
             for (int i = 0; i < slotCount; i++)
             {
                 var rarity = rarityCountCalculatorData.RarityArray[i];
@@ -61,7 +74,7 @@ namespace CardGame.Controller
                 zoneModel.AddSlotModel(new CardGameSlotModel(SlotType.Reward, slotIndex, reward));
                 slotIndex++;
             }
-            
+
             return zoneModel;
         }
 
@@ -71,10 +84,11 @@ namespace CardGame.Controller
             var model = GetWeightedRandomReward(modelDict);
             return model;
         }
+
         public static CardGameRewardModel GetWeightedRandomReward(Dictionary<CardGameRewardModel, int> rewards)
         {
             int totalWeight = rewards.Values.Sum();
-            int randomValue = _random.Next(totalWeight); 
+            int randomValue = _random.Next(totalWeight);
 
             int cumulativeWeight = 0;
             foreach (var kvp in rewards)
@@ -84,7 +98,7 @@ namespace CardGame.Controller
                     return kvp.Key;
             }
 
-            return rewards.Keys.First(); 
+            return rewards.Keys.First();
         }
 
         private ZoneType GetZoneType(int levelIndex)
@@ -99,7 +113,7 @@ namespace CardGame.Controller
             {
                 return ZoneType.SuperZone;
             }
-            
+
             if (levelIndex % model.SafeZoneCoefficient == 0)
             {
                 return ZoneType.SafeZone;

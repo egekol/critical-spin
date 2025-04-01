@@ -13,6 +13,7 @@ namespace CardGame.Scripts.Network
         public Sprite Icon;
 
         private const string RewardViewModelIconPathRoot = "Assets/CardGame/Sprites/Icons";
+#if UNITY_EDITOR
 
         private void OnValidate()
         {
@@ -29,6 +30,7 @@ namespace CardGame.Scripts.Network
                 Icon = icon;
             }
         }
+#endif
 
     }
 }

@@ -13,6 +13,11 @@ namespace CardGame.Model
             SlotIndex = slotIndex;
             CardGameRewardModel = cardGameRewardModel;
         }
+
+        public override string ToString()
+        {
+            return $"SlotType: {SlotType}, SlotIndex: {SlotIndex}, Reward: {CardGameRewardModel}";
+        }
     }
 
     public enum SlotType

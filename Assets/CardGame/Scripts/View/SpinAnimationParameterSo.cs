@@ -10,7 +10,8 @@ namespace CardGame.View
         public float EnabledBlurValue = 4f;
         public float DisabledBlurValue = 0f;
         public float BlurChangeDuration = .2f;
-        [SerializeField] public AnimationCurve StopRotationEase = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+        public AnimationCurve StopRotationEase = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+        public int SpinCountBeforeStop = 2;
         public float LoopSpinVelocity;
     }
 }

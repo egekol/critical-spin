@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CardGame.Model;
 using CardGame.View;
 using Main.Scripts.Utilities;
@@ -15,28 +16,30 @@ namespace CardGame.Controller
         [Inject] private readonly CardGameModel _cardGameModel;
         [Inject] private readonly ICardGameSceneView _cardGameSceneView;
         [Inject] private readonly IRewardViewIconSpriteCache _cache;
+        [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
 
         public void InitializeScene()
         {
+            _cardGameSceneView.Initialize(this);
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
         }
 
         public void OnSpinButtonClicked()
         {
-            var slotIndex = ChooseRandomSlot();
+            var slotModelList = _cardGameModel.CurrentZoneModel.SlotModelList;
+            var slotIndex = ChooseRandomSlot(slotModelList);
+            var reward = slotModelList[slotIndex];
+            DebugLogger.Log($"Spin started! - index: {slotIndex}, reward {reward}");
+            _cardGameSceneView.SpinAndStopAt(slotIndex);
             
+            _cardGameLevelGenerator.SetNextZoneModel();
         }
 
-        private int ChooseRandomSlot()
+        private int ChooseRandomSlot(List<CardGameSlotModel> slotModelList)
         {
-            var zone = _cardGameModel.CurrentZoneModel;
-            var randomIndex = MathHelper.GetRandomIndex(zone.SlotModelList);
+            var randomIndex = MathHelper.GetRandomIndex(slotModelList);
             return randomIndex;
         }
     }
 
-    public interface ICardGameSceneViewDelegate
-    {
-        void OnSpinButtonClicked();
-    }
 }
