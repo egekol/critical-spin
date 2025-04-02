@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpinAnimationParameterSo
   m_EditorClassIdentifier: 
   LoopRotationDuration: 0.5
-  EnabledBlurValue: 4
+  EnabledBlurValue: 1
   DisabledBlurValue: 0
   BlurChangeDuration: 0.2
   StopRotationEase:
@@ -72,3 +72,5 @@ MonoBehaviour:
   SpinClickOffset: {x: 45, y: -30, z: 0}
   ClickAnimationDuration: 1
   ClickAnimationRotation: 15
+  ShakeAnimationDuration: 0.5
+  ShakeAnimationStrength: 15
