@@ -67,4 +67,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  SpinCountBeforeStop: 2
   LoopSpinVelocity: 720
+  SpinClickOffset: {x: 45, y: -30, z: 0}
+  ClickAnimationDuration: 1
+  ClickAnimationRotation: 15

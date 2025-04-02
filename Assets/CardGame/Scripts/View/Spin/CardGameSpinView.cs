@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CardGame.Model.Spin;
 using CardGame.View.Spin.Animation;
 using Cysharp.Threading.Tasks;
@@ -76,7 +77,7 @@ namespace CardGame.View.Spin
             _spinBaseImage.sprite = spriteData.SlotBase;
             _spinIndicatorImage.sprite = spriteData.SlotIndicator;
         }
-        
+
         public void StartRotateSpinOnLoop()
         {
             _spinAnimation.StartRotateSpinOnLoop();
@@ -85,6 +86,22 @@ namespace CardGame.View.Spin
         public UniTask StopSpinRotationAt(int slotIndex)
         {
            return _spinAnimation.StopSpinRotationAt(slotIndex);
+        }
+
+        public void SetBlurActive(bool isActive)
+        {
+            _spinAnimation.SetSpinBlurActive(isActive);
+        }
+
+        public UniTask StartClickAnimation()
+        {
+            return _spinAnimation.StartClickAnimation();
+        }
+
+        public UniTask PlayFailAnimation()
+        {
+            return _spinAnimation.PlayShakeAnimation();
+
         }
 
 #if UNITY_EDITOR

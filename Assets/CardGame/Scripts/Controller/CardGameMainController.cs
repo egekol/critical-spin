@@ -21,6 +21,7 @@ namespace CardGame.Controller
         [Inject] private readonly ICardGameDataTransferController _cardGameDataTransferController;
         [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
         private const float WaitDurationAfterSuccess = 1.2f;
+        private const float FailWaitDuration = .5f;
 
         public void Initialize()
         {
@@ -46,6 +47,8 @@ namespace CardGame.Controller
             await _cardGameSceneController.StartSpin(slotIndex);
             if (isFailed)
             {
+                await _cardGameSceneController.PlayFailAnimation();
+                await UniTask.WaitForSeconds(FailWaitDuration);
                 FailGame();
                 return;
             }
@@ -54,7 +57,6 @@ namespace CardGame.Controller
             await UniTask.WaitForSeconds(WaitDurationAfterSuccess);
             _cardGameSceneController.UpdateSpinSlotView();
         }
-
 
         private void SaveRewardToRewardPack(CardGameRewardModel cardGameRewardModel)
         {

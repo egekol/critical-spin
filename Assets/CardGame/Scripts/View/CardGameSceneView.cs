@@ -18,6 +18,7 @@ namespace CardGame.View
         void SetFailPopupActive(bool isActive);
         void SetSpinningAvailable(bool isActive);
         void SetExitButtonActive(bool isActive);
+        UniTask PlayFailAnimation();
     }
 
     public class CardGameSceneView : MonoBehaviour, ICardGameSceneView
@@ -90,8 +91,11 @@ namespace CardGame.View
 
         public async UniTask SpinAndStopAt(int slotIndex)
         {
+            await _cardGameSpinView.StartClickAnimation();
             _cardGameSpinView.StartRotateSpinOnLoop();
+            _cardGameSpinView.SetBlurActive(true);
             await UniTask.WaitForSeconds(SpinLoopDuration);
+            _cardGameSpinView.SetBlurActive(false);
             await _cardGameSpinView.StopSpinRotationAt(slotIndex);
         }
 
@@ -105,6 +109,11 @@ namespace CardGame.View
         public void SetExitButtonActive(bool isActive)
         {
             _exitButton.gameObject.SetActive(isActive);
+        }
+
+        public UniTask PlayFailAnimation()
+        {
+          return _cardGameSpinView.PlayFailAnimation();
         }
 
 

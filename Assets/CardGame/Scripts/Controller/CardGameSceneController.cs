@@ -17,6 +17,7 @@ namespace CardGame.Controller
         Task StartSpin(int slotIndex);
         void SetExitButtonActive(bool isActive);
         void UpdateSpinSlotView();
+        UniTask PlayFailAnimation();
     }
 
     public class CardGameSceneController : ICardGameSceneController
@@ -68,6 +69,11 @@ namespace CardGame.Controller
         {
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
             SetSpinningAvailable(true);
+        }
+
+        public UniTask PlayFailAnimation()
+        {
+            return _cardGameSceneView.PlayFailAnimation();
         }
     }
 }
