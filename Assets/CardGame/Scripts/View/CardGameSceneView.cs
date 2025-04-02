@@ -1,6 +1,4 @@
-using System;
 using System.Threading.Tasks;
-using CardGame.Model;
 using CardGame.Model.Spin;
 using CardGame.View.Spin;
 using Cysharp.Threading.Tasks;
@@ -23,6 +21,7 @@ namespace CardGame.View
 
     public class CardGameSceneView : MonoBehaviour, ICardGameSceneView
     {
+        private const float SpinLoopDuration = 1;
         [SerializeField] private CardGameSpinView _cardGameSpinView;
         [SerializeField] private Button _spinButton;
         [SerializeField] private Button _exitButton;
@@ -30,7 +29,6 @@ namespace CardGame.View
 
         private ICardGameViewDelegate _delegate;
         private bool _isInSpinState;
-        private const float SpinLoopDuration = 1;
 
         private void OnEnable()
         {
@@ -45,32 +43,6 @@ namespace CardGame.View
             _spinButton.onClick.RemoveListener(OnSpinButtonClicked);
             cardGameFailPopup.OnReviveButtonClick -= OnReviveButtonClick;
             cardGameFailPopup.OnGiveUpButtonClick -= OnGiveUpButtonClick;
-        }
-
-        private void OnGiveUpButtonClick()
-        {
-            _delegate.OnGiveUpButtonClicked();
-        }
-
-        private void OnReviveButtonClick()
-        {
-            _delegate.OnReviveButtonClick();
-        }
-
-        private void OnExitButtonClicked()
-        {
-            _delegate.OnExitButtonClicked();
-        }
-
-        private void OnSpinButtonClicked()
-        {
-            if (_isInSpinState)
-            {
-                DebugLogger.Log($"Spinning, cant click to button");
-                return;
-            }
-
-            _delegate.OnSpinButtonClicked();
         }
 
         public void Initialize(ICardGameViewDelegate cardGameViewDelegate)
@@ -113,7 +85,33 @@ namespace CardGame.View
 
         public UniTask PlayFailAnimation()
         {
-          return _cardGameSpinView.PlayFailAnimation();
+            return _cardGameSpinView.PlayFailAnimation();
+        }
+
+        private void OnGiveUpButtonClick()
+        {
+            _delegate.OnGiveUpButtonClicked();
+        }
+
+        private void OnReviveButtonClick()
+        {
+            _delegate.OnReviveButtonClick();
+        }
+
+        private void OnExitButtonClicked()
+        {
+            _delegate.OnExitButtonClicked();
+        }
+
+        private void OnSpinButtonClicked()
+        {
+            if (_isInSpinState)
+            {
+                DebugLogger.Log("Spinning, cant click to button");
+                return;
+            }
+
+            _delegate.OnSpinButtonClicked();
         }
 
 
@@ -123,15 +121,9 @@ namespace CardGame.View
             var buttons = GetComponentsInChildren<Button>(true);
             foreach (var button in buttons)
             {
-                if (button.transform.name == UiSpinButtonName)
-                {
-                    _spinButton = button;
-                }
+                if (button.transform.name == UiSpinButtonName) _spinButton = button;
 
-                if (button.transform.name == UiExitButtonName)
-                {
-                    _exitButton = button;
-                }
+                if (button.transform.name == UiExitButtonName) _exitButton = button;
             }
         }
 

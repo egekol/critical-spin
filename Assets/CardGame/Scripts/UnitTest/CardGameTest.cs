@@ -10,14 +10,11 @@ namespace CardGame.UnitTest
         [SetUp]
         public void SetUp()
         {
-
         }
 
         [Test]
         public void TestMobInteraction()
         {
-           
         }
-    
     }
 }

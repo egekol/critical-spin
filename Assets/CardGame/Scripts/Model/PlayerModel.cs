@@ -13,10 +13,7 @@ namespace CardGame.Model
 
         public void UpdateModel(List<CardGameRewardModel> rewardModelList)
         {
-            foreach (var rewardModel in rewardModelList)
-            {
-                UpdateModel(rewardModel);
-            }
+            foreach (var rewardModel in rewardModelList) UpdateModel(rewardModel);
         }
 
         private void UpdateModel(CardGameRewardModel rewardModel)
@@ -42,34 +39,23 @@ namespace CardGame.Model
 
         private void UpdateSkins(CardGameRewardModel rewardModel)
         {
-            if (!SkinInventoryList.Contains(rewardModel.Value))
-            {
-                SkinInventoryList.Add(rewardModel.Value);
-            }
+            if (!SkinInventoryList.Contains(rewardModel.Value)) SkinInventoryList.Add(rewardModel.Value);
         }
 
         private void UpdateGunPoint(CardGameRewardModel rewardModel)
         {
             if (GunPointModelDict.ContainsKey(rewardModel.Value))
-            {
                 GunPointModelDict[rewardModel.Value].Update(rewardModel.Amount);
-            }
             else
-            {
                 GunPointModelDict.Add(rewardModel.Value, new GunPointModel(rewardModel.Value));
-            }
         }
 
         private void UpdateChest(CardGameRewardModel rewardModel)
         {
             if (ChestModelDict.ContainsKey(rewardModel.Value))
-            {
                 ChestModelDict[rewardModel.Value].Update(rewardModel.Amount);
-            }
             else
-            {
                 ChestModelDict.Add(rewardModel.Value, new ChestModel(rewardModel.Value));
-            }
         }
 
         private void UpdateCoin(CardGameRewardModel rewardModel)
@@ -80,13 +66,13 @@ namespace CardGame.Model
 
     public class BaseItemModel
     {
-        public string Name { get; set; }
-        public int Amount { get; set; }
-
         protected BaseItemModel(string value)
         {
             Name = value;
         }
+
+        public string Name { get; set; }
+        public int Amount { get; set; }
 
         public void Update(ushort amount)
         {

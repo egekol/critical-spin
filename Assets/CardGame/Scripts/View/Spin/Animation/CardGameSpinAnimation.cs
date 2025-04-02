@@ -9,17 +9,31 @@ namespace CardGame.View.Spin.Animation
 {
     public class CardGameSpinAnimation : MonoBehaviour
     {
+        private const string SpinBlurValueFloatName = "_Blur";
+        private const string SpinParentObjectName = "ui_spin_parent";
         [SerializeField] private SpinAnimationParameterSo _spinAnimationParameter;
         [SerializeField] private CardGameSpinView _cardGameSpinView;
         [SerializeField] private Transform _spinParentTf;
         private Tween _blurTween;
         private bool _isRotating;
         private Tween _loopTween;
-        private float _spinVelocity;
         private float _spinRotationValue;
+        private float _spinVelocity;
         private Tween _stopTween;
-        private const string SpinBlurValueFloatName = "_Blur";
-        private const string SpinParentObjectName = "ui_spin_parent";
+
+        private void Update()
+        {
+            if (!_isRotating) return;
+
+            if (_spinRotationValue > 360f) _spinRotationValue -= 360f;
+            Rotate(_spinVelocity * Time.deltaTime);
+        }
+
+        private void OnValidate()
+        {
+            var parent = transform.Find(SpinParentObjectName);
+            if (parent) _spinParentTf = parent;
+        }
 
         [Button]
         public void StartRotateSpinOnLoop()
@@ -31,30 +45,13 @@ namespace CardGame.View.Spin.Animation
         private void SetSpinning(bool isSpinning)
         {
             _isRotating = isSpinning;
-            foreach (var slotView in _cardGameSpinView.SpinSlotViewList)
-            {
-                slotView.SetSpinning(isSpinning);
-            }
+            foreach (var slotView in _cardGameSpinView.SpinSlotViewList) slotView.SetSpinning(isSpinning);
         }
 
         [Button]
         public void StopRotateSpinOnLoop()
         {
             _isRotating = false;
-        }
-
-        private void Update()
-        {
-            if (!_isRotating)
-            {
-                return;
-            }
-
-            if (_spinRotationValue>360f)
-            {
-                _spinRotationValue -= 360f;
-            }
-            Rotate(_spinVelocity * Time.deltaTime);
         }
 
         private void Rotate(float value)
@@ -95,8 +92,8 @@ namespace CardGame.View.Spin.Animation
             float CalculateAngleOfSlot(CardGameSpinSlotView slot)
             {
                 var rhs = slot.transform.up;
-                float slotAngle = Mathf.Atan2(rhs.x, rhs.y) * Mathf.Rad2Deg;
-                slotAngle = (slotAngle < 0) ? slotAngle + 360 : slotAngle;
+                var slotAngle = Mathf.Atan2(rhs.x, rhs.y) * Mathf.Rad2Deg;
+                slotAngle = slotAngle < 0 ? slotAngle + 360 : slotAngle;
                 return slotAngle;
             }
 
@@ -108,10 +105,11 @@ namespace CardGame.View.Spin.Animation
             }
         }
 
-        private async UniTask StopSpinAnimationAsync(Vector3 currentRotation, Vector3 targetRotation, float rotationDuration, CancellationTokenSource cts = null)
+        private async UniTask StopSpinAnimationAsync(Vector3 currentRotation, Vector3 targetRotation,
+            float rotationDuration, CancellationTokenSource cts = null)
         {
             float elapsed = 0;
-            
+
             while (elapsed < rotationDuration)
             {
                 elapsed += Time.deltaTime;
@@ -148,11 +146,12 @@ namespace CardGame.View.Spin.Animation
         {
             var angles = _spinParentTf.rotation.eulerAngles;
             _ = _spinParentTf.DORotate(angles + Vector3.forward * -_spinAnimationParameter.ClickAnimationRotation,
-                    _spinAnimationParameter.ClickAnimationDuration / 2).SetEase(Ease.OutQuart);
+                _spinAnimationParameter.ClickAnimationDuration / 2).SetEase(Ease.OutQuart);
             await _spinParentTf
                 .DOLocalMove(_spinAnimationParameter.SpinClickOffset,
-                    _spinAnimationParameter.ClickAnimationDuration / 2).SetEase(Ease.OutQuart).SetLink(gameObject).ToUniTask();
-            
+                    _spinAnimationParameter.ClickAnimationDuration / 2).SetEase(Ease.OutQuart).SetLink(gameObject)
+                .ToUniTask();
+
             _ = _spinParentTf.DORotate(angles, _spinAnimationParameter.ClickAnimationDuration / 2)
                 .SetEase(Ease.InQuart);
             await _spinParentTf
@@ -164,17 +163,8 @@ namespace CardGame.View.Spin.Animation
         [Button]
         public UniTask PlayShakeAnimation()
         {
-            return _spinParentTf.DOShakePosition(_spinAnimationParameter.ShakeAnimationDuration,_spinAnimationParameter.ShakeAnimationStrength).ToUniTask();
-        }
-
-        private void OnValidate()
-        {
-            
-            var parent = transform.Find(SpinParentObjectName);
-            if (parent)
-            {
-                _spinParentTf = parent;
-            }
+            return _spinParentTf.DOShakePosition(_spinAnimationParameter.ShakeAnimationDuration,
+                _spinAnimationParameter.ShakeAnimationStrength).ToUniTask();
         }
     }
 }

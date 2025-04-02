@@ -1,10 +1,7 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using CardGame.Model;
 using CardGame.Model.Spin;
 using CardGame.View;
 using Cysharp.Threading.Tasks;
-using Main.Scripts.Utilities;
 using Zenject;
 
 namespace CardGame.Controller
@@ -22,10 +19,10 @@ namespace CardGame.Controller
 
     public class CardGameSceneController : ICardGameSceneController
     {
-        [Inject] private readonly CardGameModel _cardGameModel;
-        [Inject] private readonly ICardGameSceneView _cardGameSceneView;
         [Inject] private readonly IRewardViewIconSpriteCache _cache;
         [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
+        [Inject] private readonly CardGameModel _cardGameModel;
+        [Inject] private readonly ICardGameSceneView _cardGameSceneView;
 
         public void InitializeScene(ICardGameViewDelegate cardGameViewDelegate)
         {
@@ -37,15 +34,7 @@ namespace CardGame.Controller
         public void SetSpinningAvailable(bool isActive)
         {
             _cardGameSceneView.SetSpinningAvailable(isActive);
-            if (_cardGameModel.CurrentZoneIndex>0)
-            {
-                _cardGameSceneView.SetExitButtonActive(true);
-            }
-        }
-
-        public UniTask SpinAndStopAt(int slotIndex)
-        {
-           return _cardGameSceneView.SpinAndStopAt(slotIndex);
+            if (_cardGameModel.CurrentZoneIndex > 0) _cardGameSceneView.SetExitButtonActive(true);
         }
 
         public void SetFailPopupActive(bool isActive)
@@ -74,6 +63,11 @@ namespace CardGame.Controller
         public UniTask PlayFailAnimation()
         {
             return _cardGameSceneView.PlayFailAnimation();
+        }
+
+        public UniTask SpinAndStopAt(int slotIndex)
+        {
+            return _cardGameSceneView.SpinAndStopAt(slotIndex);
         }
     }
 }

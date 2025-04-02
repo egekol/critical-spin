@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using CardGame.Model.Spin;
 using Main.Scripts.Utilities;
 
@@ -7,10 +6,10 @@ namespace CardGame.Model
 {
     public class ZoneRarityCountModel
     {
+        private readonly SortedDictionary<CardGameRewardRarity, ZoneRarityCountData> _zoneRarityCountDict = new();
+
         public IReadOnlyDictionary<CardGameRewardRarity, ZoneRarityCountData> ZoneRarityCountDict =>
             _zoneRarityCountDict;
-
-        private SortedDictionary<CardGameRewardRarity, ZoneRarityCountData> _zoneRarityCountDict = new();
 
         public void ClearZoneRarityCount()
         {
@@ -26,16 +25,11 @@ namespace CardGame.Model
             var isAdded = _zoneRarityCountDict.TryAdd(rarity, zoneRarityCountData);
 
             if (!isAdded)
-            {
                 DebugLogger.LogError($"Failed to add! {rarity} already exists.");
-            }
             else
-            {
                 DebugLogger.Log(
                     $"[SetZoneRarityCountFromLevelData] Added zoneRarityCount config to zone config: {zoneRarityCountData}");
-            }
         }
-
     }
 
     public struct ZoneRarityCountData
@@ -65,4 +59,3 @@ namespace CardGame.Model
         }
     }
 }
-

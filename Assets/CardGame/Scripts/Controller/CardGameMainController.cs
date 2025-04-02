@@ -15,20 +15,13 @@ namespace CardGame.Controller
 
     public class CardGameMainController : ICardGameMainController, IInitializable, ICardGameViewDelegate
     {
-        [Inject] private readonly ICardGameSceneController _cardGameSceneController;
-        [Inject] private readonly CardGameModel _cardGameModel;
-        [Inject] private readonly PlayerModel _playerModel;
-        [Inject] private readonly ICardGameDataTransferController _cardGameDataTransferController;
-        [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
         private const float WaitDurationAfterSuccess = 1.2f;
         private const float FailWaitDuration = .5f;
-
-        public void Initialize()
-        {
-            _cardGameDataTransferController.SetGameModelFromLevelData();
-            _cardGameLevelGenerator.InitializeLevel();
-            _cardGameSceneController.InitializeScene(this);
-        }
+        [Inject] private readonly ICardGameDataTransferController _cardGameDataTransferController;
+        [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
+        [Inject] private readonly CardGameModel _cardGameModel;
+        [Inject] private readonly ICardGameSceneController _cardGameSceneController;
+        [Inject] private readonly PlayerModel _playerModel;
 
         public async Task OnSpinButtonClicked()
         {
@@ -39,10 +32,7 @@ namespace CardGame.Controller
                 $"Spin started! Number{_cardGameModel.CurrentZoneIndex} - index: {slotIndex}, reward {slotModel.CardGameRewardModel}");
             var isFailed = slotModel.SlotType == SlotType.Bomb;
 
-            if (!isFailed)
-            {
-                SaveRewardToRewardPack(slotModel.CardGameRewardModel);
-            }
+            if (!isFailed) SaveRewardToRewardPack(slotModel.CardGameRewardModel);
 
             await _cardGameSceneController.StartSpin(slotIndex);
             if (isFailed)
@@ -56,11 +46,6 @@ namespace CardGame.Controller
             _cardGameLevelGenerator.SetNextZoneModel();
             await UniTask.WaitForSeconds(WaitDurationAfterSuccess);
             _cardGameSceneController.UpdateSpinSlotView();
-        }
-
-        private void SaveRewardToRewardPack(CardGameRewardModel cardGameRewardModel)
-        {
-            _cardGameModel.AddRewardToPack(cardGameRewardModel);
         }
 
         public void OnGiveUpButtonClicked()
@@ -80,6 +65,18 @@ namespace CardGame.Controller
         {
             SaveRewardPackToPlayerModel();
             _cardGameSceneController.SetExitButtonActive(false);
+        }
+
+        public void Initialize()
+        {
+            _cardGameDataTransferController.SetGameModelFromLevelData();
+            _cardGameLevelGenerator.InitializeLevel();
+            _cardGameSceneController.InitializeScene(this);
+        }
+
+        private void SaveRewardToRewardPack(CardGameRewardModel cardGameRewardModel)
+        {
+            _cardGameModel.AddRewardToPack(cardGameRewardModel);
         }
 
         private void SaveRewardPackToPlayerModel()

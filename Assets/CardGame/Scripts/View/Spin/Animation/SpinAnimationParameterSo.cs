@@ -7,7 +7,7 @@ namespace CardGame.View.Spin.Animation
     {
         public float LoopRotationDuration = 1f;
         public float EnabledBlurValue = 4f;
-        public float DisabledBlurValue = 0f;
+        public float DisabledBlurValue;
         public float BlurChangeDuration = .2f;
         public AnimationCurve StopRotationEase = AnimationCurve.Linear(0f, 0f, 1f, 1f);
         public int SpinCountBeforeStop = 2;

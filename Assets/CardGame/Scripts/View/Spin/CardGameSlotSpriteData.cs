@@ -11,5 +11,4 @@ namespace CardGame.View.Spin
         public Sprite SlotBase;
         public Sprite SlotIndicator;
     }
-
 }

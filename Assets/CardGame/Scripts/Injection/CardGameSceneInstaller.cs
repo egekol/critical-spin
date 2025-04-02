@@ -20,17 +20,7 @@ namespace CardGame.Injection
             Container.BindInterfacesTo<CardGameDataTransferController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<CardGameSceneController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<CardGameSceneView>().FromInstance(_cardGameSpinView).AsSingle();
-            BindPools();
             BindModels();
-#if UNITY_EDITOR
-            Container.BindInterfacesTo<CheatController>().AsSingle();
-#endif
-        }
-
-
-
-        private void BindPools()
-        {
         }
 
         private void BindModels()

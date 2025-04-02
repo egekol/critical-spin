@@ -2,16 +2,16 @@ namespace CardGame.Model.Spin
 {
     public class CardGameSlotModel
     {
-        public CardGameRewardModel CardGameRewardModel { get; private set; }
-        public SlotType SlotType { get; private set; }
-        public int SlotIndex { get; private set; }
-
         public CardGameSlotModel(SlotType slotType, int slotIndex, CardGameRewardModel cardGameRewardModel)
         {
             SlotType = slotType;
             SlotIndex = slotIndex;
             CardGameRewardModel = cardGameRewardModel;
         }
+
+        public CardGameRewardModel CardGameRewardModel { get; }
+        public SlotType SlotType { get; }
+        public int SlotIndex { get; }
 
         public override string ToString()
         {
@@ -23,6 +23,6 @@ namespace CardGame.Model.Spin
     {
         None,
         Reward,
-        Bomb,
+        Bomb
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using CardGame.Model.Spin;
 using CardGame.View.Spin.Animation;
 using Cysharp.Threading.Tasks;
@@ -12,40 +11,38 @@ using Zenject;
 
 namespace CardGame.View.Spin
 {
-
-
     public class CardGameSpinView : MonoBehaviour
     {
+        private const string SpinBaseObjectName = "ui_spin_base_value";
         [SerializeField] private Image _spinBaseImage;
         [SerializeField] private Image _spinIndicatorImage;
         [SerializeField] private List<CardGameSpinSlotView> _spinSlotViewList;
         [SerializeField] private List<CardGameSlotSpriteData> _cardGameSlotSpriteDataList;
         [SerializeField] private CardGameSpinAnimation _spinAnimation;
-        [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache; 
+        [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache;
+        private readonly StringBuilder _sb = new();
         public List<CardGameSpinSlotView> SpinSlotViewList => _spinSlotViewList;
         public Material SpinMaterial => _spinBaseImage.material;
-        private StringBuilder _sb = new();
-
-        private const string SpinBaseObjectName = "ui_spin_base_value";
 
         public void SetSpinSlots(CardGameZoneModel cardGameZoneModel)
         {
             _sb.Clear();
             _sb.Append("SetSpinSlots");
-            for (int i = 0; i < _spinSlotViewList.Count; i++)
+            for (var i = 0; i < _spinSlotViewList.Count; i++)
             {
                 var slotModel = cardGameZoneModel.SlotModelList[i];
                 if (slotModel.SlotType == SlotType.Bomb)
                 {
                     SetSlotViewAsBomb(_spinSlotViewList[i]);
-                    _sb.Append($" - BOMB ");
+                    _sb.Append(" - BOMB ");
                     continue;
                 }
-                
+
                 var rewardModel = slotModel.CardGameRewardModel;
                 SetSlotViewAsReward(_spinSlotViewList[i], rewardModel);
                 _sb.Append($" - {rewardModel.Value} x{rewardModel.Amount} ");
             }
+
             DebugLogger.Log(_sb.ToString());
         }
 
@@ -85,7 +82,7 @@ namespace CardGame.View.Spin
 
         public UniTask StopSpinRotationAt(int slotIndex)
         {
-           return _spinAnimation.StopSpinRotationAt(slotIndex);
+            return _spinAnimation.StopSpinRotationAt(slotIndex);
         }
 
         public void SetBlurActive(bool isActive)
@@ -101,7 +98,6 @@ namespace CardGame.View.Spin
         public UniTask PlayFailAnimation()
         {
             return _spinAnimation.PlayShakeAnimation();
-
         }
 
 #if UNITY_EDITOR
@@ -110,12 +106,8 @@ namespace CardGame.View.Spin
         {
             var images = GetComponentsInChildren<Image>(true);
             foreach (var image in images)
-            {
                 if (image.transform.name == SpinBaseObjectName)
-                {
                     _spinBaseImage = image;
-                }
-            }
 
             var slots = GetComponentsInChildren<CardGameSpinSlotView>(true);
             _spinSlotViewList = slots.ToList();
@@ -124,10 +116,7 @@ namespace CardGame.View.Spin
 
         private void UpdateSlotIndex()
         {
-            for (int i = 0; i < _spinSlotViewList.Count; i++)
-            {
-                _spinSlotViewList[i].SetSlotIndex(i);
-            }
+            for (var i = 0; i < _spinSlotViewList.Count; i++) _spinSlotViewList[i].SetSlotIndex(i);
         }
 #endif
     }

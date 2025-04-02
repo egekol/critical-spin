@@ -4,11 +4,11 @@ namespace CardGame.Model.Spin
 {
     public class CardGameModel
     {
-        public IReadOnlyList<CardGameZoneModel> ZoneModelList => _zoneModelList;
         private readonly List<CardGameZoneModel> _zoneModelList = new();
+        public IReadOnlyList<CardGameZoneModel> ZoneModelList => _zoneModelList;
 
         public CardGameZoneModel CurrentZoneModel { get; private set; }
-        public List<CardGameRewardModel> RewardPack { get; private set; } = new();
+        public List<CardGameRewardModel> RewardPack { get; } = new();
 
         public int CurrentZoneIndex { get; private set; }
 
@@ -58,6 +58,6 @@ namespace CardGame.Model.Spin
         Uncommon,
         Rare,
         Legendary,
-        Epic,
+        Epic
     }
 }

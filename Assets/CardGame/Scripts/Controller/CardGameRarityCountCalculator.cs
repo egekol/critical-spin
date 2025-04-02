@@ -36,7 +36,7 @@ namespace CardGame.Controller
             var data = new RarityCountCalculatorData(new CardGameRewardRarity[slotCount]);
             var countLeft = slotCount;
             var countIndex = 0;
-            for (int i = _rarityCountModel.ZoneRarityCountDict.Values.Count() - 1; i >= 0; i--)
+            for (var i = _rarityCountModel.ZoneRarityCountDict.Values.Count() - 1; i >= 0; i--)
             {
                 var rarity = _rarityCountModel.ZoneRarityCountDict.Values.ElementAt(i);
                 var rarityCount = 0;
@@ -45,32 +45,25 @@ namespace CardGame.Controller
                 {
                     var count = MathHelper.Map(levelIndex, rarity.MinAvailableLevel, rarity.MaxAvailableLevel,
                         rarity.MinAvailableCount, rarity.MaxAvailableCount);
-                    var ceilingCount =  (int)Math.Ceiling(count);
-                    rarityCount =  Math.Min(ceilingCount,countLeft);
+                    var ceilingCount = (int)Math.Ceiling(count);
+                    rarityCount = Math.Min(ceilingCount, countLeft);
                     countLeft -= rarityCount;
                 }
 
-                for (int j = 0; j < rarityCount; j++)
+                for (var j = 0; j < rarityCount; j++)
                 {
                     data.RarityArray[countIndex] = rarity.Rarity;
                     countIndex++;
                 }
 
-                if (countLeft<= 0)
-                {
-                    return data;
-                }
+                if (countLeft <= 0) return data;
             }
 
             if (data.RarityArray.Length == 0)
-            {
-                for (int i = 0; i < countLeft; i++)
-                {
+                for (var i = 0; i < countLeft; i++)
                     data.RarityArray[i] = CardGameRewardRarity.Common;
-                }
-            }
-            
-            for (int i = 0; i < countLeft; i++)
+
+            for (var i = 0; i < countLeft; i++)
             {
                 var randomIndex = MathHelper.GetRandomIndex(data.RarityArray);
                 var rarity = data.RarityArray[randomIndex];

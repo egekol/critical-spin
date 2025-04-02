@@ -22,10 +22,7 @@ namespace CardGame.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            foreach (var i in RewardModelDict)
-            {
-                sb.AppendLine($"{i.Key} probabilityRate : {i.Value}");
-            }
+            foreach (var i in RewardModelDict) sb.AppendLine($"{i.Key} probabilityRate : {i.Value}");
 
             return $"RewardRarity: {RewardRarity}, RewardModel: {sb} ";
         }

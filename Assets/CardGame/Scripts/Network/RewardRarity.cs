@@ -7,6 +7,6 @@ namespace CardGame.Scripts.Network
         Uncommon,
         Rare,
         Legendary,
-        Epic,
+        Epic
     }
 }

@@ -9,7 +9,8 @@ namespace CardGame.View
         Sprite GetIconSpriteById(string id);
     }
 
-    [CreateAssetMenu(fileName = "RewardViewIconSpriteAtlasSo", menuName = "SO/View/RewardViewIconSpriteAtlasSo", order = 0)]
+    [CreateAssetMenu(fileName = "RewardViewIconSpriteAtlasSo", menuName = "SO/View/RewardViewIconSpriteAtlasSo",
+        order = 0)]
     public class RewardViewIconSpriteAtlasSo : ScriptableObject, IRewardViewIconSpriteCache
     {
         public SpriteAtlas IconSpriteAtlas;
@@ -18,10 +19,7 @@ namespace CardGame.View
         {
             var value = CardGameConstants.RewardViewModelIconPrefix + id;
             var sprite = IconSpriteAtlas.GetSprite(value);
-            if (sprite == null)
-            {
-                DebugLogger.LogError($"sprite {value} not found");
-            }
+            if (sprite == null) DebugLogger.LogError($"sprite {value} not found");
             return sprite;
         }
     }

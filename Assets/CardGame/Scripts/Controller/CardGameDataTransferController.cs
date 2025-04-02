@@ -13,8 +13,8 @@ namespace CardGame.Controller
 
     public class CardGameDataTransferController : ICardGameDataTransferController
     {
-        [Inject] private readonly ICardGameLevelDto _cardGameLevelDto;
         [Inject] private readonly CardGameEventModel _cardGameEventModel;
+        [Inject] private readonly ICardGameLevelDto _cardGameLevelDto;
 
         public void SetGameModelFromLevelData()
         {
@@ -44,7 +44,7 @@ namespace CardGame.Controller
                     {
                         CardGameRewardType = ConvertRewardDtoToCardGameRewardType(rewardDto.RewardData.Type),
                         Amount = rewardDto.Amount,
-                        Value = rewardDto.RewardData.Value,
+                        Value = rewardDto.RewardData.Value
                     };
                     zoneConfig.AddRewardModel(rewardModel, rewardDto.RewardProbability);
                 }
@@ -81,7 +81,7 @@ namespace CardGame.Controller
                 RewardRarity.Legendary => CardGameRewardRarity.Legendary,
                 RewardRarity.Epic => CardGameRewardRarity.Epic,
                 RewardRarity.None => HandleException(),
-                _ => HandleException(),
+                _ => HandleException()
             };
 
             CardGameRewardRarity HandleException()
@@ -100,7 +100,7 @@ namespace CardGame.Controller
                 RewardType.GunPoint => CardGameRewardType.GunPoint,
                 RewardType.Skin => CardGameRewardType.Skin,
                 RewardType.None => HandleException(),
-                _ => HandleException(),
+                _ => HandleException()
             };
 
             CardGameRewardType HandleException()

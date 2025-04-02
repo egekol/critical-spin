@@ -11,6 +11,7 @@ namespace CardGame.View
 
         public Action OnGiveUpButtonClick { get; set; }
         public Action OnReviveButtonClick { get; set; }
+
         private void OnEnable()
         {
             _reviveButton.onClick.AddListener(OnReviveButtonClicked);
@@ -32,27 +33,20 @@ namespace CardGame.View
         {
             OnReviveButtonClick?.Invoke();
         }
-        
+
 #if UNITY_EDITOR
         private void OnValidate()
         {
             var buttons = GetComponentsInChildren<Button>(true);
             foreach (var button in buttons)
             {
-                if (button.transform.name == UiFailReviveButtonName)
-                {
-                    _reviveButton = button;
-                }
-                if (button.transform.name == UiFailGiveUpButtonName)
-                {
-                    _giveUpButton = button;
-                }
+                if (button.transform.name == UiFailReviveButtonName) _reviveButton = button;
+                if (button.transform.name == UiFailGiveUpButtonName) _giveUpButton = button;
             }
         }
 
         private const string UiFailReviveButtonName = "ui_elements_fail_button_revive";
         private const string UiFailGiveUpButtonName = "ui_elements_fail_button_giveUp";
 #endif
-
     }
 }

@@ -20,30 +20,23 @@ namespace CardGame.Scripts.Network
         public List<ZoneRarityCountConfig> ZoneRarityCountConfigList;
         public CardGameLevelConfig CardGameLevelConfig;
 
-        public IReadOnlyDictionary<RewardRarity,List<CardGameRewardDto>> GetLevelConfigDictionary()
+        public IReadOnlyDictionary<RewardRarity, List<CardGameRewardDto>> GetLevelConfigDictionary()
         {
             var configDict = new Dictionary<RewardRarity, List<CardGameRewardDto>>();
             foreach (var levelConfigSo in LevelConfigList)
-            {
                 if (configDict.ContainsKey(levelConfigSo.rewardRarity))
-                {
                     configDict[levelConfigSo.rewardRarity].AddRange(levelConfigSo.RewardList);
-                }
                 else
-                {
                     configDict.Add(levelConfigSo.rewardRarity, levelConfigSo.RewardList);
-                }
-            }
-            
+
             return configDict;
-            
         }
 
         public CardGameLevelConfig GetLevelConfig()
         {
             return CardGameLevelConfig;
         }
-        
+
         public IReadOnlyList<ZoneRarityCountConfig> GetZoneRarityCountConfigList()
         {
             return ZoneRarityCountConfigList;

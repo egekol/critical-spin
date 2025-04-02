@@ -4,12 +4,12 @@
 -set slot views from atlas
 -spin button
 -fail UI
-spin start special animation
+-spin start special animation
 skip animation?
 -spin level progress
 -slot loot inventory?(no view)
 zone and reward model allocation (model pooler)
-visual so sprite choose tool?
+visual SO sprite choose tool?
 use sliced image components??
 -set profile model
 
