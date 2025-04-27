@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
 using CardGame.Model.Spin;
+using CardGame.Scripts.EventBus;
 using CardGame.View.Spin;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CardGame.View
 {
@@ -26,6 +28,8 @@ namespace CardGame.View
         [SerializeField] private Button _spinButton;
         [SerializeField] private Button _exitButton;
         [SerializeField] private CardGameFailPopup cardGameFailPopup;
+
+        [Inject] private SignalBus _signalBus;
 
         private ICardGameViewDelegate _delegate;
         private bool _isInSpinState;
@@ -88,7 +92,7 @@ namespace CardGame.View
             return _cardGameSpinView.PlayFailAnimation();
         }
 
-        private void OnGiveUpButtonClick()
+        private void OnGiveUpButtonClick() //todo Get rid of dependencies using event bus
         {
             _delegate.OnGiveUpButtonClicked();
         }
@@ -111,7 +115,7 @@ namespace CardGame.View
                 return;
             }
 
-            _delegate.OnSpinButtonClicked();
+            _signalBus.Fire<SpinButtonClickSignal>();
         }
 
 
@@ -134,7 +138,6 @@ namespace CardGame.View
 
     public interface ICardGameViewDelegate
     {
-        Task OnSpinButtonClicked();
         void OnGiveUpButtonClicked();
         void OnReviveButtonClick();
         void OnExitButtonClicked();

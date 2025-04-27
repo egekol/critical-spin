@@ -1,21 +1,22 @@
 {
-  "name": "CardGame.Controller",
-  "rootNamespace": "",
-  "references": [
-    "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
-    "GUID:f51ebe6a0ceec4240a699833d6309b23",
-    "GUID:eccc3a06821d4b689a77101e623dbffd",
-    "GUID:345c4f2c6a4734c499967e4ce5518fe6",
-    "GUID:df832ccee9967f6439109f28f309a1b6",
-    "GUID:74e71802d0867014d9f72896ef513200"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": true
+    "name": "CardGame.Controller",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:eccc3a06821d4b689a77101e623dbffd",
+        "GUID:345c4f2c6a4734c499967e4ce5518fe6",
+        "GUID:df832ccee9967f6439109f28f309a1b6",
+        "GUID:74e71802d0867014d9f72896ef513200",
+        "GUID:b88a677b4d2c44dbb09eb790dcad2ae4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
 }
