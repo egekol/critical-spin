@@ -6,10 +6,10 @@ namespace CardGame.Model
 {
     public class PlayerModel
     {
-        public long Coin { get; set; }
-        public Dictionary<string, ChestModel> ChestModelDict { get; set; } = new();
-        public Dictionary<string, GunPointModel> GunPointModelDict { get; set; } = new();
-        public List<string> SkinInventoryList { get; set; } = new();
+        public CurrencyModel CurrencyModel { get; } = new();
+        public Dictionary<string, ChestModel> ChestModelDict { get; } = new();
+        public Dictionary<string, GunPointModel> GunPointModelDict { get; } = new();
+        public List<string> SkinInventoryList { get; } = new();
 
         public void UpdateModel(List<CardGameRewardModel> rewardModelList)
         {
@@ -60,7 +60,7 @@ namespace CardGame.Model
 
         private void UpdateCoin(CardGameRewardModel rewardModel)
         {
-            Coin += rewardModel.Amount;
+            CurrencyModel.AddCoin(rewardModel.Amount);
         }
     }
 
@@ -72,7 +72,7 @@ namespace CardGame.Model
         }
 
         public string Name { get; set; }
-        public int Amount { get; set; }
+        public int Amount { get; private set; }
 
         public void Update(ushort amount)
         {
@@ -93,4 +93,15 @@ namespace CardGame.Model
         {
         }
     }
+
+    public class CurrencyModel
+    {
+        public ulong Coin { get; private set; }
+
+        public void AddCoin(ulong amount)
+        {
+            Coin += amount;
+        }
+    }
+    
 }
