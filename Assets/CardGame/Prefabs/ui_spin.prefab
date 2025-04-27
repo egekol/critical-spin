@@ -386,15 +386,9 @@ MonoBehaviour:
   - {fileID: 4168942362421800428}
   - {fileID: 6386986545323264281}
   _cardGameSlotSpriteDataList:
-  - ZoneType: 1
-    SlotBase: {fileID: 21300000, guid: 7ebc613b7ca5d4349ad0c09102351c9f, type: 3}
-    SlotIndicator: {fileID: 21300000, guid: 639b6e175850288499829117b7043594, type: 3}
-  - ZoneType: 2
-    SlotBase: {fileID: 21300000, guid: 323d78dc69cac6d4a9d20506800da111, type: 3}
-    SlotIndicator: {fileID: 21300000, guid: 9a5c5362e860d014083d343576a52f9d, type: 3}
-  - ZoneType: 3
-    SlotBase: {fileID: 21300000, guid: 9c3012045b80b094da1e2e38811ef4f1, type: 3}
-    SlotIndicator: {fileID: 21300000, guid: cd6f17586ea76e7499ed7415158194ff, type: 3}
+  - {fileID: 11400000, guid: c595f10b4bce1cf4c8034c5fd9b88f30, type: 2}
+  - {fileID: 11400000, guid: 5d79bd0d32a4d5941bc78409fb147096, type: 2}
+  - {fileID: 11400000, guid: 0b8b7c5734eab194fae0789c8eeecfdd, type: 2}
   _spinAnimation: {fileID: 3728653082768652341}
 --- !u!114 &3728653082768652341
 MonoBehaviour:
