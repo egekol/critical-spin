@@ -12,33 +12,48 @@ namespace CardGame.Controller
 {
     public interface ICardGameSceneController
     {
-        void InitializeScene(ICardGameViewDelegate cardGameViewDelegate);
-        void SetSpinningAvailable(bool isActive);
-        void SetFailPopupActive(bool isActive);
+        void InitializeScene();
         void SetExitButtonActive(bool isActive);
-        void UpdateSpinSlotView();
     }
 
-    public class CardGameSceneController : ICardGameSceneController, ISpinEventListener, IInitializable, IDisposable
+    public class CardGameSceneController : ICardGameSceneController, IInitializable, IDisposable
     {
         [Inject] private readonly IRewardViewIconSpriteCache _cache;
         [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
         [Inject] private readonly CardGameModel _cardGameModel;
         [Inject] private readonly ICardGameSceneView _cardGameSceneView;
-        [Inject] private readonly EventManager _eventManager;
+        [Inject] private readonly SignalBus _signalBus;
         private const float WaitDurationAfterSuccess = 1.2f;
         private const float FailWaitDuration = .5f;
+        
         public void Initialize()
         {
-            _eventManager.SubscribeToSpinEvents(this);
+            _signalBus.Subscribe<SpinButtonClickSignal>(OnSpinButtonClicked);
+            _signalBus.Subscribe<OnGiveUpButtonClickSignal>(OnGiveUpButtonClicked);
+            _signalBus.Subscribe<OnReviveButtonClickSignal>(OnReviveButtonClicked);
         }
 
         public void Dispose()
         {
-            _eventManager.UnsubscribeToSpinEvents(this);
+            _signalBus.TryUnsubscribe<SpinButtonClickSignal>(OnSpinButtonClicked);
+            _signalBus.TryUnsubscribe<OnGiveUpButtonClickSignal>(OnGiveUpButtonClicked);
+            _signalBus.TryUnsubscribe<OnReviveButtonClickSignal>(OnReviveButtonClicked);
+        }
+
+        private void OnReviveButtonClicked()
+        {
+            SetFailPopupActive(false);
+            _cardGameLevelGenerator.SetNextZoneModel();
+            SetSpinningAvailable(true);
         }
         
-        public void OnSpinButtonClicked()
+        private void OnGiveUpButtonClicked()
+        {
+            SetFailPopupActive(false);
+            RestartSpin();
+        }
+
+        private void OnSpinButtonClicked()
         {
             var slotModelList = _cardGameModel.CurrentZoneModel.SlotModelList;
             var slotIndex = ChooseRandomSlot(slotModelList);
@@ -84,12 +99,10 @@ namespace CardGame.Controller
             return randomIndex;
         }
         
-        public void InitializeScene(ICardGameViewDelegate cardGameViewDelegate)
+        public void InitializeScene()
         {
-            _cardGameSceneView.Initialize(cardGameViewDelegate);
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
         }
-
 
         public void SetSpinningAvailable(bool isActive)
         {
@@ -107,6 +120,12 @@ namespace CardGame.Controller
             SetSpinningAvailable(false);
             _cardGameSceneView.SetExitButtonActive(false);
             await SpinAndStopAt(slotIndex);
+        }
+        
+        private void RestartSpin()
+        {
+            _cardGameLevelGenerator.ResetLevel();
+            UpdateSpinSlotView();
         }
 
         public void SetExitButtonActive(bool isActive)

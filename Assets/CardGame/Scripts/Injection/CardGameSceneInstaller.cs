@@ -21,9 +21,17 @@ namespace CardGame.Injection
             Container.BindInterfacesTo<CardGameDataTransferController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<CardGameSceneController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<CardGameSceneView>().FromInstance(_cardGameSpinView).AsSingle();
-            Container.Bind<EventManager>().AsSingle().NonLazy();
             SignalBusInstaller.Install(Container);
             BindModels();
+            BindSignals();
+        }
+
+        private void BindSignals()
+        {
+            Container.DeclareSignal<SpinButtonClickSignal>();
+            Container.DeclareSignal<OnGiveUpButtonClickSignal>();
+            Container.DeclareSignal<OnReviveButtonClickSignal>();
+            Container.DeclareSignal<ExitButtonClickSignal>();
         }
 
         private void BindModels()

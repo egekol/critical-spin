@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CardGame.Model;
 using CardGame.Model.Spin;
+using CardGame.Scripts.EventBus;
 using CardGame.View;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
@@ -13,26 +15,26 @@ namespace CardGame.Controller
     {
     }
 
-    public class CardGameMainController : ICardGameMainController, IInitializable, ICardGameViewDelegate
+    public class CardGameMainController : ICardGameMainController, IInitializable, IDisposable
     {
-        
         [Inject] private readonly ICardGameDataTransferController _cardGameDataTransferController;
         [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
         [Inject] private readonly CardGameModel _cardGameModel;
         [Inject] private readonly ICardGameSceneController _cardGameSceneController;
+        [Inject] private readonly SignalBus _signalBus;
         [Inject] private readonly PlayerModel _playerModel;
 
-        public void OnGiveUpButtonClicked()
+        public void Initialize()
         {
-            _cardGameSceneController.SetFailPopupActive(false);
-            RestartSpin();
+            _cardGameDataTransferController.SetGameModelFromLevelData();
+            _cardGameLevelGenerator.InitializeLevel();
+            _cardGameSceneController.InitializeScene();
+            _signalBus.Subscribe<ExitButtonClickSignal>(OnExitButtonClicked);
         }
 
-        public void OnReviveButtonClick()
+        public void Dispose()
         {
-            _cardGameSceneController.SetFailPopupActive(false);
-            _cardGameLevelGenerator.SetNextZoneModel();
-            _cardGameSceneController.SetSpinningAvailable(true);
+            _signalBus.TryUnsubscribe<ExitButtonClickSignal>(OnExitButtonClicked);
         }
 
         public void OnExitButtonClicked()
@@ -41,26 +43,11 @@ namespace CardGame.Controller
             _cardGameSceneController.SetExitButtonActive(false);
         }
 
-        public void Initialize()
-        {
-            _cardGameDataTransferController.SetGameModelFromLevelData();
-            _cardGameLevelGenerator.InitializeLevel();
-            _cardGameSceneController.InitializeScene(this);
-        }
-
-
         private void SaveRewardPackToPlayerModel()
         {
             DebugLogger.Log($"Saving reward to player model{string.Join(", ", _cardGameModel.RewardPack)}");
             _playerModel.UpdateModel(_cardGameModel.RewardPack);
         }
-
-        private void RestartSpin()
-        {
-            _cardGameLevelGenerator.ResetLevel();
-            _cardGameSceneController.UpdateSpinSlotView();
-        }
-
 
     }
 }
