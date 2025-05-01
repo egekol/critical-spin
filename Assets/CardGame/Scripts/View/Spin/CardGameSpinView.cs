@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -5,6 +6,7 @@ using CardGame.Model.Spin;
 using CardGame.View.Spin.Animation;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -16,12 +18,46 @@ namespace CardGame.View.Spin
         private const string SpinBaseObjectName = "ui_spin_base_value";
         [SerializeField] private Image _spinBaseImage;
         [SerializeField] private Image _spinIndicatorImage;
-        [SerializeField] private List<CardGameSpinSlotView> _spinSlotViewList;
+        [SerializeField] private CardGameSpinSlotView _spinSlotPrefab;
+        [SerializeField] private Transform _spinSlotParent;
+
+        [ReadOnly] private List<CardGameSpinSlotView> _spinSlotViewList = new();
         [SerializeField] private List<CardGameSpinSpriteDataSo> _cardGameSlotSpriteDataList;
         [SerializeField] private CardGameSpinAnimation _spinAnimation;
         [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache;
         private readonly StringBuilder _sb = new();
         private List<CardGameSpinSlotView> SpinSlotViewList => _spinSlotViewList;
+
+        private void Awake()
+        {
+            InstantiateSlots();
+        }
+
+        private void InstantiateSlots()
+        {
+            _spinSlotViewList.Clear();
+            var totalCount = CardGameConstants.TotalSlotCount;
+            for (var i = 0; i < totalCount; i++)
+            {
+                var angle = GetStartingAngle(i, totalCount);
+                var rotation = Quaternion.Euler(Vector3.forward * angle);
+                var slot = Instantiate(_spinSlotPrefab, transform.position, rotation, _spinSlotParent);
+                _spinSlotViewList.Add(slot);
+            }
+        }
+
+        private int GetStartingAngle(int index, int totalCount)
+        {
+            var degree = 360 / totalCount;
+            var angle = index * degree;
+            var rad = angle % 180 * -1;
+            if (angle >= 180)
+            {
+                rad += 180;
+            }
+
+            return rad;
+        }
 
         public void SetSpinSlots(CardGameZoneModel cardGameZoneModel)
         {
@@ -77,7 +113,6 @@ namespace CardGame.View.Spin
         public void StartRotateSpinOnLoop()
         {
             _spinAnimation.StartRotateSpinOnLoop();
-            foreach (var slotView in SpinSlotViewList) slotView.SetSpinning(true);
         }
 
         public UniTask StopSpinRotationAt(int slotIndex)

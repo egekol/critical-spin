@@ -11,13 +11,12 @@ namespace CardGame.View.Spin
         [SerializeField] private Image _spinSlotImage;
         [SerializeField] private TextMeshProUGUI _spinSlotAmountText;
         [SerializeField] private int _slotIndex;
-        private bool _isRotating;
 
         public int SlotIndex => _slotIndex;
 
         private void Update()
         {
-            if (_isRotating) _spinSlotImage.transform.rotation = Quaternion.identity;
+             _spinSlotImage.transform.rotation = Quaternion.identity;
         }
 
 #if UNITY_EDITOR
@@ -40,10 +39,6 @@ namespace CardGame.View.Spin
             _slotIndex = index;
         }
 
-        public void SetSpinning(bool isSpinning)
-        {
-            _isRotating = isSpinning;
-        }
 
         public void SetSpinSlotAmount(ushort amount)
         {
