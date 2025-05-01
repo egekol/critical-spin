@@ -21,8 +21,7 @@ namespace CardGame.View.Spin
         [SerializeField] private CardGameSpinAnimation _spinAnimation;
         [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache;
         private readonly StringBuilder _sb = new();
-        public List<CardGameSpinSlotView> SpinSlotViewList => _spinSlotViewList;
-        public Material SpinMaterial => _spinBaseImage.material;
+        private List<CardGameSpinSlotView> SpinSlotViewList => _spinSlotViewList;
 
         public void SetSpinSlots(CardGameZoneModel cardGameZoneModel)
         {
@@ -78,11 +77,21 @@ namespace CardGame.View.Spin
         public void StartRotateSpinOnLoop()
         {
             _spinAnimation.StartRotateSpinOnLoop();
+            foreach (var slotView in SpinSlotViewList) slotView.SetSpinning(true);
         }
 
         public UniTask StopSpinRotationAt(int slotIndex)
         {
-            return _spinAnimation.StopSpinRotationAt(slotIndex);
+            if (slotIndex < 0 || slotIndex >= SpinSlotViewList.Count)
+            {
+                DebugLogger.LogError($"spin index {slotIndex} is out of range");
+                return UniTask.CompletedTask;
+            }
+
+            _spinAnimation.StopRotateSpinOnLoop();
+
+            var slotView = SpinSlotViewList[slotIndex];
+            return _spinAnimation.StopSpinRotationAt(slotView.transform.up);
         }
 
         public void SetBlurActive(bool isActive)

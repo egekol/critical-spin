@@ -4,6 +4,7 @@ using DG.Tweening;
 using Main.Scripts.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CardGame.View.Spin.Animation
 {
@@ -12,7 +13,7 @@ namespace CardGame.View.Spin.Animation
         private const string SpinBlurValueFloatName = "_Blur";
         private const string SpinParentObjectName = "ui_spin_parent";
         [SerializeField] private SpinAnimationParameterSo _spinAnimationParameter;
-        [SerializeField] private CardGameSpinView _cardGameSpinView;
+        [SerializeField] private Image _baseImage;
         [SerializeField] private Transform _spinParentTf;
         private Tween _blurTween;
         private bool _isRotating;
@@ -45,7 +46,6 @@ namespace CardGame.View.Spin.Animation
         private void SetSpinning(bool isSpinning)
         {
             _isRotating = isSpinning;
-            foreach (var slotView in _cardGameSpinView.SpinSlotViewList) slotView.SetSpinning(isSpinning);
         }
 
         [Button]
@@ -66,19 +66,10 @@ namespace CardGame.View.Spin.Animation
         }
 
         [Button]
-        public UniTask StopSpinRotationAt(int spinIndex)
+        public UniTask StopSpinRotationAt(Vector3 tfUpDirection)
         {
-            if (spinIndex < 0 || spinIndex >= _cardGameSpinView.SpinSlotViewList.Count)
-            {
-                DebugLogger.LogError($"spin index {spinIndex} is out of range");
-                return UniTask.CompletedTask;
-            }
-
-            StopRotateSpinOnLoop();
-
+            var angle = CalculateAngleOfSlot(tfUpDirection);
             var spinCountBeforeStop = _spinAnimationParameter.SpinCountBeforeStop;
-            var slotView = _cardGameSpinView.SpinSlotViewList[spinIndex];
-            var angle = CalculateAngleOfSlot(slotView);
             var rotationAngle = spinCountBeforeStop * 360f;
             var totalRotation = rotationAngle + angle;
 
@@ -88,21 +79,20 @@ namespace CardGame.View.Spin.Animation
 
             var spinTask = StopSpinAnimationAsync(currentRotation, targetRotation, rotationDuration);
             return spinTask;
+        }
 
-            float CalculateAngleOfSlot(CardGameSpinSlotView slot)
-            {
-                var rhs = slot.transform.up;
-                var slotAngle = Mathf.Atan2(rhs.x, rhs.y) * Mathf.Rad2Deg;
-                slotAngle = slotAngle < 0 ? slotAngle + 360 : slotAngle;
-                return slotAngle;
-            }
+        private float CalculateAngleOfSlot(Vector3 rhs)
+        {
+            var slotAngle = Mathf.Atan2(rhs.x, rhs.y) * Mathf.Rad2Deg;
+            slotAngle = slotAngle < 0 ? slotAngle + 360 : slotAngle;
+            return slotAngle;
+        }
 
-            float CalculateRotationDuration(float slotAngle, int spinCount)
-            {
-                var angleValue = slotAngle / 360f;
-                var dur = _spinAnimationParameter.LoopRotationDuration * (spinCount + angleValue);
-                return dur;
-            }
+        private float CalculateRotationDuration(float slotAngle, int spinCount)
+        {
+            var angleValue = slotAngle / 360f;
+            var dur = _spinAnimationParameter.LoopRotationDuration * (spinCount + angleValue);
+            return dur;
         }
 
         private async UniTask StopSpinAnimationAsync(Vector3 currentRotation, Vector3 targetRotation,
@@ -131,14 +121,14 @@ namespace CardGame.View.Spin.Animation
                 ? _spinAnimationParameter.EnabledBlurValue
                 : _spinAnimationParameter.DisabledBlurValue;
             _blurTween?.Kill();
-            var from = _cardGameSpinView.SpinMaterial.GetFloat(SpinBlurValueFloatName);
+            var from = _baseImage.material.GetFloat(SpinBlurValueFloatName);
             _blurTween = DOVirtual.Float(from, blurValue, _spinAnimationParameter.BlurChangeDuration,
                 OnBlurValueChanged);
         }
 
         private void OnBlurValueChanged(float value)
         {
-            _cardGameSpinView.SpinMaterial.SetFloat(SpinBlurValueFloatName, value);
+            _baseImage.material.SetFloat(SpinBlurValueFloatName, value);
         }
 
         [Button]

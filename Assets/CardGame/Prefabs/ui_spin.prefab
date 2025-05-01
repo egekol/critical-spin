@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spinAnimationParameter: {fileID: 11400000, guid: 849eed1d4f5931341b4d745397bbe8f0, type: 2}
-  _cardGameSpinView: {fileID: 7372459370521601853}
+  _baseImage: {fileID: 7676356709768114358}
   _spinParentTf: {fileID: 7676356709324315557}
 --- !u!114 &7676356709882800568
 MonoBehaviour:
