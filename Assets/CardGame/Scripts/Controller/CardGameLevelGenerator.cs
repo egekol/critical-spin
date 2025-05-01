@@ -17,7 +17,6 @@ namespace CardGame.Controller
 
     public class CardGameLevelGenerator : ICardGameLevelGenerator
     {
-        private static readonly Random _random = new();
         [Inject] private readonly CardGameEventModel _cardGameEventModel;
         [Inject] private readonly CardGameModel _cardGameModel;
         [Inject] private readonly ICardGameRarityCountCalculator _cardGameRarityCountCalculator;
@@ -98,7 +97,7 @@ namespace CardGame.Controller
         public static CardGameRewardModel GetWeightedRandomReward(Dictionary<CardGameRewardModel, int> rewards)
         {
             var totalWeight = rewards.Values.Sum();
-            var randomValue = _random.Next(totalWeight);
+            var randomValue = MathHelper.GetRandomValue(totalWeight);
 
             var cumulativeWeight = 0;
             foreach (var kvp in rewards)

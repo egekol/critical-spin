@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +24,6 @@ namespace CardGame.View.Spin
         [SerializeField] private List<CardGameSpinSpriteDataSo> _cardGameSlotSpriteDataList;
         [SerializeField] private CardGameSpinAnimation _spinAnimation;
         [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache;
-        private readonly StringBuilder _sb = new();
         private List<CardGameSpinSlotView> SpinSlotViewList => _spinSlotViewList;
 
         private void Awake()
@@ -45,6 +43,7 @@ namespace CardGame.View.Spin
                 _spinSlotViewList.Add(slot);
             }
         }
+        
 
         private int GetStartingAngle(int index, int totalCount)
         {
@@ -61,40 +60,47 @@ namespace CardGame.View.Spin
 
         public void SetSpinSlots(CardGameZoneModel cardGameZoneModel)
         {
-            _sb.Clear();
-            _sb.Append("SetSpinSlots");
+            var builder = StringHelper.CreateNewBuild();
+            builder.Append("SetSpinSlots");
             for (var i = 0; i < _spinSlotViewList.Count; i++)
             {
-                var slotModel = cardGameZoneModel.SlotModelList[i];
-                if (slotModel.SlotType == SlotType.Bomb)
-                {
-                    SetSlotViewAsBomb(_spinSlotViewList[i]);
-                    _sb.Append(" - BOMB ");
-                    continue;
-                }
+                SetSlotView(cardGameZoneModel, i, builder);
+            }
+            DebugLogger.Log(builder.ToString());
+        }
 
-                var rewardModel = slotModel.CardGameRewardModel;
-                SetSlotViewAsReward(_spinSlotViewList[i], rewardModel);
-                _sb.Append($" - {rewardModel.Value} x{rewardModel.Amount} ");
+        private void SetSlotView(CardGameZoneModel cardGameZoneModel, int i, StringBuilder builder)
+        {
+            var slotModel = cardGameZoneModel.SlotModelList[i];
+            if (slotModel.SlotType == SlotType.Bomb)
+            {
+                SetSlotViewAsBomb(_spinSlotViewList[i]);
+                builder.Append(" - BOMB ");
+                return;
             }
 
-            DebugLogger.Log(_sb.ToString());
+            var rewardModel = slotModel.CardGameRewardModel;
+            SetSlotViewAsReward(_spinSlotViewList[i], rewardModel);
+            builder.Append($" - {rewardModel.Value} x{rewardModel.Amount} ");
         }
 
         private void SetSlotViewAsBomb(CardGameSpinSlotView spinSlotView)
         {
             var bombId = CardGameConstants.SlotBombAtlasId;
-            var icon = _rewardIconSpriteCache.GetIconSpriteById(bombId);
-            spinSlotView.SetSpinSlotImage(icon);
-            spinSlotView.SetTextViewEnabled(false);
+            InitSlotViewSprite(spinSlotView, bombId);
         }
 
         private void SetSlotViewAsReward(CardGameSpinSlotView spinSlotView, CardGameRewardModel rewardModel)
         {
-            var icon = _rewardIconSpriteCache.GetIconSpriteById(rewardModel.Value);
-            spinSlotView.SetSpinSlotImage(icon);
-            spinSlotView.SetTextViewEnabled(true);
+            InitSlotViewSprite(spinSlotView, rewardModel.Value);
             spinSlotView.SetSpinSlotAmount(rewardModel.Amount);
+        }
+
+        private void InitSlotViewSprite(CardGameSpinSlotView spinSlotView, string spriteId)
+        {
+            var icon = _rewardIconSpriteCache.GetIconSpriteById(spriteId);
+            spinSlotView.SetSpinSlotImage(icon);
+            spinSlotView.SetTextViewEnabled(false);
         }
 
         public void SetSpinView(ZoneType zoneType)

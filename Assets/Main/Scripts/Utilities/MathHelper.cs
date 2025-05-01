@@ -5,7 +5,7 @@ namespace Main.Scripts.Utilities
 {
     public static class MathHelper
     {
-        private static readonly Random _random = new Random();
+        private static readonly Random _random = new();
 
         public static float Map(float value, float inMin, float inMax, float outMin, float outMax)
         {
@@ -22,6 +22,11 @@ namespace Main.Scripts.Utilities
         public static int GetRandomIndex<T>(T[] array)
         {
             return _random.Next(0, array.Length); // Returns a random index in range [0, array.Length - 1]
+        }
+
+        public static float GetRandomValue(int maxValue)
+        {
+            return _random.Next(maxValue);
         }
     }
 }
