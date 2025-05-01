@@ -17,7 +17,7 @@ namespace CardGame.View.Spin
         [SerializeField] private Image _spinBaseImage;
         [SerializeField] private Image _spinIndicatorImage;
         [SerializeField] private List<CardGameSpinSlotView> _spinSlotViewList;
-        [SerializeField] private List<CardGameSlotSpriteData> _cardGameSlotSpriteDataList;
+        [SerializeField] private List<CardGameSpinSpriteDataSo> _cardGameSlotSpriteDataList;
         [SerializeField] private CardGameSpinAnimation _spinAnimation;
         [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache;
         private readonly StringBuilder _sb = new();
