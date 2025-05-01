@@ -1,4 +1,4 @@
-namespace CardGame.Scripts.Network
+namespace CardGame.Scripts.Data
 {
     public enum RewardType
     {

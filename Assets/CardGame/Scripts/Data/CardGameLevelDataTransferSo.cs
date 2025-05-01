@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace CardGame.Scripts.Network
+namespace CardGame.Scripts.Data
 {
     public interface ICardGameLevelDto
     {

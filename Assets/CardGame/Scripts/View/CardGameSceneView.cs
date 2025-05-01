@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using CardGame.Model.Spin;
 using CardGame.Scripts.EventBus;
@@ -31,6 +32,7 @@ namespace CardGame.View
         [Inject] private SignalBus _signalBus;
 
         private bool _isInSpinState;
+
 
         private void OnEnable()
         {

@@ -1,4 +1,4 @@
-using CardGame.Scripts.Network;
+using CardGame.Scripts.Data;
 using UnityEngine;
 using Zenject;
 
