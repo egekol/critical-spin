@@ -1,6 +1,6 @@
 namespace CardGame.Model.Spin
 {
-    public class CardGameRewardModel
+    public class CardGameRewardModel //todo create base reward model to main layer
     {
         public CardGameRewardType CardGameRewardType { get; set; }
         public ushort Amount { get; set; }
