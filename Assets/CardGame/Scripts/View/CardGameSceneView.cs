@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
 using CardGame.Model.Spin;
+using CardGame.Scripts.EventBus;
 using CardGame.View.Spin;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CardGame.View
 {
@@ -12,7 +14,6 @@ namespace CardGame.View
     {
         void SetSpinSlotView(CardGameZoneModel zoneModelList);
         UniTask SpinAndStopAt(int slotIndex);
-        void Initialize(ICardGameViewDelegate cardGameViewDelegate);
         void SetFailPopupActive(bool isActive);
         void SetSpinningAvailable(bool isActive);
         void SetExitButtonActive(bool isActive);
@@ -27,7 +28,8 @@ namespace CardGame.View
         [SerializeField] private Button _exitButton;
         [SerializeField] private CardGameFailPopup cardGameFailPopup;
 
-        private ICardGameViewDelegate _delegate;
+        [Inject] private SignalBus _signalBus;
+
         private bool _isInSpinState;
 
         private void OnEnable()
@@ -43,11 +45,6 @@ namespace CardGame.View
             _spinButton.onClick.RemoveListener(OnSpinButtonClicked);
             cardGameFailPopup.OnReviveButtonClick -= OnReviveButtonClick;
             cardGameFailPopup.OnGiveUpButtonClick -= OnGiveUpButtonClick;
-        }
-
-        public void Initialize(ICardGameViewDelegate cardGameViewDelegate)
-        {
-            _delegate = cardGameViewDelegate;
         }
 
         public void SetFailPopupActive(bool isActive)
@@ -71,7 +68,6 @@ namespace CardGame.View
             await _cardGameSpinView.StopSpinRotationAt(slotIndex);
         }
 
-
         public void SetSpinningAvailable(bool isActive)
         {
             _spinButton.gameObject.SetActive(isActive);
@@ -90,17 +86,17 @@ namespace CardGame.View
 
         private void OnGiveUpButtonClick()
         {
-            _delegate.OnGiveUpButtonClicked();
+            _signalBus.Fire<OnGiveUpButtonClickSignal>();
         }
 
         private void OnReviveButtonClick()
         {
-            _delegate.OnReviveButtonClick();
+            _signalBus.Fire<OnReviveButtonClickSignal>();
         }
 
         private void OnExitButtonClicked()
         {
-            _delegate.OnExitButtonClicked();
+            _signalBus.Fire<ExitButtonClickSignal>();
         }
 
         private void OnSpinButtonClicked()
@@ -111,7 +107,7 @@ namespace CardGame.View
                 return;
             }
 
-            _delegate.OnSpinButtonClicked();
+            _signalBus.Fire<SpinButtonClickSignal>();
         }
 
 
@@ -130,13 +126,5 @@ namespace CardGame.View
         private const string UiSpinButtonName = "ui_elements_spinButton_value";
         private const string UiExitButtonName = "ui_elements_exit_button";
 #endif
-    }
-
-    public interface ICardGameViewDelegate
-    {
-        Task OnSpinButtonClicked();
-        void OnGiveUpButtonClicked();
-        void OnReviveButtonClick();
-        void OnExitButtonClicked();
     }
 }

@@ -11,7 +11,8 @@
     "GUID:dda1239771071f844ac2c3028350c3b4",
     "GUID:345c4f2c6a4734c499967e4ce5518fe6",
     "GUID:eccc3a06821d4b689a77101e623dbffd",
-    "GUID:74e71802d0867014d9f72896ef513200"
+    "GUID:74e71802d0867014d9f72896ef513200",
+    "CardGame.EventBus"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

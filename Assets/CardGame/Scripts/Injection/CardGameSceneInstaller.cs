@@ -1,6 +1,7 @@
 using CardGame.Controller;
 using CardGame.Model;
 using CardGame.Model.Spin;
+using CardGame.Scripts.EventBus;
 using CardGame.View;
 using UnityEngine;
 using Zenject;
@@ -20,7 +21,17 @@ namespace CardGame.Injection
             Container.BindInterfacesTo<CardGameDataTransferController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<CardGameSceneController>().AsSingle().NonLazy();
             Container.BindInterfacesTo<CardGameSceneView>().FromInstance(_cardGameSpinView).AsSingle();
+            SignalBusInstaller.Install(Container);
             BindModels();
+            BindSignals();
+        }
+
+        private void BindSignals()
+        {
+            Container.DeclareSignal<SpinButtonClickSignal>();
+            Container.DeclareSignal<OnGiveUpButtonClickSignal>();
+            Container.DeclareSignal<OnReviveButtonClickSignal>();
+            Container.DeclareSignal<ExitButtonClickSignal>();
         }
 
         private void BindModels()
