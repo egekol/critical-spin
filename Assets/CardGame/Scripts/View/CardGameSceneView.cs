@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using CardGame.Model.Spin;
 using CardGame.Scripts.EventBus;
 using CardGame.View.Spin;
