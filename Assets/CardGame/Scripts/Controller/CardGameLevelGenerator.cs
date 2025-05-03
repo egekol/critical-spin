@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CardGame.Model;
 using CardGame.Model.Spin;
 using Main.Scripts.Utilities;
-using Zenject;
 
 namespace CardGame.Controller
 {
@@ -17,9 +15,9 @@ namespace CardGame.Controller
 
     public class CardGameLevelGenerator : ICardGameLevelGenerator
     {
-        [Inject] private readonly CardGameEventModel _cardGameEventModel;
-        [Inject] private readonly CardGameModel _cardGameModel;
-        [Inject] private readonly ICardGameRarityCountCalculator _cardGameRarityCountCalculator;
+        private readonly CardGameEventModel _cardGameEventModel = CardGameEventModel.Instance;
+        private readonly CardGameModel _cardGameModel = CardGameModel.Instance;
+        private readonly ICardGameRarityCountCalculator _cardGameRarityCountCalculator = new CardGameRarityCountCalculator();
 
         public void InitializeLevel()
         {

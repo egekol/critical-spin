@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Main.Scripts.ScriptableSingleton;
 
 namespace CardGame.Model.Spin
 {
-    public class CardGameModel
+    public class CardGameModel : ScriptableSingletonManager<CardGameModel>
     {
         private readonly List<CardGameZoneModel> _zoneModelList = new();
         public IReadOnlyList<CardGameZoneModel> ZoneModelList => _zoneModelList;

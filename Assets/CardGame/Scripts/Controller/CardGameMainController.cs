@@ -1,41 +1,44 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using CardGame.Model;
 using CardGame.Model.Spin;
-using CardGame.Scripts.EventBus;
-using CardGame.View;
-using Cysharp.Threading.Tasks;
+using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
-using Zenject;
 
 namespace CardGame.Controller
 {
-    public interface ICardGameMainController
+    public class CardGameMainController : ScriptableSingletonManager<CardGameMainController>
     {
-    }
+        private ICardGameDataTransferController _cardGameDataTransferController;
+        private CardGameModel _cardGameModel;
+        private ICardGameSceneController _cardGameSceneController;
+        private PlayerModel _playerModel;
 
-    public class CardGameMainController : ICardGameMainController, IInitializable, IDisposable
-    {
-        [Inject] private readonly ICardGameDataTransferController _cardGameDataTransferController;
-        [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
-        [Inject] private readonly CardGameModel _cardGameModel;
-        [Inject] private readonly ICardGameSceneController _cardGameSceneController;
-        [Inject] private readonly SignalBus _signalBus;
-        [Inject] private readonly PlayerModel _playerModel;
-
-        public void Initialize()
+        public override void Initialize()
         {
+            // _signalBus.Subscribe<ExitButtonClickSignal>(OnExitButtonClicked);//todo bus
+        }
+
+        public override void LateAwake()
+        {
+            _cardGameDataTransferController = CardGameDataTransferController.Instance;
+            _cardGameModel = CardGameModel.Instance;
+            _cardGameSceneController = CardGameSceneController.Instance;
+            _playerModel = PlayerModel.Instance;
+            base.LateAwake();
+        }
+
+        public override void Start()
+        {
+            base.Start();
             _cardGameDataTransferController.SetGameModelFromLevelData();
-            _cardGameLevelGenerator.InitializeLevel();
             _cardGameSceneController.InitializeScene();
-            _signalBus.Subscribe<ExitButtonClickSignal>(OnExitButtonClicked);
         }
 
-        public void Dispose()
+        public override void Destroy()
         {
-            _signalBus.TryUnsubscribe<ExitButtonClickSignal>(OnExitButtonClicked);
+            base.Destroy();
+            // _signalBus.TryUnsubscribe<ExitButtonClickSignal>(OnExitButtonClicked); todo
         }
+
 
         public void OnExitButtonClicked()
         {

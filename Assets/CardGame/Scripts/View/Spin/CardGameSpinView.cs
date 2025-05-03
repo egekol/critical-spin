@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.Text;
 using CardGame.Managers.Spin;
 using CardGame.Model.Spin;
@@ -10,7 +9,6 @@ using Main.Scripts.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace CardGame.View.Spin
 {
@@ -25,7 +23,7 @@ namespace CardGame.View.Spin
         [ReadOnly] private List<CardGameSpinSlotView> _spinSlotViewList = new();
         [SerializeField] private List<CardGameSpinSpriteDataSo> _cardGameSlotSpriteDataList;
         [SerializeField] private CardGameSpinAnimation _spinAnimation;
-        [Inject] private readonly IRewardViewIconSpriteCache _rewardIconSpriteCache;
+        [SerializeField] private RewardViewIconSpriteAtlasSo _rewardIconSpriteCache;
         private List<CardGameSpinSlotView> SpinSlotViewList => _spinSlotViewList;
 
         private void Awake()

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using CardGame.Model.Spin;
+using Main.Scripts.ScriptableSingleton;
 
 namespace CardGame.Model
 {
-    public class PlayerModel
+    public class PlayerModel : ScriptableSingletonManager<PlayerModel>
     {
         public CurrencyModel CurrencyModel { get; } = new();
         public Dictionary<string, ChestModel> ChestModelDict { get; } = new();

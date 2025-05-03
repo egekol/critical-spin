@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using CardGame.Model.Spin;
+using Main.Scripts.ScriptableSingleton;
 
 namespace CardGame.Model
 {
-    public class CardGameEventModel
+    public class CardGameEventModel : ScriptableSingletonManager<CardGameEventModel>
     {
         private readonly Dictionary<CardGameRewardRarity, CardGameZoneConfig> _zoneModelDict = new();
         public IReadOnlyDictionary<CardGameRewardRarity, CardGameZoneConfig> ZoneModelDict => _zoneModelDict;

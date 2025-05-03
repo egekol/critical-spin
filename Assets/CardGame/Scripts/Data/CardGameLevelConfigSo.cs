@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace CardGame.Scripts.Data
+namespace CardGame.Data
 {
     [CreateAssetMenu(fileName = "CardGameLevelConfigSo", menuName = "SO/CardGameLevelConfigSo", order = 0)]
     public class CardGameLevelConfigSo : ScriptableObject
@@ -30,7 +30,6 @@ namespace CardGame.Scripts.Data
     public class CardGameRewardDto
     {
         public RewardViewDataTransferSo RewardData;
-        //todo this would be any transfer data file instead of So, if there is network implementation
 
         public ushort Amount;
         [Range(0, 100)] public int RewardProbability;

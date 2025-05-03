@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace CardGame.View
 {
@@ -21,16 +20,20 @@ namespace CardGame.View
 
     public class CardGameSceneView : MonoBehaviour, ICardGameSceneView
     {
+        public static CardGameSceneView Instance;
+        
         private const float SpinLoopDuration = 1;
         [SerializeField] private CardGameSpinView _cardGameSpinView;
         [SerializeField] private Button _spinButton;
         [SerializeField] private Button _exitButton;
         [SerializeField] private CardGameFailPopup cardGameFailPopup;
 
-        [Inject] private SignalBus _signalBus;
-
         private bool _isInSpinState;
 
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void OnEnable()
         {
@@ -86,17 +89,17 @@ namespace CardGame.View
 
         private void OnGiveUpButtonClick()
         {
-            _signalBus.Fire<OnGiveUpButtonClickSignal>();
+            // _signalBus.Fire<OnGiveUpButtonClickSignal>();
         }
 
         private void OnReviveButtonClick()
         {
-            _signalBus.Fire<OnReviveButtonClickSignal>();
+            // _signalBus.Fire<OnReviveButtonClickSignal>();
         }
 
         private void OnExitButtonClicked()
         {
-            _signalBus.Fire<ExitButtonClickSignal>();
+            // _signalBus.Fire<ExitButtonClickSignal>();
         }
 
         private void OnSpinButtonClicked()
@@ -107,7 +110,7 @@ namespace CardGame.View
                 return;
             }
 
-            _signalBus.Fire<SpinButtonClickSignal>();
+            // _signalBus.Fire<SpinButtonClickSignal>();//todo bus
         }
 
 

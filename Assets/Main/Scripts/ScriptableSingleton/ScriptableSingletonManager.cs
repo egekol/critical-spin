@@ -10,6 +10,16 @@ namespace Main.Scripts.ScriptableSingleton
              base.Initialize();
         }
 
+        public override void LateAwake()
+        {
+            base.LateAwake();
+        }
+
+        public override void Start()
+        {
+            base.Start();
+        }
+
         public override void Destroy()
         {
              base.Destroy();
