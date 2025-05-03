@@ -12,6 +12,7 @@ namespace CardGame.Controller
         void SetGameModelFromLevelData();
     }
 
+    [CreateAssetMenu(fileName = "CardGameDataTransferController", menuName = "SO/Manager/CardGameDataTransferController", order = 0)]
     public class CardGameDataTransferController : ScriptableSingletonManager<CardGameDataTransferController>, ICardGameDataTransferController
     {
         private  CardGameEventModel _cardGameEventModel;

@@ -1,5 +1,5 @@
+using CardGame.EventBus;
 using CardGame.Model.Spin;
-using CardGame.Scripts.EventBus;
 using CardGame.View.Spin;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
@@ -90,17 +90,17 @@ namespace CardGame.View
 
         private void OnGiveUpButtonClick()
         {
-            MessageBroker.Default.Receive<OnGiveUpButtonClickSignal>().Publish();
+            MessageBroker.Default.Publish(new OnGiveUpButtonClickSignal());
         }
 
         private void OnReviveButtonClick()
         {
-            MessageBroker.Default.Receive<OnReviveButtonClickSignal>().Publish();
+            MessageBroker.Default.Publish(new OnReviveButtonClickSignal());
         }
 
         private void OnExitButtonClicked()
         {
-            MessageBroker.Default.Receive<ExitButtonClickSignal>().Publish();
+            MessageBroker.Default.Publish(new ExitButtonClickSignal());
         }
 
         private void OnSpinButtonClicked()
@@ -111,7 +111,7 @@ namespace CardGame.View
                 return;
             }
 
-            MessageBroker.Default.Receive<SpinButtonClickSignal>().Publish();
+            MessageBroker.Default.Publish(new SpinButtonClickSignal());
         }
 
 

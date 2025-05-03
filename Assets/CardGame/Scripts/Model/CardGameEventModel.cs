@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using CardGame.Model.Spin;
 using Main.Scripts.ScriptableSingleton;
+using UnityEngine;
 
 namespace CardGame.Model
 {
+    [CreateAssetMenu(fileName = "CardGameEventModel", menuName = "SO/Model/CardGameEventModel", order = 0)]
     public class CardGameEventModel : ScriptableSingletonManager<CardGameEventModel>
     {
         private readonly Dictionary<CardGameRewardRarity, CardGameZoneConfig> _zoneModelDict = new();

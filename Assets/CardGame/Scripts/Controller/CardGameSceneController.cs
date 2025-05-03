@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CardGame.EventBus;
 using CardGame.Model.Spin;
-using CardGame.Scripts.EventBus;
 using CardGame.View;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.ScriptableSingleton;
@@ -17,6 +17,7 @@ namespace CardGame.Controller
         void SetExitButtonActive(bool isActive);
     }
 
+    [CreateAssetMenu(fileName = "CardGameSceneController", menuName = "SO/Manager/CardGameSceneController", order = 0)]
     public class CardGameSceneController : ScriptableSingletonManager<CardGameSceneController>, ICardGameSceneController
     {
         [SerializeField] private RewardViewIconSpriteAtlasSo _cache;
@@ -28,6 +29,7 @@ namespace CardGame.Controller
 
         public override void Initialize()
         {
+            base.Initialize();
             MessageBroker.Default.Receive<SpinButtonClickSignal>().Subscribe(OnSpinButtonClicked).AddTo(_compositeDisposable);
             MessageBroker.Default.Receive<OnGiveUpButtonClickSignal>().Subscribe(OnGiveUpButtonClicked).AddTo(_compositeDisposable);
             MessageBroker.Default.Receive<OnReviveButtonClickSignal>().Subscribe(OnReviveButtonClicked).AddTo(_compositeDisposable);

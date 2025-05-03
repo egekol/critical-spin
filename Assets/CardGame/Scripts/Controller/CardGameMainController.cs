@@ -1,13 +1,14 @@
+using CardGame.EventBus;
 using CardGame.Model;
 using CardGame.Model.Spin;
-using CardGame.Scripts.EventBus;
-using Cysharp.Threading.Tasks;
 using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
 using UniRx;
+using UnityEngine;
 
 namespace CardGame.Controller
 {
+    [CreateAssetMenu(fileName = "CardGameMainController", menuName = "SO/Manager/CardGameMainController", order = 0)]
     public class CardGameMainController : ScriptableSingletonManager<CardGameMainController>
     {
         private ICardGameDataTransferController _cardGameDataTransferController;
@@ -17,6 +18,7 @@ namespace CardGame.Controller
 
         public override void Initialize()
         {
+            base.Initialize();
             MessageBroker.Default.Receive<ExitButtonClickSignal>().Subscribe(OnExitButtonClicked).AddTo(_compositeDisposable);
         }
 

@@ -9,9 +9,9 @@ namespace Main.Scripts.ScriptableSingleton
 
         public override void Initialize()
         {
+             _compositeDisposable = new CompositeDisposable();
              Instance = this as T;
              base.Initialize();
-             _compositeDisposable = new CompositeDisposable();
         }
 
         public override void LateAwake()

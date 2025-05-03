@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using Main.Scripts.ScriptableSingleton;
+using UnityEngine;
 
 namespace CardGame.Model.Spin
 {
+    [CreateAssetMenu(fileName = "CardGameModel", menuName = "SO/Model/CardGameModel", order = 0)]
     public class CardGameModel : ScriptableSingletonManager<CardGameModel>
     {
         private readonly List<CardGameZoneModel> _zoneModelList = new();
