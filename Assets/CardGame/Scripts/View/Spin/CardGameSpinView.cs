@@ -59,7 +59,7 @@ namespace CardGame.View.Spin
                 rad += 180;
             }
 
-            return rad;
+            return rad; 
         }
 
         public void SetSpinSlots(CardGameZoneModel cardGameZoneModel)
