@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
+using CardGame.Managers.Spin;
 using CardGame.Model.Spin;
 using CardGame.View.Spin.Animation;
 using Cysharp.Threading.Tasks;
@@ -15,9 +17,9 @@ namespace CardGame.View.Spin
     public class CardGameSpinView : MonoBehaviour
     {
         private const string SpinBaseObjectName = "ui_spin_base_value";
+        private const string SpinSlotObjectName = "ui_spin_slot";
         [SerializeField] private Image _spinBaseImage;
         [SerializeField] private Image _spinIndicatorImage;
-        [SerializeField] private CardGameSpinSlotView _spinSlotPrefab;
         [SerializeField] private Transform _spinSlotParent;
 
         [ReadOnly] private List<CardGameSpinSlotView> _spinSlotViewList = new();
@@ -35,11 +37,13 @@ namespace CardGame.View.Spin
         {
             _spinSlotViewList.Clear();
             var totalCount = CardGameConstants.TotalSlotCount;
+            var prefab = ScriptableSpinSlotManager.Instance.SpinSlotPrefab;
             for (var i = 0; i < totalCount; i++)
             {
                 var angle = GetStartingAngle(i, totalCount);
                 var rotation = Quaternion.Euler(Vector3.forward * angle);
-                var slot = Instantiate(_spinSlotPrefab, transform.position, rotation, _spinSlotParent);
+                var slot = Instantiate(prefab, transform.position, rotation, _spinSlotParent);
+                slot.gameObject.name = $"{SpinSlotObjectName}_{i}";
                 _spinSlotViewList.Add(slot);
             }
         }
@@ -87,20 +91,20 @@ namespace CardGame.View.Spin
         private void SetSlotViewAsBomb(CardGameSpinSlotView spinSlotView)
         {
             var bombId = CardGameConstants.SlotBombAtlasId;
-            InitSlotViewSprite(spinSlotView, bombId);
+            InitSlotViewSprite(spinSlotView, bombId,false);
         }
 
         private void SetSlotViewAsReward(CardGameSpinSlotView spinSlotView, CardGameRewardModel rewardModel)
         {
-            InitSlotViewSprite(spinSlotView, rewardModel.Value);
+            InitSlotViewSprite(spinSlotView, rewardModel.Value,true);
             spinSlotView.SetSpinSlotAmount(rewardModel.Amount);
         }
 
-        private void InitSlotViewSprite(CardGameSpinSlotView spinSlotView, string spriteId)
+        private void InitSlotViewSprite(CardGameSpinSlotView spinSlotView, string spriteId, bool hasText)
         {
             var icon = _rewardIconSpriteCache.GetIconSpriteById(spriteId);
             spinSlotView.SetSpinSlotImage(icon);
-            spinSlotView.SetTextViewEnabled(false);
+            spinSlotView.SetTextViewEnabled(hasText);
         }
 
         public void SetSpinView(ZoneType zoneType)
