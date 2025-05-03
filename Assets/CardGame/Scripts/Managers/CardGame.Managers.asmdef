@@ -1,4 +1,0 @@
-{
-	"name": "CardGame.Managers",
-	"references":[ "Main.ScriptableSingleton", "CardGame.View" ]
-}

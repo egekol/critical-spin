@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Main.Scripts.SingletonSO
+namespace Main.Scripts.ScriptableSingleton
 {
     public class ScriptableSingletonManager<T> : ScriptableManagerBase where T : ScriptableSingletonManager<T>
     {

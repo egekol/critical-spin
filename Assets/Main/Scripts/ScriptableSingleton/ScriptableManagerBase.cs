@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Main.Scripts.SingletonSO
+namespace Main.Scripts.ScriptableSingleton
 {
     public class ScriptableManagerBase :  ScriptableObject
     {

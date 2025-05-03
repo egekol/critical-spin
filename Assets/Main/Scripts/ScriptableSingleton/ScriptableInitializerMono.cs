@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Main.Scripts.SingletonSO
+namespace Main.Scripts.ScriptableSingleton
 {
     public class ScriptableInitializerMono : MonoBehaviour
     {
         [SerializeField] private ScriptableManagerBase[] _abstractScriptableManagerArray;
         private List<ScriptableManagerBase> _instantiatedAbstractScriptableManagerList;
         
-        private void Start()
+        private void Awake()
         {
             _instantiatedAbstractScriptableManagerList = new List<ScriptableManagerBase>(_abstractScriptableManagerArray.Length);
             for (int i = 0; i < _abstractScriptableManagerArray.Length; i++)
