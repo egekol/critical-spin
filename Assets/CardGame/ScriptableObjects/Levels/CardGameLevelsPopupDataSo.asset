@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c5bd4bf0f4842cc9b85519e3b5e4643, type: 3}
   m_Name: CardGameLevelsPopupDataSo
   m_EditorClassIdentifier: 
-  MiddleImageSpriteNormalZone: {fileID: 0}
-  MiddleImageSpriteSafeZone: {fileID: 0}
-  MiddleTextColorNormalZone: {r: 1, g: 1, b: 1, a: 0}
-  MiddleTextColorSuperZone: {r: 0.27061954, g: 0.754717, b: 0.24563903, a: 0}
+  MiddleImageSpriteNormalZone: {fileID: 21300000, guid: d17614b620d1dad4288730f3d1a809c8, type: 3}
+  MiddleImageSpriteSafeZone: {fileID: 21300000, guid: 22467393e799d0c468c3c539ea4ab560, type: 3}
+  MiddleTextColorNormalZone: {r: 1, g: 1, b: 1, a: 1}
+  MiddleTextColorSafeZone: {r: 0.27061954, g: 0.754717, b: 0.24563903, a: 1}
   LevelsVisibleNumberCount: 18
   LevelNumberTextPrefab: {fileID: 3604581713271998350, guid: 8dd8344e52bb55140aaab56096496c5a, type: 3}
   NumberPositionTransformPrefab: {fileID: 914763998755897291, guid: 3cb40725b811d4845b828805af0c41df, type: 3}

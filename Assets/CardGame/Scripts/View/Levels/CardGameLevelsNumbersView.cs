@@ -41,13 +41,32 @@ namespace CardGame.View.Levels
         [Button]
         public void SetCurrentLevel(int number)
         {
-            SetTextInMiddle(number);
-        }
-
-        private void SetTextInMiddle(int number)
-        {
-            var middle=_dataSo.LevelsVisibleNumberCount / 2;
-            SetLevelText(number, middle-1);
+            var middleCount = _dataSo.LevelsVisibleNumberCount / 2;
+            var middleIndex = middleCount - 1;
+            int startIndex = 0;
+            if (number < middleCount)
+            {
+                startIndex = middleIndex - number;
+            }
+            
+            var startingNumber = 1;
+            
+            if (number > middleCount)
+            {
+                startingNumber = number - middleIndex;
+            }
+            
+            var count = 0;
+            for (int i = startIndex; i < _numberTextList.Count; i++)
+            {
+                SetLevelText(startingNumber + count, i);
+                count++;
+                DebugLogger.Log($"SetCurrentLevel {startingNumber + count} ; startIndex {startIndex}; count {count}; index {i}");
+            }
+            for (int i = 0; i < startIndex; i++)
+            {
+                SetLevelTextBlank(i);
+            }
         }
 
         private void SetLevelText(int number, int index)
@@ -56,9 +75,10 @@ namespace CardGame.View.Levels
             {
                 return;
             }
-            var text = _numberTextList[number];
+
+            var text = _numberTextList[index];
             text.text = number.ToString();
-            if (number%CardGameConstants.SafeZoneMod == 0)
+            if (number % CardGameConstants.SafeZoneMod == 0)
             {
                 text.color = _dataSo.MiddleTextColorSafeZone;
             }
@@ -66,6 +86,16 @@ namespace CardGame.View.Levels
             {
                 text.color = _dataSo.MiddleTextColorNormalZone;
             }
+        }
+
+        private void SetLevelTextBlank(int index)
+        {
+            if (_numberTextList.Count <= index || index < 0)
+            {
+                return;
+            }
+            var text = _numberTextList[index];
+            text.gameObject.SetActive(false);
         }
     }
 }

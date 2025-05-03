@@ -879,6 +879,7 @@ MonoBehaviour:
   _middleNumberText: {fileID: 320749195}
   _pivotTransformLeft: {fileID: 1425663693}
   _pivotTransformRight: {fileID: 247932790}
+  _dataSo: {fileID: 11400000, guid: 06386c8042494054ab8c875b193fae4a, type: 2}
 --- !u!1 &1279688795
 GameObject:
   m_ObjectHideFlags: 0
