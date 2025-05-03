@@ -3,6 +3,7 @@ using CardGame.Scripts.EventBus;
 using CardGame.View.Spin;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -89,17 +90,17 @@ namespace CardGame.View
 
         private void OnGiveUpButtonClick()
         {
-            // _signalBus.Fire<OnGiveUpButtonClickSignal>();
+            MessageBroker.Default.Receive<OnGiveUpButtonClickSignal>().Publish();
         }
 
         private void OnReviveButtonClick()
         {
-            // _signalBus.Fire<OnReviveButtonClickSignal>();
+            MessageBroker.Default.Receive<OnReviveButtonClickSignal>().Publish();
         }
 
         private void OnExitButtonClicked()
         {
-            // _signalBus.Fire<ExitButtonClickSignal>();
+            MessageBroker.Default.Receive<ExitButtonClickSignal>().Publish();
         }
 
         private void OnSpinButtonClicked()
@@ -110,7 +111,7 @@ namespace CardGame.View
                 return;
             }
 
-            // _signalBus.Fire<SpinButtonClickSignal>();//todo bus
+            MessageBroker.Default.Receive<SpinButtonClickSignal>().Publish();
         }
 
 

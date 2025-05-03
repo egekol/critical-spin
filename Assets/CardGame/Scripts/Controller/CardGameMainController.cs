@@ -1,7 +1,10 @@
 using CardGame.Model;
 using CardGame.Model.Spin;
+using CardGame.Scripts.EventBus;
+using Cysharp.Threading.Tasks;
 using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
+using UniRx;
 
 namespace CardGame.Controller
 {
@@ -14,7 +17,7 @@ namespace CardGame.Controller
 
         public override void Initialize()
         {
-            // _signalBus.Subscribe<ExitButtonClickSignal>(OnExitButtonClicked);//todo bus
+            MessageBroker.Default.Receive<ExitButtonClickSignal>().Subscribe(OnExitButtonClicked).AddTo(_compositeDisposable);
         }
 
         public override void LateAwake()
@@ -33,14 +36,7 @@ namespace CardGame.Controller
             _cardGameSceneController.InitializeScene();
         }
 
-        public override void Destroy()
-        {
-            base.Destroy();
-            // _signalBus.TryUnsubscribe<ExitButtonClickSignal>(OnExitButtonClicked); todo
-        }
-
-
-        public void OnExitButtonClicked()
+        private void OnExitButtonClicked(ExitButtonClickSignal obj)
         {
             SaveRewardPackToPlayerModel();
             _cardGameSceneController.SetExitButtonActive(false);

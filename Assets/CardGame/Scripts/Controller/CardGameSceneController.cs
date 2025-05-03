@@ -6,6 +6,7 @@ using CardGame.View;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
+using UniRx;
 using UnityEngine;
 
 namespace CardGame.Controller
@@ -27,9 +28,9 @@ namespace CardGame.Controller
 
         public override void Initialize()
         {
-            // _signalBus.Subscribe<SpinButtonClickSignal>(OnSpinButtonClicked);
-            // _signalBus.Subscribe<OnGiveUpButtonClickSignal>(OnGiveUpButtonClicked);
-            // _signalBus.Subscribe<OnReviveButtonClickSignal>(OnReviveButtonClicked);//todo bus
+            MessageBroker.Default.Receive<SpinButtonClickSignal>().Subscribe(OnSpinButtonClicked).AddTo(_compositeDisposable);
+            MessageBroker.Default.Receive<OnGiveUpButtonClickSignal>().Subscribe(OnGiveUpButtonClicked).AddTo(_compositeDisposable);
+            MessageBroker.Default.Receive<OnReviveButtonClickSignal>().Subscribe(OnReviveButtonClicked).AddTo(_compositeDisposable);
         }
 
         public override void LateAwake()
@@ -40,27 +41,21 @@ namespace CardGame.Controller
             base.LateAwake();
         }
 
-        public override void Destroy()
-        {
-            // _signalBus.TryUnsubscribe<SpinButtonClickSignal>(OnSpinButtonClicked);
-            // _signalBus.TryUnsubscribe<OnGiveUpButtonClickSignal>(OnGiveUpButtonClicked);
-            // _signalBus.TryUnsubscribe<OnReviveButtonClickSignal>(OnReviveButtonClicked);//todo bus
-        }
 
-        private void OnReviveButtonClicked()
+        private void OnReviveButtonClicked(OnReviveButtonClickSignal obj)
         {
             SetFailPopupActive(false);
             _cardGameLevelGenerator.SetNextZoneModel();
             SetSpinningAvailable(true);
         }
         
-        private void OnGiveUpButtonClicked()
+        private void OnGiveUpButtonClicked(OnGiveUpButtonClickSignal obj)
         {
             SetFailPopupActive(false);
             RestartSpin();
         }
 
-        private void OnSpinButtonClicked()
+        private void OnSpinButtonClicked(SpinButtonClickSignal obj)
         {
             var slotModelList = _cardGameModel.CurrentZoneModel.SlotModelList;
             var slotIndex = ChooseRandomSlot(slotModelList);
