@@ -5,7 +5,7 @@ using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
 using UnityEngine;
 
-namespace CardGame.Controller
+namespace CardGame.Managers
 {
     public interface ICardGameDataTransferController
     {

@@ -1,16 +1,14 @@
-using System;
+using CardGame.EventBus;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CardGame.View
+namespace CardGame.View.Popup
 {
     public class CardGameFailPopup : MonoBehaviour
     {
         [SerializeField] private Button _reviveButton;
         [SerializeField] private Button _giveUpButton;
-
-        public Action OnGiveUpButtonClick { get; set; }
-        public Action OnReviveButtonClick { get; set; }
 
         private void OnEnable()
         {
@@ -26,15 +24,21 @@ namespace CardGame.View
 
         private void OnGiveUpButtonClicked()
         {
-            OnGiveUpButtonClick?.Invoke();
+            MessageBroker.Default.Publish(new OnGiveUpButtonClickSignal());
         }
 
         private void OnReviveButtonClicked()
         {
-            OnReviveButtonClick?.Invoke();
+            MessageBroker.Default.Publish(new OnReviveButtonClickSignal());
+        }
+
+        public void SetActive(bool isActive)
+        {
+            gameObject.SetActive(isActive);
         }
 
 #if UNITY_EDITOR
+
         private void OnValidate()
         {
             var buttons = GetComponentsInChildren<Button>(true);
@@ -46,6 +50,7 @@ namespace CardGame.View
         }
 
         private const string UiFailReviveButtonName = "ui_elements_fail_button_revive";
+
         private const string UiFailGiveUpButtonName = "ui_elements_fail_button_giveUp";
 #endif
     }

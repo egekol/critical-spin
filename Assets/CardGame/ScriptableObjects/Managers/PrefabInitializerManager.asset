@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e58a6a03257b4885a6d6c63ca9439c0d, type: 3}
-  m_Name: CardGameSceneController
+  m_Script: {fileID: 11500000, guid: 337d06374d2244dd89f6f9be99769b7b, type: 3}
+  m_Name: PrefabInitializerManager
   m_EditorClassIdentifier: 
-  _cache: {fileID: 11400000, guid: 972a80d42d92ddc4d998646f73babb65, type: 2}
-  _sceneViewPrefab: {fileID: 3341481045673628636, guid: 0f8ae20e383077848b92f31accd2ce55, type: 3}

@@ -1,15 +1,19 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CardGame.Controller;
 using CardGame.EventBus;
+using CardGame.EventBus.Spin;
+using CardGame.Managers.Spin;
 using CardGame.Model.Spin;
 using CardGame.View;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.ScriptableSingleton;
+using Main.Scripts.ScriptableSingleton.PrefabManager;
 using Main.Scripts.Utilities;
 using UniRx;
 using UnityEngine;
 
-namespace CardGame.Controller
+namespace CardGame.Managers
 {
     public interface ICardGameSceneController
     {
@@ -21,9 +25,10 @@ namespace CardGame.Controller
     public class CardGameSceneController : ScriptableSingletonManager<CardGameSceneController>, ICardGameSceneController
     {
         [SerializeField] private RewardViewIconSpriteAtlasSo _cache;
+        [SerializeField] private CardGameSceneView _sceneViewPrefab;
         private ICardGameLevelGenerator _cardGameLevelGenerator;
-        private CardGameModel _cardGameModel;
         private ICardGameSceneView _cardGameSceneView;
+        private CardGameModel _cardGameModel;
         private const float WaitDurationAfterSuccess = 1.2f;
         private const float FailWaitDuration = .5f;
 
@@ -39,7 +44,7 @@ namespace CardGame.Controller
         {
             _cardGameLevelGenerator = new CardGameLevelGenerator();
             _cardGameModel = CardGameModel.Instance;
-            _cardGameSceneView = CardGameSceneView.Instance;
+            _cardGameSceneView = PrefabInitializerManager.Instance.InstantiatePrefabInScene(_sceneViewPrefab);
             base.LateAwake();
         }
 
@@ -49,6 +54,8 @@ namespace CardGame.Controller
             SetFailPopupActive(false);
             _cardGameLevelGenerator.SetNextZoneModel();
             SetSpinningAvailable(true);
+            var model = _cardGameModel.CurrentZoneModel;
+            MessageBroker.Default.Publish(new SpinRestartSignal(model));
         }
         
         private void OnGiveUpButtonClicked(OnGiveUpButtonClickSignal obj)
@@ -105,7 +112,9 @@ namespace CardGame.Controller
         public void InitializeScene()
         {
             _cardGameLevelGenerator.InitializeLevel();
-            _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
+            var model = _cardGameModel.CurrentZoneModel;
+            _cardGameSceneView.SetSpinSlotView(model);
+            MessageBroker.Default.Publish(new SpinRestartSignal(model));
         }
 
         public void SetSpinningAvailable(bool isActive)
@@ -130,6 +139,7 @@ namespace CardGame.Controller
         {
             _cardGameLevelGenerator.ResetLevel();
             UpdateSpinSlotView();
+
         }
 
         public void SetExitButtonActive(bool isActive)
@@ -141,6 +151,7 @@ namespace CardGame.Controller
         {
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
             SetSpinningAvailable(true);
+            MessageBroker.Default.Publish(new SpinUpdateSignal(_cardGameModel.CurrentZoneModel));
         }
 
         public UniTask PlayFailAnimation()

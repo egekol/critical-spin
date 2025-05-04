@@ -1,4 +1,4 @@
-namespace CardGame.EventBus
+namespace CardGame.EventBus.Spin
 {
     public struct SpinButtonClickSignal
     {

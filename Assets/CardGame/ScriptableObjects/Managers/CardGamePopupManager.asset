@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b90fb104704c2d997570ae0882f551, type: 3}
+  m_Name: CardGamePopupManager
+  m_EditorClassIdentifier: 
+  _popupPanelPrefab: {fileID: 5684790791576399389, guid: 6fecefae1e1d99140b37bc59cdb70ab4, type: 3}
+  _spinButtonPopupPrefab: {fileID: 5852998414898736418, guid: b710d30fbbee09b49ac386bc9d8a6137, type: 3}
+  _failPopupPrefab: {fileID: 1479635977485631993, guid: debaa7b13e9e57e4ca8845140ea8b0e0, type: 3}
+  _exitPanelPrefab: {fileID: 7441619958913165650, guid: f828fafd0ba6e1240af655c7aafb0313, type: 3}
+  SpinButtonPopup: {fileID: 0}
+  FailPopup: {fileID: 0}
+  PopupPanel: {fileID: 0}
+  ExitPanel: {fileID: 0}

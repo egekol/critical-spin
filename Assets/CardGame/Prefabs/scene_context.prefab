@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2518560988197498702}
   - component: {fileID: 2518560988197498701}
+  - component: {fileID: 1392643686}
   m_Layer: 0
   m_Name: scene_context
   m_TagString: Untagged
@@ -53,3 +54,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 83536c4834162924f9bd5e9fa0ed8943, type: 2}
   - {fileID: 11400000, guid: ac3de42143345b94bbcaa54af07ebcc3, type: 2}
   - {fileID: 11400000, guid: 0bc13938ec097ef44b359203b8305901, type: 2}
+  - {fileID: 11400000, guid: 0280ad1b79f7ad24db7f929ccb481257, type: 2}
+  - {fileID: 11400000, guid: 714a010057b3c804899e7f8ae7a9ee4c, type: 2}
+--- !u!114 &1392643686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2518560988197498697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 722558cc01b8469faba76e4e69f87bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefabInitializerManager: {fileID: 11400000, guid: 714a010057b3c804899e7f8ae7a9ee4c, type: 2}
+  _prefabArray: []
+  _transformParent: {fileID: 0}

@@ -6,7 +6,7 @@ using Main.Scripts.Utilities;
 using UniRx;
 using UnityEngine;
 
-namespace CardGame.Controller
+namespace CardGame.Managers
 {
     [CreateAssetMenu(fileName = "CardGameMainController", menuName = "SO/Manager/CardGameMainController", order = 0)]
     public class CardGameMainController : ScriptableSingletonManager<CardGameMainController>
