@@ -21,14 +21,15 @@ namespace CardGame.View.Levels
         public async UniTask PlayNextNumberAnimationAsync(int nextNumber)
         {
             ResetAnimationToBack(nextNumber);
-            SetTextAndColor(nextNumber);
+            SetTextColor(nextNumber);
             _middleImage.gameObject.SetActive(true);
             _middleNumberText.gameObject.SetActive(true);
             _ = _middleNumberText.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.OutSine);
             await _middleImage.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.OutSine).ToUniTask();
         }
 
-        private void SetTextAndColor(int nextNumber)
+
+        public void SetTextColor(int nextNumber)
         {
             if (nextNumber % CardGameConstants.SafeZoneMod == 0)
             {
@@ -49,6 +50,11 @@ namespace CardGame.View.Levels
             _middleNumberText.text = nextNumber.ToString();
             _middleImage.transform.position = _pivotTransformRight.position;
             _middleNumberText.transform.position = _pivotTransformRight.position;
+        }
+
+        public void SetText(int number)
+        {
+            _middleNumberText.text = number.ToString();
         }
     }
 }

@@ -35,12 +35,12 @@ namespace CardGame.Controller
             MessageBroker.Default.Receive<OnReviveButtonClickSignal>().Subscribe(OnReviveButtonClicked).AddTo(_compositeDisposable);
         }
 
-        public override void LateAwake()
+        public override void BeforeStart()
         {
             _cardGameLevelGenerator = new CardGameLevelGenerator();
             _cardGameModel = CardGameModel.Instance;
             _cardGameSceneView = CardGameSceneView.Instance;
-            base.LateAwake();
+            base.BeforeStart();
         }
 
 
@@ -49,6 +49,8 @@ namespace CardGame.Controller
             SetFailPopupActive(false);
             _cardGameLevelGenerator.SetNextZoneModel();
             SetSpinningAvailable(true);
+            var model = _cardGameModel.CurrentZoneModel;
+            MessageBroker.Default.Publish(new SpinRestartSignal(model));
         }
         
         private void OnGiveUpButtonClicked(OnGiveUpButtonClickSignal obj)
@@ -105,7 +107,9 @@ namespace CardGame.Controller
         public void InitializeScene()
         {
             _cardGameLevelGenerator.InitializeLevel();
-            _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
+            var model = _cardGameModel.CurrentZoneModel;
+            _cardGameSceneView.SetSpinSlotView(model);
+            MessageBroker.Default.Publish(new SpinRestartSignal(model));
         }
 
         public void SetSpinningAvailable(bool isActive)
@@ -130,6 +134,7 @@ namespace CardGame.Controller
         {
             _cardGameLevelGenerator.ResetLevel();
             UpdateSpinSlotView();
+
         }
 
         public void SetExitButtonActive(bool isActive)
@@ -141,6 +146,7 @@ namespace CardGame.Controller
         {
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
             SetSpinningAvailable(true);
+            MessageBroker.Default.Publish(new SpinUpdateSignal(_cardGameModel.CurrentZoneModel));
         }
 
         public UniTask PlayFailAnimation()

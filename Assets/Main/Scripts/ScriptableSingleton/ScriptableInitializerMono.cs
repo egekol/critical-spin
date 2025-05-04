@@ -19,19 +19,20 @@ namespace Main.Scripts.ScriptableSingleton
                 _instantiatedAbstractScriptableManagerList.Add(instantiated);
             }
 
-            LateAwake();
         }
 
-        private void LateAwake()
+        private void BeforeStart()
         {
             foreach (var manager in _instantiatedAbstractScriptableManagerList)
             {
-                manager.LateAwake();
+                manager.BeforeStart();
             }
         }
 
         private void Start()
         {
+            BeforeStart();
+            
             foreach (var manager in _instantiatedAbstractScriptableManagerList)
             {
                 manager.Start();

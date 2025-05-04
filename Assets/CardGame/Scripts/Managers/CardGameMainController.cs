@@ -22,13 +22,13 @@ namespace CardGame.Controller
             MessageBroker.Default.Receive<ExitButtonClickSignal>().Subscribe(OnExitButtonClicked).AddTo(_compositeDisposable);
         }
 
-        public override void LateAwake()
+        public override void BeforeStart()
         {
             _cardGameDataTransferController = CardGameDataTransferController.Instance;
             _cardGameModel = CardGameModel.Instance;
             _cardGameSceneController = CardGameSceneController.Instance;
             _playerModel = PlayerModel.Instance;
-            base.LateAwake();
+            base.BeforeStart();
         }
 
         public override void Start()

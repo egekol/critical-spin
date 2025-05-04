@@ -18,9 +18,9 @@ namespace CardGame.Controller
         private  CardGameEventModel _cardGameEventModel;
         [SerializeField] private  CardGameLevelDataTransferSo _cardGameLevelDto;
 
-        public override void LateAwake()
+        public override void BeforeStart()
         {
-            base.LateAwake();
+            base.BeforeStart();
             _cardGameEventModel = CardGameEventModel.Instance;
         }
 

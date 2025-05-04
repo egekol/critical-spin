@@ -1,4 +1,6 @@
 using System;
+using CardGame.EventBus;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,12 +28,12 @@ namespace CardGame.View
 
         private void OnGiveUpButtonClicked()
         {
-            OnGiveUpButtonClick?.Invoke();
+            MessageBroker.Default.Publish(new OnGiveUpButtonClickSignal());
         }
 
         private void OnReviveButtonClicked()
         {
-            OnReviveButtonClick?.Invoke();
+            MessageBroker.Default.Publish(new OnReviveButtonClickSignal());
         }
 
 #if UNITY_EDITOR
