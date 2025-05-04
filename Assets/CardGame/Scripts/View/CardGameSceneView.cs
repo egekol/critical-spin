@@ -1,11 +1,9 @@
-using CardGame.EventBus;
+using CardGame.Managers;
+using CardGame.Managers.Spin;
 using CardGame.Model.Spin;
 using CardGame.View.Spin;
 using Cysharp.Threading.Tasks;
-using Main.Scripts.Utilities;
-using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CardGame.View
 {
@@ -21,39 +19,18 @@ namespace CardGame.View
 
     public class CardGameSceneView : MonoBehaviour, ICardGameSceneView
     {
-        public static CardGameSceneView Instance;
-        
         private const float SpinLoopDuration = 1;
-        [SerializeField] private CardGameSpinView _cardGameSpinView;
-        [SerializeField] private Button _spinButton;
-        [SerializeField] private Button _exitButton;
-        [SerializeField] private CardGameFailPopup cardGameFailPopup;
-
-        private bool _isInSpinState;
+        private CardGameSpinView _cardGameSpinView;
+        [SerializeField] private CardGamePopupManager _popupManager;
 
         private void Awake()
         {
-            Instance = this;
-        }
-
-        private void OnEnable()
-        {
-            _spinButton.onClick.AddListener(OnSpinButtonClicked);
-            _exitButton.onClick.AddListener(OnExitButtonClicked);
-            cardGameFailPopup.OnReviveButtonClick += OnReviveButtonClick;
-            cardGameFailPopup.OnGiveUpButtonClick += OnGiveUpButtonClick;
-        }
-
-        private void OnDisable()
-        {
-            _spinButton.onClick.RemoveListener(OnSpinButtonClicked);
-            cardGameFailPopup.OnReviveButtonClick -= OnReviveButtonClick;
-            cardGameFailPopup.OnGiveUpButtonClick -= OnGiveUpButtonClick;
+            _cardGameSpinView = ScriptableSpinSlotManager.Instance.InstantiateSpinPrefab(transform);
         }
 
         public void SetFailPopupActive(bool isActive)
         {
-            cardGameFailPopup.gameObject.SetActive(isActive);
+            _popupManager.FailPopup.SetActive(isActive);
         }
 
         public void SetSpinSlotView(CardGameZoneModel zoneModelList)
@@ -74,13 +51,13 @@ namespace CardGame.View
 
         public void SetSpinningAvailable(bool isActive)
         {
-            _spinButton.gameObject.SetActive(isActive);
-            _isInSpinState = !isActive;
+            _popupManager.SpinButtonPopup.SetSpinningAvailable(isActive);
+            ScriptableSpinSlotManager.Instance.SetSpinState(!isActive);
         }
 
         public void SetExitButtonActive(bool isActive)
         {
-            _exitButton.gameObject.SetActive(isActive);
+            _popupManager.ExitPanel.SetActive(isActive);
         }
 
         public UniTask PlayFailAnimation()
@@ -88,47 +65,6 @@ namespace CardGame.View
             return _cardGameSpinView.PlayFailAnimation();
         }
 
-        private void OnGiveUpButtonClick()
-        {
-            MessageBroker.Default.Publish(new OnGiveUpButtonClickSignal());
-        }
 
-        private void OnReviveButtonClick()
-        {
-            MessageBroker.Default.Publish(new OnReviveButtonClickSignal());
-        }
-
-        private void OnExitButtonClicked()
-        {
-            MessageBroker.Default.Publish(new ExitButtonClickSignal());
-        }
-
-        private void OnSpinButtonClicked()
-        {
-            if (_isInSpinState)
-            {
-                DebugLogger.Log("Spinning, cant click to button");
-                return;
-            }
-
-            MessageBroker.Default.Publish(new SpinButtonClickSignal());
-        }
-
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            var buttons = GetComponentsInChildren<Button>(true);
-            foreach (var button in buttons)
-            {
-                if (button.transform.name == UiSpinButtonName) _spinButton = button;
-
-                if (button.transform.name == UiExitButtonName) _exitButton = button;
-            }
-        }
-
-        private const string UiSpinButtonName = "ui_elements_spinButton_value";
-        private const string UiExitButtonName = "ui_elements_exit_button";
-#endif
     }
 }

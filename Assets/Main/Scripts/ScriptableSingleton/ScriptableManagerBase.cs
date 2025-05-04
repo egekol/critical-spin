@@ -9,7 +9,7 @@ namespace Main.Scripts.ScriptableSingleton
             
         }
 
-        public virtual void BeforeStart()
+        public virtual void LateAwake()
         {
             
         }

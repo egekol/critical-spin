@@ -1,15 +1,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CardGame.Controller;
 using CardGame.EventBus;
+using CardGame.Managers.Spin;
 using CardGame.Model.Spin;
 using CardGame.View;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.ScriptableSingleton;
+using Main.Scripts.ScriptableSingleton.PrefabManager;
 using Main.Scripts.Utilities;
 using UniRx;
 using UnityEngine;
 
-namespace CardGame.Controller
+namespace CardGame.Managers
 {
     public interface ICardGameSceneController
     {
@@ -22,8 +25,9 @@ namespace CardGame.Controller
     {
         [SerializeField] private RewardViewIconSpriteAtlasSo _cache;
         private ICardGameLevelGenerator _cardGameLevelGenerator;
-        private CardGameModel _cardGameModel;
         private ICardGameSceneView _cardGameSceneView;
+        private CardGameSceneView _sceneViewPrefab;
+        private CardGameModel _cardGameModel;
         private const float WaitDurationAfterSuccess = 1.2f;
         private const float FailWaitDuration = .5f;
 
@@ -35,12 +39,12 @@ namespace CardGame.Controller
             MessageBroker.Default.Receive<OnReviveButtonClickSignal>().Subscribe(OnReviveButtonClicked).AddTo(_compositeDisposable);
         }
 
-        public override void BeforeStart()
+        public override void LateAwake()
         {
             _cardGameLevelGenerator = new CardGameLevelGenerator();
             _cardGameModel = CardGameModel.Instance;
-            _cardGameSceneView = CardGameSceneView.Instance;
-            base.BeforeStart();
+            _cardGameSceneView = PrefabInitializerManager.Instance.InstantiatePrefabInScene(_sceneViewPrefab);
+            base.LateAwake();
         }
 
 

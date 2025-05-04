@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: ScriptableSpinSlotManager
   m_EditorClassIdentifier: 
   SpinSlotPrefab: {fileID: 8327322109177002208, guid: 4878641a012a6c14687a9340a199b6a6, type: 3}
+  levelsUIDataSo: {fileID: 11400000, guid: 06386c8042494054ab8c875b193fae4a, type: 2}
+  SpinPrefab: {fileID: 0}

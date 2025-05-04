@@ -6,7 +6,7 @@ using Main.Scripts.Utilities;
 using UniRx;
 using UnityEngine;
 
-namespace CardGame.Controller
+namespace CardGame.Managers
 {
     [CreateAssetMenu(fileName = "CardGameMainController", menuName = "SO/Manager/CardGameMainController", order = 0)]
     public class CardGameMainController : ScriptableSingletonManager<CardGameMainController>
@@ -22,13 +22,13 @@ namespace CardGame.Controller
             MessageBroker.Default.Receive<ExitButtonClickSignal>().Subscribe(OnExitButtonClicked).AddTo(_compositeDisposable);
         }
 
-        public override void BeforeStart()
+        public override void LateAwake()
         {
             _cardGameDataTransferController = CardGameDataTransferController.Instance;
             _cardGameModel = CardGameModel.Instance;
             _cardGameSceneController = CardGameSceneController.Instance;
             _playerModel = PlayerModel.Instance;
-            base.BeforeStart();
+            base.LateAwake();
         }
 
         public override void Start()

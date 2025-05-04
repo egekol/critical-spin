@@ -1,15 +1,16 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Main.Scripts.ScriptableSingleton
 {
-    public class ScriptableInitializerMono : MonoBehaviour
+    [DefaultExecutionOrder(-100)]
+    public class ScriptableInitializerMono : InitializerBase
     {
         [SerializeField] private ScriptableManagerBase[] _abstractScriptableManagerArray;
         private List<ScriptableManagerBase> _instantiatedAbstractScriptableManagerList;
-        
-        private void Awake()
+   
+
+        protected override void Initialize()
         {
             _instantiatedAbstractScriptableManagerList = new List<ScriptableManagerBase>(_abstractScriptableManagerArray.Length);
             for (int i = 0; i < _abstractScriptableManagerArray.Length; i++)
@@ -18,21 +19,18 @@ namespace Main.Scripts.ScriptableSingleton
                 instantiated.Initialize();
                 _instantiatedAbstractScriptableManagerList.Add(instantiated);
             }
-
         }
 
-        private void BeforeStart()
+        protected override void LateAwake()
         {
             foreach (var manager in _instantiatedAbstractScriptableManagerList)
             {
-                manager.BeforeStart();
+                manager.LateAwake();
             }
         }
 
         private void Start()
         {
-            BeforeStart();
-            
             foreach (var manager in _instantiatedAbstractScriptableManagerList)
             {
                 manager.Start();

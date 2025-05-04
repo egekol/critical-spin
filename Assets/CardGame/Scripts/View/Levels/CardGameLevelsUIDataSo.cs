@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 namespace CardGame.View.Levels
 {
     [CreateAssetMenu(fileName = "CardGameLevelsPopupDataSo", menuName = "SO/f", order = 0)]
-    public class CardGameLevelsPopupDataSo : ScriptableObject
+    public class CardGameLevelsUIDataSo : ScriptableObject
     {
         public Sprite MiddleImageSpriteNormalZone;
         public Sprite MiddleImageSpriteSafeZone;

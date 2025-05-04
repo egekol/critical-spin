@@ -15,13 +15,12 @@ namespace CardGame.View.Levels
         [SerializeField] private TextMeshProUGUI _middleNumberText;
         [SerializeField] private Transform _pivotTransformLeft;
         [SerializeField] private Transform _pivotTransformRight;
-        [SerializeField] private CardGameLevelsPopupDataSo _dataSo;
 
         [Button]
-        public async UniTask PlayNextNumberAnimationAsync(int nextNumber)
+        public async UniTask PlayNextNumberAnimationAsync(int nextNumber, CardGameLevelsUIDataSo dataSo)
         {
             ResetAnimationToBack(nextNumber);
-            SetTextColor(nextNumber);
+            SetTextColor(nextNumber, dataSo);
             _middleImage.gameObject.SetActive(true);
             _middleNumberText.gameObject.SetActive(true);
             _ = _middleNumberText.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.OutSine);
@@ -29,17 +28,17 @@ namespace CardGame.View.Levels
         }
 
 
-        public void SetTextColor(int nextNumber)
+        public void SetTextColor(int nextNumber, CardGameLevelsUIDataSo dataSo)
         {
             if (nextNumber % CardGameConstants.SafeZoneMod == 0)
             {
-                _middleImage.sprite = _dataSo.MiddleImageSpriteSafeZone;
-                _middleNumberText.color = _dataSo.MiddleTextColorSafeZone;
+                _middleImage.sprite = dataSo.MiddleImageSpriteSafeZone;
+                _middleNumberText.color = dataSo.MiddleTextColorSafeZone;
             }
             else
             {
-                _middleImage.sprite = _dataSo.MiddleImageSpriteNormalZone;
-                _middleNumberText.color = _dataSo.MiddleTextColorNormalZone;
+                _middleImage.sprite = dataSo.MiddleImageSpriteNormalZone;
+                _middleNumberText.color = dataSo.MiddleTextColorNormalZone;
             }
         }
 

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CardGame.EventBus;
+using CardGame.Managers.Spin;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Main.Scripts.Utilities;
 using Sirenix.OdinInspector;
 using TMPro;
+using UniRx;
 using UnityEngine;
 
 namespace CardGame.View.Levels
@@ -19,10 +22,43 @@ namespace CardGame.View.Levels
         [SerializeField] private Transform _pivotTransformRight;
         [SerializeField] private Transform _numberTextParent;
         [SerializeField] private Transform _numberPositionsTfParent;
-        [SerializeField] private CardGameLevelsPopupDataSo _dataSo;
         [SerializeField] private CardGameLevelsMiddleNumberView _middleNumberView;
 
+        private CompositeDisposable _compositeDisposable;
+        private CardGameLevelsUIDataSo _dataSo;
+
         private void Awake()
+        {
+            _dataSo = ScriptableSpinSlotManager.Instance.levelsUIDataSo;
+            _compositeDisposable = new CompositeDisposable();
+            MessageBroker.Default.Receive<SpinUpdateSignal>().Subscribe(OnSpinUpdate).AddTo(_compositeDisposable);
+            MessageBroker.Default.Receive<SpinRestartSignal>().Subscribe(OnSpinRestart).AddTo(_compositeDisposable);
+        }
+
+        private void Start()
+        {
+            InstantiateObjects();
+        }
+
+        private void OnDestroy()
+        {
+            _compositeDisposable.Dispose();
+        }
+
+        private void OnSpinUpdate(SpinUpdateSignal signal)
+        {
+            var level = signal.ZoneModel.ZoneIndex+1;
+            SetCurrentLevel(level-1);
+            AnimateNextLevel(level).Forget();
+        }
+        
+        private void OnSpinRestart(SpinRestartSignal signal)
+        {
+            var level = signal.ZoneModel.ZoneIndex+1;
+            SetCurrentLevel(level);
+        }
+        
+        private void InstantiateObjects()
         {
             _numberTfList = new();
             _numberTextList = new();
@@ -56,9 +92,10 @@ namespace CardGame.View.Levels
             
             for (int i = 0; i < _numberTextList.Count; i++)
             {
-                _ = _numberTextList[i].transform.DOMove(_numberTfList[i].position,.5f).SetEase(Ease.OutSine);
+                _ = _numberTextList[i].transform.DOMove(_numberTfList[i].position, .5f).SetEase(Ease.OutSine);
             }
-            await _middleNumberView.PlayNextNumberAnimationAsync(currentLevel);
+
+            await _middleNumberView.PlayNextNumberAnimationAsync(currentLevel, _dataSo);
             var firstText = _numberTextList[0];
             _numberTextList.RemoveAt(0);
             _numberTextList.Add(firstText);

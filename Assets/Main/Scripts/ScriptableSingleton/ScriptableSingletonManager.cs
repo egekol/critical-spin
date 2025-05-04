@@ -14,9 +14,9 @@ namespace Main.Scripts.ScriptableSingleton
              base.Initialize();
         }
 
-        public override void BeforeStart()
+        public override void LateAwake()
         {
-            base.BeforeStart();
+            base.LateAwake();
         }
 
         public override void Start()

@@ -5,7 +5,7 @@ using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
 using UnityEngine;
 
-namespace CardGame.Controller
+namespace CardGame.Managers
 {
     public interface ICardGameDataTransferController
     {
@@ -18,9 +18,9 @@ namespace CardGame.Controller
         private  CardGameEventModel _cardGameEventModel;
         [SerializeField] private  CardGameLevelDataTransferSo _cardGameLevelDto;
 
-        public override void BeforeStart()
+        public override void LateAwake()
         {
-            base.BeforeStart();
+            base.LateAwake();
             _cardGameEventModel = CardGameEventModel.Instance;
         }
 
