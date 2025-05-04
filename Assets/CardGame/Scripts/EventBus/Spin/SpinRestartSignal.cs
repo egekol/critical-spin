@@ -1,6 +1,6 @@
 using CardGame.Model.Spin;
 
-namespace CardGame.EventBus
+namespace CardGame.EventBus.Spin
 {
     public struct SpinRestartSignal
     {

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: CardGameSceneController
   m_EditorClassIdentifier: 
   _cache: {fileID: 11400000, guid: 972a80d42d92ddc4d998646f73babb65, type: 2}
+  _sceneViewPrefab: {fileID: 3341481045673628636, guid: 0f8ae20e383077848b92f31accd2ce55, type: 3}

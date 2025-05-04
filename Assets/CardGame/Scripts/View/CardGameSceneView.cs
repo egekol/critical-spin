@@ -21,10 +21,11 @@ namespace CardGame.View
     {
         private const float SpinLoopDuration = 1;
         private CardGameSpinView _cardGameSpinView;
-        [SerializeField] private CardGamePopupManager _popupManager;
+        private CardGamePopupManager _popupManager;
 
         private void Awake()
         {
+            _popupManager = CardGamePopupManager.Instance;
             _cardGameSpinView = ScriptableSpinSlotManager.Instance.InstantiateSpinPrefab(transform);
         }
 

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using CardGame.EventBus;
+using CardGame.EventBus.Spin;
 using CardGame.Managers.Spin;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -33,10 +31,6 @@ namespace CardGame.View.Levels
             _compositeDisposable = new CompositeDisposable();
             MessageBroker.Default.Receive<SpinUpdateSignal>().Subscribe(OnSpinUpdate).AddTo(_compositeDisposable);
             MessageBroker.Default.Receive<SpinRestartSignal>().Subscribe(OnSpinRestart).AddTo(_compositeDisposable);
-        }
-
-        private void Start()
-        {
             InstantiateObjects();
         }
 
@@ -78,7 +72,6 @@ namespace CardGame.View.Levels
                 var position = _pivotTransformLeft.position + offset;
                 var tf = Instantiate(_dataSo.NumberPositionTransformPrefab, position, Quaternion.identity, _numberPositionsTfParent);
                 _numberTfList.Add(tf);
-
             }
         }
 

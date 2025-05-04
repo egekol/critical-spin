@@ -1,4 +1,5 @@
 using CardGame.EventBus;
+using CardGame.EventBus.Spin;
 using CardGame.Managers.Spin;
 using Main.Scripts.Utilities;
 using UniRx;

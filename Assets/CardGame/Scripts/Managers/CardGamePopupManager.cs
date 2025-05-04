@@ -13,19 +13,24 @@ namespace CardGame.Managers
         [SerializeField] private CardGameSpinButtonPopup _spinButtonPopupPrefab;
         [SerializeField] private CardGameFailPopup _failPopupPrefab;
         [SerializeField] private CardGameExitPanel _exitPanelPrefab;
-        
-        [ReadOnly] public CardGameSpinButtonPopup SpinButtonPopup;
-        [ReadOnly] public CardGameFailPopup FailPopup;
-        [ReadOnly] public CardGamePopupPanel PopupPanel;
-        [ReadOnly] public CardGameExitPanel ExitPanel;
+
+        public CardGameSpinButtonPopup SpinButtonPopup { get; set; }
+        public CardGameFailPopup FailPopup { get; set; }
+        public CardGamePopupPanel PopupPanel { get; set; }
+        public CardGameExitPanel ExitPanel { get; set; }
 
         public override void Initialize()
         {
             base.Initialize();
+        }
+
+        public override void LateAwake()
+        {
             PopupPanel = PrefabInitializerManager.Instance.InstantiatePrefabInScene(_popupPanelPrefab);
             SpinButtonPopup = PrefabInitializerManager.Instance.InstantiatePrefabInScene(_spinButtonPopupPrefab, PopupPanel.transform);
             FailPopup = PrefabInitializerManager.Instance.InstantiatePrefabInScene(_failPopupPrefab, PopupPanel.transform);
             ExitPanel = PrefabInitializerManager.Instance.InstantiatePrefabInScene(_exitPanelPrefab, PopupPanel.transform);
+            base.LateAwake();
         }
     }
 }

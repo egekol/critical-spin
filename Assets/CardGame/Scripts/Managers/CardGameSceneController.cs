@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CardGame.Controller;
 using CardGame.EventBus;
+using CardGame.EventBus.Spin;
 using CardGame.Managers.Spin;
 using CardGame.Model.Spin;
 using CardGame.View;
@@ -24,9 +25,9 @@ namespace CardGame.Managers
     public class CardGameSceneController : ScriptableSingletonManager<CardGameSceneController>, ICardGameSceneController
     {
         [SerializeField] private RewardViewIconSpriteAtlasSo _cache;
+        [SerializeField] private CardGameSceneView _sceneViewPrefab;
         private ICardGameLevelGenerator _cardGameLevelGenerator;
         private ICardGameSceneView _cardGameSceneView;
-        private CardGameSceneView _sceneViewPrefab;
         private CardGameModel _cardGameModel;
         private const float WaitDurationAfterSuccess = 1.2f;
         private const float FailWaitDuration = .5f;

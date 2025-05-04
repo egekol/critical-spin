@@ -5,13 +5,14 @@ namespace Main.Scripts.ScriptableSingleton.PrefabManager
 {
     public class PrefabInitializerMono : InitializerBase
     {
-        [SerializeField] private PrefabInitializerManager _prefabInitializerManager;
+        private PrefabInitializerManager _prefabInitializerManager;
         [SerializeField] private MonoBehaviour[] _prefabArray;
         [SerializeField] private Transform _transformParent;
         private List<MonoBehaviour> _prefabList;
 
         protected override void Initialize()
         {
+            _prefabInitializerManager = PrefabInitializerManager.Instance;
             _prefabInitializerManager.SetTransformParent(_transformParent);
             _prefabList = new List<MonoBehaviour>(_prefabArray.Length);
             for (int i = 0; i < _prefabArray.Length; i++)
