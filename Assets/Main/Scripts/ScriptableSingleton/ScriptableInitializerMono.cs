@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,24 @@ namespace Main.Scripts.ScriptableSingleton
                 var instantiated = Instantiate(_abstractScriptableManagerArray[i]);
                 instantiated.Initialize();
                 _instantiatedAbstractScriptableManagerList.Add(instantiated);
+            }
+
+            LateAwake();
+        }
+
+        private void LateAwake()
+        {
+            foreach (var manager in _instantiatedAbstractScriptableManagerList)
+            {
+                manager.LateAwake();
+            }
+        }
+
+        private void Start()
+        {
+            foreach (var manager in _instantiatedAbstractScriptableManagerList)
+            {
+                manager.Start();
             }
         }
 

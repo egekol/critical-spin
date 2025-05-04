@@ -4,14 +4,8 @@ using UnityEngine.U2D;
 
 namespace CardGame.View
 {
-    public interface IRewardViewIconSpriteCache
-    {
-        Sprite GetIconSpriteById(string id);
-    }
-
-    [CreateAssetMenu(fileName = "RewardViewIconSpriteAtlasSo", menuName = "SO/View/RewardViewIconSpriteAtlasSo",
-        order = 0)]
-    public class RewardViewIconSpriteAtlasSo : ScriptableObject, IRewardViewIconSpriteCache
+    [CreateAssetMenu(fileName = "RewardViewIconSpriteAtlasSo", menuName = "SO/View/RewardViewIconSpriteAtlasSo", order = 0)]
+    public class RewardViewIconSpriteAtlasSo : ScriptableObject
     {
         public SpriteAtlas IconSpriteAtlas;
 

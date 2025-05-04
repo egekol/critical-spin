@@ -1,4 +1,4 @@
-namespace CardGame.Scripts.Data
+namespace CardGame.Data
 {
     public enum RewardRarity
     {

@@ -3,7 +3,7 @@ using Main.Scripts.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace CardGame.Scripts.Data
+namespace CardGame.Data
 {
     [CreateAssetMenu(fileName = "RewardViewDataTransferSo", menuName = "SO/RewardViewDataTransferSo", order = 0)]
     public class RewardViewDataTransferSo : ScriptableObject

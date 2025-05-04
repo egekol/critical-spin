@@ -1,6 +1,6 @@
-namespace CardGame.Scripts.EventBus
+namespace CardGame.EventBus
 {
-    public class OnReviveButtonClickSignal
+    public struct OnReviveButtonClickSignal
     {
     }
 }

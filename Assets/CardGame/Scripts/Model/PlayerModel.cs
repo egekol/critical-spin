@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using CardGame.Model.Spin;
+using Main.Scripts.ScriptableSingleton;
+using UnityEngine;
 
 namespace CardGame.Model
 {
-    public class PlayerModel
+    [CreateAssetMenu(fileName = "PlayerModel", menuName = "SO/Model/PlayerModel", order = 0)]
+    public class PlayerModel : ScriptableSingletonManager<PlayerModel>
     {
         public CurrencyModel CurrencyModel { get; } = new();
         public Dictionary<string, ChestModel> ChestModelDict { get; } = new();

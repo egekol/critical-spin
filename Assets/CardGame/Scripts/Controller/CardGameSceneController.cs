@@ -1,12 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CardGame.EventBus;
 using CardGame.Model.Spin;
-using CardGame.Scripts.EventBus;
 using CardGame.View;
 using Cysharp.Threading.Tasks;
+using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
-using Zenject;
+using UniRx;
+using UnityEngine;
 
 namespace CardGame.Controller
 {
@@ -16,50 +17,52 @@ namespace CardGame.Controller
         void SetExitButtonActive(bool isActive);
     }
 
-    public class CardGameSceneController : ICardGameSceneController, IInitializable, IDisposable
+    [CreateAssetMenu(fileName = "CardGameSceneController", menuName = "SO/Manager/CardGameSceneController", order = 0)]
+    public class CardGameSceneController : ScriptableSingletonManager<CardGameSceneController>, ICardGameSceneController
     {
-        [Inject] private readonly IRewardViewIconSpriteCache _cache;
-        [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
-        [Inject] private readonly CardGameModel _cardGameModel;
-        [Inject] private readonly ICardGameSceneView _cardGameSceneView;
-        [Inject] private readonly SignalBus _signalBus;
+        [SerializeField] private RewardViewIconSpriteAtlasSo _cache;
+        private ICardGameLevelGenerator _cardGameLevelGenerator;
+        private CardGameModel _cardGameModel;
+        private ICardGameSceneView _cardGameSceneView;
         private const float WaitDurationAfterSuccess = 1.2f;
         private const float FailWaitDuration = .5f;
-        
-        public void Initialize()
+
+        public override void Initialize()
         {
-            _signalBus.Subscribe<SpinButtonClickSignal>(OnSpinButtonClicked);
-            _signalBus.Subscribe<OnGiveUpButtonClickSignal>(OnGiveUpButtonClicked);
-            _signalBus.Subscribe<OnReviveButtonClickSignal>(OnReviveButtonClicked);
+            base.Initialize();
+            MessageBroker.Default.Receive<SpinButtonClickSignal>().Subscribe(OnSpinButtonClicked).AddTo(_compositeDisposable);
+            MessageBroker.Default.Receive<OnGiveUpButtonClickSignal>().Subscribe(OnGiveUpButtonClicked).AddTo(_compositeDisposable);
+            MessageBroker.Default.Receive<OnReviveButtonClickSignal>().Subscribe(OnReviveButtonClicked).AddTo(_compositeDisposable);
         }
 
-        public void Dispose()
+        public override void LateAwake()
         {
-            _signalBus.TryUnsubscribe<SpinButtonClickSignal>(OnSpinButtonClicked);
-            _signalBus.TryUnsubscribe<OnGiveUpButtonClickSignal>(OnGiveUpButtonClicked);
-            _signalBus.TryUnsubscribe<OnReviveButtonClickSignal>(OnReviveButtonClicked);
+            _cardGameLevelGenerator = new CardGameLevelGenerator();
+            _cardGameModel = CardGameModel.Instance;
+            _cardGameSceneView = CardGameSceneView.Instance;
+            base.LateAwake();
         }
 
-        private void OnReviveButtonClicked()
+
+        private void OnReviveButtonClicked(OnReviveButtonClickSignal obj)
         {
             SetFailPopupActive(false);
             _cardGameLevelGenerator.SetNextZoneModel();
             SetSpinningAvailable(true);
         }
         
-        private void OnGiveUpButtonClicked()
+        private void OnGiveUpButtonClicked(OnGiveUpButtonClickSignal obj)
         {
             SetFailPopupActive(false);
             RestartSpin();
         }
 
-        private void OnSpinButtonClicked()
+        private void OnSpinButtonClicked(SpinButtonClickSignal obj)
         {
             var slotModelList = _cardGameModel.CurrentZoneModel.SlotModelList;
             var slotIndex = ChooseRandomSlot(slotModelList);
             var slotModel = slotModelList[slotIndex];
-            DebugLogger.Log(
-                $"Spin started! Number{_cardGameModel.CurrentZoneIndex} - index: {slotIndex}, reward {slotModel.CardGameRewardModel}");
+            DebugLogger.Log($"Spin started! Number{_cardGameModel.CurrentZoneIndex} - index: {slotIndex}, reward {slotModel.CardGameRewardModel}");
             var isFailed = slotModel.SlotType == SlotType.Bomb;
 
             if (!isFailed) SaveRewardToRewardPack(slotModel.CardGameRewardModel);
@@ -101,6 +104,7 @@ namespace CardGame.Controller
         
         public void InitializeScene()
         {
+            _cardGameLevelGenerator.InitializeLevel();
             _cardGameSceneView.SetSpinSlotView(_cardGameModel.CurrentZoneModel);
         }
 

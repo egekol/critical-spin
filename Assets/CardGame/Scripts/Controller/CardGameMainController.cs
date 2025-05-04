@@ -1,43 +1,44 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using CardGame.EventBus;
 using CardGame.Model;
 using CardGame.Model.Spin;
-using CardGame.Scripts.EventBus;
-using CardGame.View;
-using Cysharp.Threading.Tasks;
+using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
-using Zenject;
+using UniRx;
+using UnityEngine;
 
 namespace CardGame.Controller
 {
-    public interface ICardGameMainController
+    [CreateAssetMenu(fileName = "CardGameMainController", menuName = "SO/Manager/CardGameMainController", order = 0)]
+    public class CardGameMainController : ScriptableSingletonManager<CardGameMainController>
     {
-    }
+        private ICardGameDataTransferController _cardGameDataTransferController;
+        private CardGameModel _cardGameModel;
+        private ICardGameSceneController _cardGameSceneController;
+        private PlayerModel _playerModel;
 
-    public class CardGameMainController : ICardGameMainController, IInitializable, IDisposable
-    {
-        [Inject] private readonly ICardGameDataTransferController _cardGameDataTransferController;
-        [Inject] private readonly ICardGameLevelGenerator _cardGameLevelGenerator;
-        [Inject] private readonly CardGameModel _cardGameModel;
-        [Inject] private readonly ICardGameSceneController _cardGameSceneController;
-        [Inject] private readonly SignalBus _signalBus;
-        [Inject] private readonly PlayerModel _playerModel;
-
-        public void Initialize()
+        public override void Initialize()
         {
+            base.Initialize();
+            MessageBroker.Default.Receive<ExitButtonClickSignal>().Subscribe(OnExitButtonClicked).AddTo(_compositeDisposable);
+        }
+
+        public override void LateAwake()
+        {
+            _cardGameDataTransferController = CardGameDataTransferController.Instance;
+            _cardGameModel = CardGameModel.Instance;
+            _cardGameSceneController = CardGameSceneController.Instance;
+            _playerModel = PlayerModel.Instance;
+            base.LateAwake();
+        }
+
+        public override void Start()
+        {
+            base.Start();
             _cardGameDataTransferController.SetGameModelFromLevelData();
-            _cardGameLevelGenerator.InitializeLevel();
             _cardGameSceneController.InitializeScene();
-            _signalBus.Subscribe<ExitButtonClickSignal>(OnExitButtonClicked);
         }
 
-        public void Dispose()
-        {
-            _signalBus.TryUnsubscribe<ExitButtonClickSignal>(OnExitButtonClicked);
-        }
-
-        public void OnExitButtonClicked()
+        private void OnExitButtonClicked(ExitButtonClickSignal obj)
         {
             SaveRewardPackToPlayerModel();
             _cardGameSceneController.SetExitButtonActive(false);

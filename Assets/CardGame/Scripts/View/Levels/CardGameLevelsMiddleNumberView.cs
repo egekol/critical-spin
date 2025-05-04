@@ -24,7 +24,7 @@ namespace CardGame.View.Levels
             SetTextAndColor(nextNumber);
             _middleImage.gameObject.SetActive(true);
             _middleNumberText.gameObject.SetActive(true);
-            _middleNumberText.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.OutSine);
+            _ = _middleNumberText.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.OutSine);
             await _middleImage.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.OutSine).ToUniTask();
         }
 

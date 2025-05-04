@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace CardGame.Scripts.Data
+namespace CardGame.Data
 {
-    public interface ICardGameLevelDto
-    {
-        IReadOnlyDictionary<RewardRarity, List<CardGameRewardDto>> GetLevelConfigDictionary();
-        IReadOnlyList<ZoneRarityCountConfig> GetZoneRarityCountConfigList();
-        CardGameLevelConfig GetLevelConfig();
-    }
 
     [CreateAssetMenu(fileName = "CardGameLevelDataTransferSo", menuName = "SO/CardGameLevelDataTransferSo", order = 0)]
-    public class CardGameLevelDataTransferSo : SerializedScriptableObject, ICardGameLevelDto
+    public class CardGameLevelDataTransferSo : SerializedScriptableObject
     {
         public List<CardGameLevelConfigSo> LevelConfigList;
 

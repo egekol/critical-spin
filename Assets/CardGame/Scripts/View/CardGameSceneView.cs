@@ -1,11 +1,11 @@
+using CardGame.EventBus;
 using CardGame.Model.Spin;
-using CardGame.Scripts.EventBus;
 using CardGame.View.Spin;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace CardGame.View
 {
@@ -21,16 +21,20 @@ namespace CardGame.View
 
     public class CardGameSceneView : MonoBehaviour, ICardGameSceneView
     {
+        public static CardGameSceneView Instance;
+        
         private const float SpinLoopDuration = 1;
         [SerializeField] private CardGameSpinView _cardGameSpinView;
         [SerializeField] private Button _spinButton;
         [SerializeField] private Button _exitButton;
         [SerializeField] private CardGameFailPopup cardGameFailPopup;
 
-        [Inject] private SignalBus _signalBus;
-
         private bool _isInSpinState;
 
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void OnEnable()
         {
@@ -86,17 +90,17 @@ namespace CardGame.View
 
         private void OnGiveUpButtonClick()
         {
-            _signalBus.Fire<OnGiveUpButtonClickSignal>();
+            MessageBroker.Default.Publish(new OnGiveUpButtonClickSignal());
         }
 
         private void OnReviveButtonClick()
         {
-            _signalBus.Fire<OnReviveButtonClickSignal>();
+            MessageBroker.Default.Publish(new OnReviveButtonClickSignal());
         }
 
         private void OnExitButtonClicked()
         {
-            _signalBus.Fire<ExitButtonClickSignal>();
+            MessageBroker.Default.Publish(new ExitButtonClickSignal());
         }
 
         private void OnSpinButtonClicked()
@@ -107,7 +111,7 @@ namespace CardGame.View
                 return;
             }
 
-            _signalBus.Fire<SpinButtonClickSignal>();
+            MessageBroker.Default.Publish(new SpinButtonClickSignal());
         }
 
 

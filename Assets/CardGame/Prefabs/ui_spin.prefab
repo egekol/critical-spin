@@ -368,13 +368,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spinBaseImage: {fileID: 7676356709768114358}
   _spinIndicatorImage: {fileID: 3535730981617321953}
-  _spinSlotPrefab: {fileID: 8327322109177002208, guid: 4878641a012a6c14687a9340a199b6a6, type: 3}
   _spinSlotParent: {fileID: 7676356709324315557}
   _cardGameSlotSpriteDataList:
   - {fileID: 11400000, guid: c595f10b4bce1cf4c8034c5fd9b88f30, type: 2}
   - {fileID: 11400000, guid: 5d79bd0d32a4d5941bc78409fb147096, type: 2}
   - {fileID: 11400000, guid: 0b8b7c5734eab194fae0789c8eeecfdd, type: 2}
   _spinAnimation: {fileID: 3728653082768652341}
+  _rewardIconSpriteCache: {fileID: 11400000, guid: 972a80d42d92ddc4d998646f73babb65, type: 2}
 --- !u!114 &3728653082768652341
 MonoBehaviour:
   m_ObjectHideFlags: 0

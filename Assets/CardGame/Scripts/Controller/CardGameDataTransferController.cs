@@ -1,8 +1,9 @@
+using CardGame.Data;
 using CardGame.Model;
 using CardGame.Model.Spin;
-using CardGame.Scripts.Data;
+using Main.Scripts.ScriptableSingleton;
 using Main.Scripts.Utilities;
-using Zenject;
+using UnityEngine;
 
 namespace CardGame.Controller
 {
@@ -11,10 +12,17 @@ namespace CardGame.Controller
         void SetGameModelFromLevelData();
     }
 
-    public class CardGameDataTransferController : ICardGameDataTransferController
+    [CreateAssetMenu(fileName = "CardGameDataTransferController", menuName = "SO/Manager/CardGameDataTransferController", order = 0)]
+    public class CardGameDataTransferController : ScriptableSingletonManager<CardGameDataTransferController>, ICardGameDataTransferController
     {
-        [Inject] private readonly CardGameEventModel _cardGameEventModel;
-        [Inject] private readonly ICardGameLevelDto _cardGameLevelDto;
+        private  CardGameEventModel _cardGameEventModel;
+        [SerializeField] private  CardGameLevelDataTransferSo _cardGameLevelDto;
+
+        public override void LateAwake()
+        {
+            base.LateAwake();
+            _cardGameEventModel = CardGameEventModel.Instance;
+        }
 
         public void SetGameModelFromLevelData()
         {
