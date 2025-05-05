@@ -120,7 +120,6 @@ namespace CardGame.View.Levels
             {
                 SetLevelText(startingNumber + count, i);
                 count++;
-                DebugLogger.Log($"SetCurrentLevel {startingNumber + count} ; startIndex {startIndex}; count {count}; index {i}");
             }
             for (int i = 0; i < startIndex; i++)
             {

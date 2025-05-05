@@ -7,5 +7,6 @@ namespace Main.Scripts.Utilities
         public const string SlotBombAtlasId = "slot_bomb";
         public const int TotalSlotCount = 8;
         public const int SafeZoneMod = 5;
+        public const int ZoneCreationChunkSize = 10;
     }
 }

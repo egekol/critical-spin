@@ -51,7 +51,7 @@ namespace CardGame.Controller
         {
             DebugLogger.Log("Creating new Ten more zones");
             var index = _cardGameModel.ZoneModelList.Count - 1;
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < CardGameConstants.ZoneCreationChunkSize; i++)
             {
                 index++;
                 var zone = CreateRandomZoneModel(index);

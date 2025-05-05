@@ -24,7 +24,6 @@ namespace CardGame.Managers
     [CreateAssetMenu(fileName = "CardGameSceneController", menuName = "SO/Manager/CardGameSceneController", order = 0)]
     public class CardGameSceneController : ScriptableSingletonManager<CardGameSceneController>, ICardGameSceneController
     {
-        [SerializeField] private RewardViewIconSpriteAtlasSo _cache;
         [SerializeField] private CardGameSceneView _sceneViewPrefab;
         private ICardGameLevelGenerator _cardGameLevelGenerator;
         private ICardGameSceneView _cardGameSceneView;
@@ -55,7 +54,7 @@ namespace CardGame.Managers
             _cardGameLevelGenerator.SetNextZoneModel();
             SetSpinningAvailable(true);
             var model = _cardGameModel.CurrentZoneModel;
-            MessageBroker.Default.Publish(new SpinRestartSignal(model));
+            MessageBroker.Default.Publish(new SpinUpdateSignal(model));
         }
         
         private void OnGiveUpButtonClicked(OnGiveUpButtonClickSignal obj)
@@ -74,10 +73,10 @@ namespace CardGame.Managers
 
             if (!isFailed) SaveRewardToRewardPack(slotModel.CardGameRewardModel);
 
-            StartSpinFlow(slotIndex, isFailed).Forget();
+            StartSpinFlow(slotIndex, isFailed, slotModel).Forget();
         }
 
-        private async UniTask StartSpinFlow(int slotIndex, bool isFailed)
+        private async UniTask StartSpinFlow(int slotIndex, bool isFailed, CardGameSlotModel slotModel)
         {
             await StartSpin(slotIndex);
             if (isFailed)
@@ -89,7 +88,9 @@ namespace CardGame.Managers
             }
 
             _cardGameLevelGenerator.SetNextZoneModel();
+            CardGameInventoryManager.Instance.GetNewItem(slotModel.CardGameRewardModel);
             await UniTask.WaitForSeconds(WaitDurationAfterSuccess);
+          
             UpdateSpinSlotView();
         }
 
@@ -139,7 +140,7 @@ namespace CardGame.Managers
         {
             _cardGameLevelGenerator.ResetLevel();
             UpdateSpinSlotView();
-
+            MessageBroker.Default.Publish(new SpinRestartSignal(_cardGameModel.CurrentZoneModel));
         }
 
         public void SetExitButtonActive(bool isActive)

@@ -393,7 +393,6 @@ MonoBehaviour:
   _pivotTransformRight: {fileID: 1488106333950993137}
   _numberTextParent: {fileID: 1488106334403776200}
   _numberPositionsTfParent: {fileID: 1488106335576516583}
-  _dataSo: {fileID: 11400000, guid: 06386c8042494054ab8c875b193fae4a, type: 2}
   _middleNumberView: {fileID: 1488106335721130284}
 --- !u!1 &1488106334651090558
 GameObject:
@@ -824,7 +823,6 @@ MonoBehaviour:
   _middleNumberText: {fileID: 1488106334361798270}
   _pivotTransformLeft: {fileID: 1488106335311699512}
   _pivotTransformRight: {fileID: 1488106334678015875}
-  _dataSo: {fileID: 11400000, guid: 06386c8042494054ab8c875b193fae4a, type: 2}
 --- !u!1 &6351295068427742244
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,6 +832,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6351295068427742240}
+  - component: {fileID: 8472883336251352481}
   - component: {fileID: 6351295068427742243}
   - component: {fileID: 6351295068427742242}
   - component: {fileID: 6351295068427742245}
@@ -865,6 +864,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &8472883336251352481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6351295068427742244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc9fa999aa84ca43a6aabc2c4d868a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!223 &6351295068427742243
 Canvas:
   m_ObjectHideFlags: 0
@@ -963,7 +974,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1717.083, y: 1076.679}
+  m_SizeDelta: {x: 1203.281, y: 110.088}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &9217867122378652482
 GameObject:

@@ -1,15 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CardGame.EventBus;
 using CardGame.Managers.Spin;
 using CardGame.Model.Spin;
 using CardGame.View.Spin.Animation;
 using Cysharp.Threading.Tasks;
 using Main.Scripts.Utilities;
 using Sirenix.OdinInspector;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 

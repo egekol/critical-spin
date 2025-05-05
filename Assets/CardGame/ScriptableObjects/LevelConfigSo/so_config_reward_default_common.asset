@@ -18,16 +18,16 @@ MonoBehaviour:
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
     Amount: 10
     RewardProbability: 10
-  - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
+  - RewardData: {fileID: 11400000, guid: 34e875b5efe31e14e9e3202fdb1f831b, type: 2}
     Amount: 11
     RewardProbability: 10
-  - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
+  - RewardData: {fileID: 11400000, guid: bbbcb8799fddb63438a7db1471b7c701, type: 2}
     Amount: 12
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
     Amount: 13
     RewardProbability: 10
-  - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
+  - RewardData: {fileID: 11400000, guid: d8a55db39026a294aa9d5533d5b1a15a, type: 2}
     Amount: 14
     RewardProbability: 10
   - RewardData: {fileID: 11400000, guid: fa5d6f5166f220e40950023af3953d06, type: 2}
