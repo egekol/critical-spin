@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace CardGame.View.Popup
 {
-    public class CardGameFailPopup : MonoBehaviour
+    public class CardGameFailPopup : Popup
     {
         [SerializeField] private Button _reviveButton;
         [SerializeField] private Button _giveUpButton;
@@ -32,10 +32,6 @@ namespace CardGame.View.Popup
             MessageBroker.Default.Publish(new OnReviveButtonClickSignal());
         }
 
-        public void SetActive(bool isActive)
-        {
-            gameObject.SetActive(isActive);
-        }
 
 #if UNITY_EDITOR
 

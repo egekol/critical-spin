@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace CardGame.View.Popup
 {
-    public class CardGameSpinButtonPopup : MonoBehaviour
+    public class CardGameSpinButtonPopup : Popup
     {
         [SerializeField] private Button _spinButton;
 
@@ -20,11 +20,6 @@ namespace CardGame.View.Popup
         private void OnDisable()
         {
             _spinButton.onClick.RemoveListener(OnSpinButtonClicked);
-        }
-        
-        public void SetSpinningAvailable(bool isActive)
-        {
-            _spinButton.gameObject.SetActive(isActive);
         }
         
         private void OnSpinButtonClicked()

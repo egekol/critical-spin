@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace CardGame.View.Popup
 {
-    public class CardGameExitPanel : MonoBehaviour
+    public class CardGameExitPanel : Popup
     {
         [SerializeField] private Button _exitButton;
 
@@ -19,10 +19,6 @@ namespace CardGame.View.Popup
             _exitButton.onClick.RemoveAllListeners();
         }
         
-        public void SetActive(bool isActive)
-        {
-            gameObject.SetActive(isActive);
-        }
         private void OnExitButtonClicked()
         {
             MessageBroker.Default.Publish(new ExitButtonClickSignal());

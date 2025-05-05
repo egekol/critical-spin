@@ -52,7 +52,7 @@ namespace CardGame.View
 
         public void SetSpinningAvailable(bool isActive)
         {
-            _popupManager.SpinButtonPopup.SetSpinningAvailable(isActive);
+            _popupManager.SpinButtonPopup.SetActive(isActive);
             ScriptableSpinSlotManager.Instance.SetSpinState(!isActive);
         }
 
