@@ -1,0 +1,26 @@
+0.0.2 Update:
+
+Major:
+- Zenject sildim.
+- Scriptlerin ve prefablerin initialize edilme sistemini SO'ya tasidim:
+ - Onceki yazdigim scriptlerin icindeki tum injectionlari ve dependencyleri sildim ama bazi flowlari bozmamak icin
+    bazi scriptlerde manuel injection yaptim. Haricinde her prefabi datayi ve configi so uzerinden manage ediyoruz.
+ - Prefablerin instantiation'ini dinamik hale getirdim.
+ - Asmdef leri kaldirdim. Manager ve event bus folderlarini actim, controlleri silmedim cunku disariya hic 
+    acilmayan hesaplamalarin yapildigi scriptleri direkt yaratarak kullandim
+- Inventory ve levels UI ekledim. Item ucma animasyonu diger bilgisayarimdaydi. Ona erisemedim ve sifirdan yazmaya zaman ayiramadim...
+- Popuplarin panellerini fixledim. Popup manager altinda topladim
+- Signal bus kullanmayip tum zenjecti silmeye karar verdim. Event bus icin Uni Rx ekledim.
+
+Minor:
+- Hierarchy icinde dogru sirada olmayan objeleri duzenledim
+- prefabin icinde sakladigim sprite datalarini so icine tasidim
+- Spin animasyonundaki spin ile circular dependency'i fixledim
+- Network layer ismini Data yaptim (mock)
+- Bazi degistirilemez fieldlari readonly yaptim
+- min max range fieldlari olmadi (bazi degerler max min olabiliyor)
+- Bazi scriptlerin icindeki string builder ve random kullanimini utilities e tasidim.
+
+++ Feedbacklerden eksik herhangi yapmadigim bir sey kalmadi. YouTube dersleri 0'dan baslayarak anlatsa da kullanilan
+    yapilarin farklarini gormemde yardimci oldu (Uni Rx, Singleton SO management). Olabildigince benzer yapiya cevirdim
+    fakat bazi scriptler biraz hybrid oldu.
